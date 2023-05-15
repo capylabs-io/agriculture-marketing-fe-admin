@@ -1,61 +1,29 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
     <v-main>
-      <HelloWorld/>
+      <PluginLoading />
+      <PluginSnackbar />
+      <PluginConfirmDialog />
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    HelloWorld,
+    PluginLoading: () => import("@/components/plugin/PluginLoading.vue"),
+    PluginSnackbar: () => import("@/components/plugin/PluginAlert.vue"),
+    PluginConfirmDialog: () =>
+      import("@/components/plugin/PluginConfirmDialog.vue"),
   },
 
-  data: () => ({
-    //
-  }),
+  created() {},
+  data() {
+    return {};
+  },
 };
 </script>
 
@@ -75,21 +43,12 @@ nav {
 
 .v-application,
 body {
-  font-family: "DM Sans", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   font-weight: 400;
   color: var(--v-neutral100-base) !important;
 }
-.primary-bg {
-  background: var(--v-primary-base) !important;
-}
-.neutral10-bg {
-  background: var(--v-neutral10-base) !important;
-}
-.white-bg {
-  background: white !important;
-}
-.neutral30-border {
-  border: 1px solid var(--v-neutral30-base) !important;
+.font-inter {
+  font-family: "Inter", sans-serif !important;
 }
 .border-radius-24 {
   border-radius: 24px !important;
@@ -118,6 +77,13 @@ body {
 .gap-16 {
   gap: 16px;
 }
+.col-gap-36 {
+  column-gap: 36px;
+}
+.col-gap-72 {
+  column-gap: 72px;
+}
+
 .full-width {
   width: 100% !important;
 }
@@ -144,9 +110,13 @@ body {
   font-size: 12px !important;
   line-height: 14px !important;
 }
+.text-xxs {
+  font-size: 10px !important;
+  line-height: 12px !important;
+}
 .text-xs {
   font-size: 12px !important;
-  line-height: 18px !important;
+  line-height: 14px !important;
 }
 .text-sm {
   font-size: 14px !important;
@@ -158,19 +128,19 @@ body {
 }
 .text-lg {
   font-size: 18px !important;
-  line-height: 28px !important;
+  line-height: 24px !important;
 }
 .text-xl {
   font-size: 20px !important;
-  line-height: 32px !important;
+  line-height: 28px !important;
 }
 .text-dp-xs {
   font-size: 24px !important;
-  line-height: 36px !important;
+  line-height: 32px !important;
 }
 .text-dp-sm {
-  font-size: 30px !important;
-  line-height: 38px !important;
+  font-size: 28px !important;
+  line-height: 36px !important;
 }
 .text-dp-md {
   font-size: 36px !important;
@@ -179,22 +149,24 @@ body {
 }
 .text-dp-lg {
   font-size: 48px !important;
-  line-height: 60px !important;
+  line-height: 56px !important;
   letter-spacing: -2% !important;
 }
 .text-dp-xl {
   font-size: 60px !important;
-  line-height: 72px !important;
+  line-height: 64px !important;
   letter-spacing: -2% !important;
 }
 .text-dp-xxl {
   font-size: 72px !important;
-  line-height: 90px !important;
+  line-height: 80px !important;
   letter-spacing: -2% !important;
 }
-
+.font-weight-semibold {
+  font-weight: 600;
+}
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 8px var(--v-gray13-base);
+  -webkit-box-shadow: inset 0 0 8px #1e1e20;
   background-color: transparent !important;
 }
 ::-webkit-scrollbar {
@@ -203,95 +175,117 @@ body {
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  -webkit-box-shadow: 0 0 8px var(--v-gray13-base);
+  -webkit-box-shadow: 0 0 8px #1e1e20;
   background-color: var(--v-primary-base);
 }
 
 //Vuetify component setting
+.v-carousel__controls__item .v-icon {
+  opacity: 0 !important;
+}
+.v-carousel__controls__item {
+  margin: 0 6px !important;
+}
+.v-carousel__controls__item.v-btn.v-btn--icon {
+  background-color: var(--v-neutral30-base) !important;
+  height: 8px; /* Height you want */
+  width: 8px; /* Width you want */
+  border-radius: 4px; /* Remove default border radius */
+}
+
+.v-carousel__controls__item.v-btn.v-btn--icon.v-btn--active {
+  background-color: var(
+    --v-primary60-base
+  ) !important; /* Colour for active one */
+}
+
+.v-btn__content .v-icon {
+  display: none; /* Removes the default icon */
+}
 .theme--light.v-list-item--active::before {
   opacity: 0 !important;
 }
-.v-text-field--outlined fieldset {
-  border-color: var(--v-neutral30-base) !important;
-}
-.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
-  font-weight: 600 !important;
-  font-size: 14px !important;
-  line-height: 20px !important;
-  color: var(--v-neutral70-base) !important;
-}
-.v-data-table > .v-data-table__wrapper > table > tbody > tr:nth-of-type(even) {
-  background: var(--v-neutral10-base);
-}
-.theme--light.v-data-table
-  > .v-data-table__wrapper
-  > table
-  > tbody
-  > tr:not(:last-child)
-  > td:not(.v-data-table__mobile-row) {
-  border: none !important;
-}
-.v-dialog {
-  border-radius: 16px !important;
-}
-.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)
-  > .v-input__control
-  > .v-input__slot {
-  height: 100%;
-}
-.v-sheet.v-snack__wrapper {
-  border-radius: 12px;
-}
-.v-text-field.v-text-field--enclosed .v-text-field__details {
-  margin-bottom: 0px !important;
-}
-.v-input--dense > .v-input__control > .v-input__slot {
-  margin-bottom: 0px !important;
-}
-.v-text-field__details,
-.v-messages {
-  min-height: 10px !important;
-  min-width: 1px;
-}
+// .v-text-field--outlined fieldset {
+//   border-color: var(--v-neutral30-base) !important;
+// }
+// .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+//   font-weight: 600 !important;
+//   font-size: 14px !important;
+//   line-height: 20px !important;
+//   color: var(--v-neutral70-base) !important;
+// }
+// .v-data-table > .v-data-table__wrapper > table > tbody > tr:nth-of-type(even) {
+//   background: var(--v-neutral10-base);
+// }
+// .theme--light.v-data-table
+//   > .v-data-table__wrapper
+//   > table
+//   > tbody
+//   > tr:not(:last-child)
+//   > td:not(.v-data-table__mobile-row) {
+//   border: none !important;
+// }
+// .v-dialog {
+//   border-radius: 16px !important;
+// }
+// .v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)
+//   > .v-input__control
+//   > .v-input__slot {
+//   height: 100%;
+// }
+// .v-sheet.v-snack__wrapper {
+//   border-radius: 12px;
+// }
+// .v-text-field.v-text-field--enclosed .v-text-field__details {
+//   margin-bottom: 0px !important;
+// }
+// .v-input--dense > .v-input__control > .v-input__slot {
+//   margin-bottom: 0px !important;
+// }
+// .v-text-field__details,
+// .v-messages {
+//   min-height: 10px !important;
+//   min-width: 1px;
+// }
 
-.theme--light.v-select.v-input--is-disabled .v-select__selections,
-.theme--light.v-input--is-disabled input,
-.theme--light.v-input--is-disabled textarea {
-  color: var(--v-neutral70-base) !important;
-}
+// .theme--light.v-select.v-input--is-disabled .v-select__selections,
+// .theme--light.v-input--is-disabled input,
+// .theme--light.v-input--is-disabled textarea {
+//   color: var(--v-neutral70-base) !important;
+// }
 
-.theme--light.v-stepper .v-stepper__step--active .v-stepper__label {
-  color: var(--v-primary-base) !important;
-  text-shadow: none !important;
-}
+// .theme--light.v-stepper .v-stepper__step--active .v-stepper__label {
+//   color: var(--v-primary-base) !important;
+//   text-shadow: none !important;
+// }
 
-.theme--light.v-stepper .v-stepper__step--active .v-stepper__step__step {
-  background-color: transparent !important;
-  border: 1px solid var(--v-primary-base) !important;
-  color: var(--v-primary-base) !important;
-}
+// .theme--light.v-stepper .v-stepper__step--active .v-stepper__step__step {
+//   background-color: transparent !important;
+//   border: 1px solid var(--v-primary-base) !important;
+//   color: var(--v-primary-base) !important;
+// }
 
-.theme--light.v-stepper
-  .v-stepper__step:not(.v-stepper__step--active):not(
-    .v-stepper__step--complete
-  ):not(.v-stepper__step--error)
-  .v-stepper__step__step {
-  background-color: transparent !important;
-  border: 1px solid rgba(0, 0, 0, 0.38) !important;
-  color: rgba(0, 0, 0, 0.38) !important;
-}
+// .theme--light.v-stepper
+//   .v-stepper__step:not(.v-stepper__step--active):not(
+//     .v-stepper__step--complete
+//   ):not(.v-stepper__step--error)
+//   .v-stepper__step__step {
+//   background-color: transparent !important;
+//   border: 1px solid rgba(0, 0, 0, 0.38) !important;
+//   color: rgba(0, 0, 0, 0.38) !important;
+// }
 
-.theme--light.v-stepper .v-stepper__label {
-  font-size: 12px !important;
-  line-height: 18px !important;
-}
+// .theme--light.v-stepper .v-stepper__label {
+//   font-size: 12px !important;
+//   line-height: 18px !important;
+// }
 
-.v-stepper--alt-labels .v-stepper__step {
-  flex-grow: 1 !important;
-}
-.v-stepper--alt-labels .v-stepper__step__step {
-  margin-bottom: 6px !important;
-}
+// .v-stepper--alt-labels .v-stepper__step {
+//   flex-grow: 1 !important;
+// }
+// .v-stepper--alt-labels .v-stepper__step__step {
+//   margin-bottom: 6px !important;
+// }
 // .v-expansion-panel--active > .v-expansion-panel-header {
 //   min-height: 52px !important;
 // }
@@ -306,5 +300,31 @@ body {
     opacity: 1;
   }
 }
+.picture-inner {
+  border: none !important;
+}
+.picture-preview {
+  background-color: transparent !important;
+  border: 1px solid var(--v-neutral30-base) !important;
+  border-radius: 8px;
+}
+.category-icon {
+  max-width: 24px !important;
+  max-height: 24px !important;
+}
+.upload-container {
+  position: relative;
+}
+.upload-text {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transform: translateY(-50%);
+}
 
+.token-icon {
+  font-size: 18px;
+}
 </style>

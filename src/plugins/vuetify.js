@@ -26,8 +26,8 @@ export default new Vuetify({
         neutral100: "#1A1919",
 
         //Primary
-        primary: "#FEFEF2",
-        primary5: "#F5F8FF",
+        primary: "#FFE474",
+        primary5: "#FEFEF2",
         primary10: "#FEFCEA",
         primary20: "#FDF7C9",
         primary30: "#FCEFA0",
@@ -40,22 +40,24 @@ export default new Vuetify({
         primary100: "#3D2815",
 
         //Green
-        green10: "#F0FDF3",
-        green20: "#DAF7E1",
-        green40: "#8FDFA8",
+        green10: "#F4FEF6",
         green60: "#53B06C",
+        green70: "#419056",
 
         //Red
-        red20: "#FAE5E3",
+        red10: "#FEF6F4",
         red60: "#DE5242",
         red70: "#C83E2E",
-        red80: "#A53224",
-
-        //Yellow
-        yellow40: "#F9E283",
 
         //blue
+        blue10: "#F5F8FF",
+        blue60: "#2970FF",
+        blue70: "#155EEF",
+
         //purple
+        purple10: "#FEFAFF",
+        purple60: "#BA24D5",
+        purple70: "#9F1AB1",
       },
     },
   },
