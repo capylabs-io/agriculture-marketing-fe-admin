@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -34,16 +38,16 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld />
+      <HelloWorld/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import HelloWorld from './components/HelloWorld';
 
 export default {
-  name: "App",
+  name: 'App',
 
   components: {
     HelloWorld,
@@ -54,7 +58,27 @@ export default {
   }),
 };
 </script>
+
 <style lang="scss">
+nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
+}
+
+.v-application,
+body {
+  font-family: "DM Sans", sans-serif !important;
+  font-weight: 400;
+  color: var(--v-neutral100-base) !important;
+}
 .primary-bg {
   background: var(--v-primary-base) !important;
 }
@@ -268,4 +292,19 @@ export default {
 .v-stepper--alt-labels .v-stepper__step__step {
   margin-bottom: 6px !important;
 }
+// .v-expansion-panel--active > .v-expansion-panel-header {
+//   min-height: 52px !important;
+// }
+
+//Animations
+@keyframes fadeleft {
+  0% {
+    opacity: 0;
+    transform: translatex(-100px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 </style>
