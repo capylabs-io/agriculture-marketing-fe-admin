@@ -33,7 +33,7 @@ const routes = [
         name: "Admin Account",
         component: () =>
           import("../views/account-setting/pages/account-setting.vue"),
-  
+
         // meta: {
         //   requiresAuth: true,
         // },

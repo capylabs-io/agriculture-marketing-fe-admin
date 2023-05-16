@@ -6,7 +6,7 @@ import alert from "@/plugins/alert";
 import { User, Common } from "@/plugins/api";
 // import router from "@/router";
 
-export const accountStore = defineStore("partner", {
+export const accountStore = defineStore("account", {
   state: () => ({
     user: {},
     userMetadata: {},
