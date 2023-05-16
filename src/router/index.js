@@ -37,9 +37,57 @@ const routes = [
         // },
       },
       {
+        path: "/product",
+        name: "Product Management",
+        component: () => import("../views/product/pages/product-management.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/supply",
+        name: "Supply Management",
+        component: () => import("../views/supply/pages/supply-management.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/breed",
+        name: "Breed Management",
+        component: () => import("../views/breed/pages/breed-management.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/create-supply",
+        name: "Create Supply",
+        component: () => import("../views/supply/pages/create-supply.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
         path: "/write-post",
         name: "Write Post",
         component: () => import("../views/news/pages/create-news.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/create-product",
+        name: "Create Product",
+        component: () => import("../views/product/pages/create-product.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/create-breed",
+        name: "Create Breed",
+        component: () => import("../views/breed/pages/create-breed.vue"),
         // meta: {
         //   requiresAuth: true,
         // },

@@ -16,7 +16,7 @@
             link
           >
             <v-list-item-icon class="mr-2">
-              <v-icon>mdi-home-outline</v-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium"
               >Báo cáo thống kê</v-list-item-title
@@ -25,11 +25,12 @@
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
+            to="/product"
             dense
             link
           >
             <v-list-item-icon class="mr-2">
-              <v-icon>mdi-home-outline </v-icon>
+              <v-icon>mdi-pine-tree</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium"
               >Quản lý sản phẩm</v-list-item-title
@@ -38,11 +39,12 @@
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
+            to="/supply"
             dense
             link
           >
             <v-list-item-icon class="mr-2">
-              <v-icon>mdi-home-outline </v-icon>
+              <v-icon>mdi-warehouse</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium"
               >Quản lý vật tư</v-list-item-title
@@ -51,11 +53,12 @@
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
+            to="/breed"
             dense
             link
           >
             <v-list-item-icon class="mr-2">
-              <v-icon>mdi-home-outline </v-icon>
+              <v-icon>mdi-leaf</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium"
               >Quản lý giống</v-list-item-title
@@ -69,7 +72,7 @@
             link
           >
             <v-list-item-icon class="mr-2">
-              <v-icon>mdi-home-outline </v-icon>
+              <v-icon>mdi-pencil</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium"
               >Quản lý bài viết</v-list-item-title
