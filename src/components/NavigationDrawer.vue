@@ -93,6 +93,7 @@
           </v-list-item>
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
+            to="/account-setting"
             active-class="active-item"
             dense
             link

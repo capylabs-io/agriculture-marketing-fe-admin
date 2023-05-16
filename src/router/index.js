@@ -29,6 +29,16 @@ const routes = [
         // },
       },
       {
+        path: "/account-setting",
+        name: "Admin Account",
+        component: () =>
+          import("../views/account-setting/pages/account-setting.vue"),
+
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
         path: "/news",
         name: "News Management",
         component: () => import("../views/news/pages/news.vue"),

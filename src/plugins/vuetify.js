@@ -58,6 +58,9 @@ export default new Vuetify({
         purple10: "#FEFAFF",
         purple60: "#BA24D5",
         purple70: "#9F1AB1",
+
+        //yellow
+        yellow5: "#FEFEF2",
       },
     },
   },
