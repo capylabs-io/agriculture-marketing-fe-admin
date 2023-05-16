@@ -26,7 +26,7 @@ export default new Vuetify({
         neutral100: "#1A1919",
 
         //Primary
-        primary: "#FFE474",
+        primary: "#F2C748",
         primary5: "#FEFEF2",
         primary10: "#FEFCEA",
         primary20: "#FDF7C9",

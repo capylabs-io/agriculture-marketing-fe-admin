@@ -2,7 +2,7 @@
 <template>
   <div class="wrapper full-height">
     <NavigationDrawer />
-    <div class="container mx-auto pa-10">
+    <div class="container mx-auto pa-8">
       <router-view></router-view>
     </div>
   </div>

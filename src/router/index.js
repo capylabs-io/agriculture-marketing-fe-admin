@@ -21,88 +21,29 @@ const routes = [
     component: () => import("../views/Mainlayout.vue"),
     children: [
       {
-        path: "/dash-board",
-        name: "Dash Board",
+        path: "/dashboard",
+        name: "Dashboard",
         component: () => import("../views/dash-board/pages/dash-board.vue"),
         // meta: {
         //   requiresAuth: true,
         // },
       },
-      // {
-      //   path: "/campaign/:id",
-      //   name: "Campaign Detail",
-      //   component: () => import("../views/campaign/pages/CampaignDetail.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/create-campaign",
-      //   name: "Create Campaign",
-      //   component: () => import("../views/campaign/pages/CreateCampaign.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //     requiresPartnerAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/category",
-      //   name: "Category Management",
-      //   component: () => import("../views/category/pages/CategoryManagement.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/user-management",
-      //   name: "User Management",
-      //   component: () => import("../views/user/pages/UserManagement.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/user-detail/:id",
-      //   name: "User Detail",
-      //   component: () => import("../views/user/pages/UserDetail.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/account-setting",
-      //   name: "Partner Account",
-      //   component: () => import("../views/partner/pages/PartnerDetail.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //     requiresPartnerAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/partner",
-      //   name: "Partner Management",
-      //   component: () => import("../views/partner/pages/PartnerManagement.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/partner/:id",
-      //   name: "Partner Detail",
-      //   component: () => import("../views/partner/pages/PartnerDetail.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //     requiresMaintainerAuth: true,
-      //   },
-      // },
-      // {
-      //   path: "/dashboard",
-      //   name: "Dashboard",
-      //   component: () => import("../views/dashboard/pages/DashboardLayout.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
+      {
+        path: "/news",
+        name: "News Management",
+        component: () => import("../views/news/pages/news.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/write-post",
+        name: "Write Post",
+        component: () => import("../views/news/pages/create-news.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
     ],
   },
 ];
