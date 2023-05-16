@@ -41,6 +41,11 @@ nav {
   }
 }
 
+.table-img {
+  width: 80px !important;
+  height: 80px !important;
+}
+
 .row + .row {
   margin-top: 0px !important;
 }
