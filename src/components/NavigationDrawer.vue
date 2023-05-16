@@ -171,6 +171,6 @@ export default {
 }
 
 .active-item {
-  background: var(--v-primary10-base) !important;
+  background: var(--v-primary40-base) !important;
 }
 </style>
