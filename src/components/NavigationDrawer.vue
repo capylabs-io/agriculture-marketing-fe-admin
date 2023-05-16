@@ -1,12 +1,12 @@
 <template>
   <v-navigation-drawer class="pa-0" width="284px" permanent app>
     <div class="d-flex flex-column full-height overflow-hidden px-4">
-      <div class="d-flex justify-center align-center py-7  logo-img">
+      <div class="d-flex justify-center align-center py-7 logo-img">
         <v-img :src="require(`@/assets/logo.png`)" />
       </div>
 
       <v-divider></v-divider>
-      <div class="py-4 ">
+      <div class="py-4">
         <v-list class="py-0">
           <v-list-item
             class="border-radius-8 py-0 px-2"
@@ -57,7 +57,9 @@
             <v-list-item-icon class="mr-2">
               <v-icon>mdi-home-outline </v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium">Quản lý giống</v-list-item-title>
+            <v-list-item-title class="text-md font-weight-medium"
+              >Quản lý giống</v-list-item-title
+            >
           </v-list-item>
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
@@ -87,6 +89,7 @@
           </v-list-item>
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
+            to="/account-setting"
             active-class="active-item"
             dense
             link
@@ -103,7 +106,7 @@
 
       <v-spacer></v-spacer>
       <v-divider></v-divider>
-      <div class="d-flex align-center justify-space-between py-6 pb-6 ">
+      <div class="d-flex align-center justify-space-between py-6 pb-6">
         <div class="d-flex align-center">
           <div class="avatar-img">
             <v-img

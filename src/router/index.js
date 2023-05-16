@@ -28,14 +28,15 @@ const routes = [
         //   requiresAuth: true,
         // },
       },
-      // {
-      //   path: "/campaign/:id",
-      //   name: "Campaign Detail",
-      //   component: () => import("../views/campaign/pages/CampaignDetail.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //   },
-      // },
+      {
+        path: "/account-setting",
+        name: "Admin Account",
+        component: () =>
+          import("../views/account-setting/pages/account-setting.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
       // {
       //   path: "/create-campaign",
       //   name: "Create Campaign",
