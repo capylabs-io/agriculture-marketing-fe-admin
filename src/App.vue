@@ -41,6 +41,26 @@ nav {
   }
 }
 
+.row + .row {
+  margin-top: 0px !important;
+}
+.search-field {
+  max-width: 360px !important;
+}
+.items-per-page-field {
+  max-width: 88px !important;
+}
+.max-item-field {
+  max-width: 64px !important;
+}
+
+.white-bg {
+  background: white !important;
+}
+.neutral20-border {
+  border: 1px solid var(--v-neutral20-base) !important;
+}
+
 .v-application,
 body {
   font-family: "Inter", sans-serif !important;
@@ -191,7 +211,10 @@ body {
   background-color: var(--v-primary-base);
 }
 
-Vuetify component setting
+//Vuetify component setting
+.theme--light.v-list-item--active::before {
+  opacity: 0 !important;
+}
 .v-carousel__controls__item .v-icon {
   opacity: 0 !important;
 }
@@ -217,6 +240,50 @@ Vuetify component setting
 .theme--light.v-list-item--active::before {
   opacity: 0 !important;
 }
+.theme--light.v-list-item--active::before {
+  opacity: 0 !important;
+}
+.v-text-field--outlined fieldset {
+  border-color: var(--v-neutral30-base) !important;
+}
+.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  color: var(--v-neutral70-base) !important;
+}
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+  padding: 12px 12px !important;
+}
+.v-pagination__navigation,
+.v-pagination__item {
+  border: 1px solid var(--v-neutral30-base) !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+// .v-text-field--outlined fieldset {
+//   border-color: var(--v-neutral30-base) !important;
+// }
+// .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+//   font-weight: 600 !important;
+//   font-size: 14px !important;
+//   line-height: 20px !important;
+//   color: var(--v-neutral70-base) !important;
+// }
+// .v-data-table > .v-data-table__wrapper > table > tbody > tr:nth-of-type(even) {
+//   background: var(--v-neutral10-base);
+// }
+// .theme--light.v-data-table
+//   > .v-data-table__wrapper
+//   > table
+//   > tbody
+//   > tr:not(:last-child)
+//   > td:not(.v-data-table__mobile-row) {
+//   border: none !important;
+// }
+.v-dialog {
+  border-radius: 16px !important;
+}
 .v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)
   > .v-input__control
   > .v-input__slot {
@@ -224,6 +291,17 @@ Vuetify component setting
 }
 .v-sheet.v-snack__wrapper {
   border-radius: 12px;
+}
+.v-text-field.v-text-field--enclosed .v-text-field__details {
+  margin-bottom: 0px !important;
+}
+.v-input--dense > .v-input__control > .v-input__slot {
+  margin-bottom: 0px !important;
+}
+.v-text-field__details,
+.v-messages {
+  min-height: 10px !important;
+  min-width: 1px;
 }
 
 .v-text-field.v-text-field--enclosed .v-text-field__details {

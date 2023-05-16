@@ -1,16 +1,16 @@
 <template>
   <v-navigation-drawer class="pa-0" width="284px" permanent app>
-    <div class="d-flex flex-column full-height overflow-hidden px-4">
-      <div class="d-flex justify-center align-center py-7 logo-img">
+    <div class="d-flex flex-column full-height overflow-hidden pa-4">
+      <div class="d-flex justify-center align-center py-7 logo-img mx-auto">
         <v-img :src="require(`@/assets/logo.png`)" />
       </div>
 
-      <v-divider></v-divider>
-      <div class="py-4">
+      <v-divider class="mt-2"></v-divider>
+      <div class="py-6">
         <v-list class="py-0">
           <v-list-item
             class="border-radius-8 py-0 px-2"
-            to="/dash-board"
+            to="/dashboard"
             active-class="active-item"
             dense
             link
@@ -63,6 +63,7 @@
           </v-list-item>
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
+            to="/news"
             active-class="active-item"
             dense
             link
@@ -106,37 +107,27 @@
 
       <v-spacer></v-spacer>
       <v-divider></v-divider>
-      <div class="d-flex align-center justify-space-between py-6 pb-6">
+      <div class="d-flex align-center justify-space-between mt-6">
         <div class="d-flex align-center">
-          <div class="avatar-img">
-            <v-img
-              class="border-radius-8"
-              :src="require(`@/assets/components/landing/profile.webp`)"
-            />
-          </div>
-          <div class="ml-3">
+          <v-img
+            class="avatar-img"
+            :src="require(`@/assets/components/landing/profile.webp`)"
+          />
+          <div class="ml-4">
             <div
               class="font-weight-bold text-sm neutral100--text text-capitalize"
             >
-              <!-- {{
-              userStore.isMaintainer
-              ? "Maintainer"
-              : userStore.userData.username
-            }} -->
               Độ Phùng
             </div>
-            <div class="text-caption neutral70--text">
-              <!-- {{ userStore.userData.email }} -->
-              admin.123
-            </div>
+            <div class="text-caption neutral70--text">admin.123</div>
           </div>
         </div>
         <v-btn
-          class="d-flex red60--text px-0 text-none mb-2 text-btn"
+          class="d-flex red60--text px-0 text-none mb-2 text-btn align-center"
           @click="onLogoutClicked"
-          text
+          icon
         >
-          <v-icon class="mr-2" color="red60"> mdi-power </v-icon>
+          <v-icon class="mt-2" color="neutral60"> mdi-logout </v-icon>
         </v-btn>
       </div>
       <!-- <div class=" pb-6">
@@ -173,6 +164,7 @@ export default {
 .avatar-img {
   width: 36px;
   height: 36px;
+  border-radius: 18px !important;
 }
 .logo-img {
   width: 180px;
@@ -180,6 +172,6 @@ export default {
 }
 
 .active-item {
-  background: var(--v-primary10-base) !important;
+  background: var(--v-primary40-base) !important;
 }
 </style>
