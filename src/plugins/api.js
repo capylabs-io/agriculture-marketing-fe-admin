@@ -11,25 +11,25 @@ const PRODUCT_API = "/products/";
 const PRODUCT_CATEGORY_API = "/product-categories/";
 
 const APIHelper = (api) => ({
-  search: (params, option) =>
-    axios.get(api, { params: utils.filterObject(params) }, option),
-  count: (params, option) =>
-    axios.get(api + "count", { params: utils.filterObject(params) }, option),
-  fetch: (params, option) =>
-    axios.get(api, { params: utils.filterObject(params) }, option),
+  search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
+  count: (params, option) => axios.get(api + "count", { params: utils.filterObject(params) }, option),
+  fetch: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
   fetchOne: (id, option) => axios.get(api + id, option),
   create: (params, options) =>
-    axios.post(api, utils.filterObject(params), options),
-  update: (id, params, option) =>
-    axios.put(api + id, utils.filterObject(params), option),
+    axios.post(api, utils.filterObject(params), {
+      ...options,
+      headers: {
+        Authorization: "Bearer " + userStore().jwt,
+      },
+    }),
+  update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option),
 });
 export const APIRespository = APIHelper;
 export const Auth = {
   signIn: (signInData) => axios.post("auth/local", signInData),
   signUp: (signUpData) => axios.post("auth/local/register", signUpData),
-  changePassword: (signUpData) =>
-    axios.post("auth/change-password", signUpData),
+  changePassword: (signUpData) => axios.post("auth/change-password", signUpData),
 };
 export const User = {
   ...APIHelper(USER_API),

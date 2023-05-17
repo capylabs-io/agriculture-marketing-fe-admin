@@ -29,18 +29,29 @@
       <v-data-table
         :headers="headers"
         :items="productStore.slicedProducts"
+        :items-per-page="productStore.productsPerPage"
         hide-default-footer
       >
         <template v-slot:[`item.thumbnail`]="{ item }">
           <v-img
             class="table-img neutral20-border border-radius-8 mx-auto"
-            :src="item.thumbnail"
+            :src="getImageUrl(item.images)"
           ></v-img>
+        </template>
+        <template v-slot:[`item.publishedAt`]="{ item }">
+          <div>
+            {{ item.createdAt | ddmmyyyyhhmmss }}
+          </div>
+        </template>
+        <template v-slot:[`item.author`]="{ item }">
+          <div>
+            {{ item.author.username }}
+          </div>
         </template>
         <template v-slot:[`item.qrcode`]="{ item }">
           <v-img
             class="table-img border-radius-8 mx-auto"
-            :src="item.qrcode"
+            :src="getImageUrl(item.qrCodeImage)"
           ></v-img>
         </template>
         <template v-slot:[`item.action`]="{}">
@@ -101,7 +112,7 @@ export default {
   },
   data() {
     return {
-      itemsPerPage: [10, 50, 100],
+      itemsPerPage: [10, 20, 50],
       headers: [
         {
           text: "Ảnh sản phẩm",
@@ -147,6 +158,12 @@ export default {
   },
   created() {
     this.productStore.fetchProducts();
+  },
+  methods: {
+    getImageUrl(url) {
+      if (!url) return require("@/assets/no-image.png");
+      return url;
+    },
   },
 };
 </script>

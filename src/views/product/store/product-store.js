@@ -84,7 +84,9 @@ export const productStore = defineStore("product", {
     async fetchProducts() {
       try {
         loading.show();
-        const res = await Product.fetch({});
+        const res = await Product.fetch({
+          populate: "*",
+        });
         if (!res) {
           alert.error("Error occurred when fetching products!", "Please try again later!");
           return;
@@ -95,7 +97,8 @@ export const productStore = defineStore("product", {
           return {
             id: product.id,
             ...product.attributes,
-            productCategory: get(product, "attributes.productCategory", {}),
+            productCategory: get(product, "attributes.productCategory.data.attributes", {}),
+            author: get(product, "attributes.user.data.attributes", {}),
           };
         });
         this.products = mappedProducts;
