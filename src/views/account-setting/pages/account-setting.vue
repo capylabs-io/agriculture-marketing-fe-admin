@@ -10,33 +10,33 @@
           <v-btn
             color="white"
             class="text-none font-weight-bold px-2"
-            @click="accountStore.isEditingBrandInfo = true"
-            v-if="!accountStore.isEditingBrandInfo"
+            @click="userStore.isEditingBrandInfo = true"
+            v-if="!userStore.isEditingBrandInfo"
             depressed
             >Chỉnh sửa</v-btn
           >
         </div>
         <div
           class="neutral30-border border-radius-8 overflow-hidden"
-          v-if="accountStore.isEditingBrandInfo"
+          v-if="userStore.isEditingBrandInfo"
         >
           <v-btn
             color="white"
             class="text-none font-weight-bold px-2"
-            @click="accountStore.isEditingBrandInfo = false"
+            @click="userStore.isEditingBrandInfo = false"
             depressed
             >Hủy</v-btn
           >
         </div>
         <div
           class="neutral30-border border-radius-8 overflow-hidden"
-          v-if="accountStore.isEditingBrandInfo"
+          v-if="userStore.isEditingBrandInfo"
         >
           <v-btn
             color="primary"
-            class="primary--text text-none font-weight-bold px-2"
-            :disabled="!accountStore.brandInfoForm && !accountStore.inputAvatar"
-            @click="accountStore.updateBrandInfo"
+            class="white--text text-none font-weight-bold px-2"
+            :disabled="!userStore.brandInfoForm && !userStore.avatarUrl"
+            @click="editAccount()"
             depressed
             >Lưu thay đổi</v-btn
           >
@@ -57,7 +57,7 @@
         <v-btn
           color="primary"
           class="border-radius-8 text-none font-weight-bold"
-          @click="accountStore.changePasswordDialog = true"
+          @click="userStore.changePasswordDialog = true"
           depressed
           >Đổi mật khẩu</v-btn
         >
@@ -87,7 +87,7 @@
 <script>
 // import PictureInput from "vue-picture-input";
 import { mapStores } from "pinia";
-import { accountStore } from "../stores/accountStore";
+import { userStore } from "@/stores/userStore";
 // import { get } from "lodash";
 export default {
   components: {
@@ -101,10 +101,10 @@ export default {
     };
   },
   computed: {
-    ...mapStores(accountStore),
+    ...mapStores(userStore),
     // partnerAvatar() {
     //   return get(
-    //     this.accountStore,
+    //     this.userStore,
     //     "partner.avatarUrl",
     //     require("@/assets/components/upload-icon.png")
     //   );
@@ -117,20 +117,24 @@ export default {
     onIconSelect(image) {
       if (image) {
         const imageFile = this.$refs.pictureInput.file;
-        this.accountStore.changePartnerAvatar(imageFile);
+        this.userStore.changePartnerAvatar(imageFile);
       } else {
         console.log("FileReader API not supported!");
       }
     },
+    editAccount() {
+      this.userStore.updateAccountSetting();
+      this.profileEdit = false;
+    },
   },
   async created() {
-    // this.accountStore.reset();
+    // this.userStore.reset();
     // if (this.$route.path.includes("account-setting")) {
-    //   await this.accountStore.fetchPartnerInfo();
+    //   await this.userStore.fetchPartnerInfo();
     // } else {
     //   const partnerId = this.$route.params.id;
     //   if (!partnerId) this.$router.push("/dashboard");
-    //   await this.accountStore.fetchPartner(partnerId);
+    //   await this.userStore.fetchPartner(partnerId);
     // }
   },
   // components: {

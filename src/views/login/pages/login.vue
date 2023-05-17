@@ -28,6 +28,7 @@
             <v-text-field
               height="36px"
               type="text"
+              v-model="userStore.username"
               :rules="rules.checkIdentifier"
               class="pa-0 mt-2"
               placeholder="Nhập Tên Tài Khoản"
@@ -42,6 +43,7 @@
               :append-icon="isShowPass ? 'mdi-eye' : 'mdi-eye-off'"
               :type="isShowPass ? 'text' : 'password'"
               :rules="rules.password"
+              v-model="userStore.password"
               @click:append="isShowPass = !isShowPass"
               class="pa-0 mt-2"
               outlined
@@ -125,7 +127,13 @@
 
 <script>
 import { rules } from "@/plugins/rules";
+import { userStore } from "@/stores/userStore";
+import { mapStores } from "pinia";
+
 export default {
+  computed: {
+    ...mapStores(userStore),
+  },
   data() {
     return {
       rules: rules,

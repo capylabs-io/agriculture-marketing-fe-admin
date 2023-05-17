@@ -2,7 +2,7 @@ import axios from "axios";
 import utils from "@/plugins/utils";
 
 // axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
-axios.defaults.baseURL = "https://neobank-dev-api.capylabs.io/api/";
+axios.defaults.baseURL = "https://mocmien-api.capylabs.io/api/";
 
 const USER_API = "/users/";
 const CATEGORY_API = "/campaign-categories/";
@@ -25,7 +25,8 @@ const APIHelper = (api) => ({
 });
 export const APIRespository = APIHelper;
 export const Auth = {
-  signIn: (signInData) => axios.post("/admin/auth", signInData),
+  signIn: (signInData) => axios.post("auth/local", signInData),
+  signUp: (signUpData) => axios.post("auth/local/register", signUpData),
 };
 
 export const User = {
@@ -47,12 +48,13 @@ export const User = {
   //     }
   //   );
   // },
-  updateUserInfo: (model) => axios.put("users/edit/", model),
+updateUserInfo: (model,id) => axios.put(`users/${id}`, model),
   updateUserEmail: (email, password) =>
     axios.post("users/edit-email", {
       newEmail: email,
       password,
     }),
+  uploadFile: (file) => axios.post("upload", file),
 };
 
 export const Partner = {

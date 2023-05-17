@@ -13,6 +13,10 @@
           placeholder="Chọn hình minh hoạ"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
+          v-model="userStore.file"
+          accept="image/png, image/jpeg, image/bmp,image/webp"
+          ref="myfile"
+          @change="onFileChanged($event)"
           prepend-icon=""
           :show-size="1000"
           clearable
@@ -27,6 +31,7 @@
       <v-col cols="12" md="4">
         <div class="font-weight-semibold mb-2">Tên thành viên</div>
         <v-text-field
+          v-model="userStore.userSignUpData.name"
           type="text"
           class="border-radius-8"
           placeholder="Phùng thanh độ"
@@ -42,6 +47,7 @@
         <div class="font-weight-semibold mb-2">Số điện thoại</div>
         <v-text-field
           type="text"
+          v-model="userStore.userSignUpData.phoneNumber"
           class="border-radius-8"
           placeholder="+84 930-298135"
           solo
@@ -56,6 +62,7 @@
         <div class="font-weight-semibold mb-2">Địa chỉ</div>
         <v-text-field
           type="text"
+          v-model="userStore.userSignUpData.address"
           class="border-radius-8"
           placeholder="Phùng thanh độ"
           solo
@@ -69,11 +76,22 @@
 </template>
 
 <script>
+import { userStore } from "@/stores/userStore";
+import { mapStores } from "pinia";
 export default {
+  computed: {
+    ...mapStores(userStore),
+  },
   data() {
     return {
       items: ["Tin tức", "Giới thiệu"],
     };
+  },
+  methods: {
+    onFileChanged(data) {
+      this.userStore.file = data;
+      console.log("file", data);
+    },
   },
 };
 </script>
