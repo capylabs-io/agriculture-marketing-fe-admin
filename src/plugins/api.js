@@ -6,6 +6,8 @@ axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
 
 const USER_API = "/users/";
 const POST_API = "/posts/";
+const PRODUCT_API = "/products/";
+const PRODUCT_CATEGORY_API = "/product-categories/";
 
 const APIHelper = (api) => ({
   search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
@@ -58,4 +60,10 @@ export const Common = {
 };
 export const Post = {
   ...APIHelper(POST_API),
+};
+export const Product = {
+  ...APIHelper(PRODUCT_API),
+};
+export const ProductCategory = {
+  ...APIHelper(PRODUCT_CATEGORY_API),
 };

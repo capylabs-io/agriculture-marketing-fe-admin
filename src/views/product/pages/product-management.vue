@@ -4,6 +4,7 @@
     <div class="text-dp-md font-weight-semibold">Quản lý sản phẩm</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <v-text-field
+        v-model="productStore.searchKey"
         class="search-field border-radius-8"
         placeholder="Tìm kiếm"
         prepend-inner-icon="mdi-magnify"
@@ -25,7 +26,11 @@
     </div>
 
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
-      <v-data-table :headers="headers" :items="items" hide-default-footer>
+      <v-data-table
+        :headers="headers"
+        :items="productStore.slicedProducts"
+        hide-default-footer
+      >
         <template v-slot:[`item.thumbnail`]="{ item }">
           <v-img
             class="table-img neutral20-border border-radius-8 mx-auto"
@@ -41,7 +46,9 @@
         <template v-slot:[`item.action`]="{}">
           <div class="d-flex align-center justify-center">
             <v-btn icon dense><v-icon>mdi-eye-outline</v-icon></v-btn>
-            <v-btn icon dense><v-icon>mdi-pencil-outline</v-icon></v-btn>
+            <v-btn icon dense disabled
+              ><v-icon>mdi-pencil-outline</v-icon></v-btn
+            >
             <v-btn icon dense><v-icon>mdi-delete-outline</v-icon></v-btn>
           </div>
         </template>
@@ -54,6 +61,7 @@
         <v-select
           class="border-radius-8 items-per-page-field"
           :items="itemsPerPage"
+          v-model="productStore.productsPerPage"
           flat
           solo
           outlined
@@ -63,7 +71,7 @@
         trên tổng số
         <v-text-field
           class="border-radius-8 max-item-field"
-          placeholder="100"
+          :value="productStore.totalProduct"
           flat
           solo
           outlined
@@ -71,30 +79,28 @@
           hide-details
           readonly
         ></v-text-field>
+        sản phẩm
       </div>
       <v-pagination
         class="pa-0 mr-n2"
         color="primary"
-        :length="1"
+        :length="productStore.totalProductPage"
+        v-model="productStore.productPage"
       ></v-pagination>
     </div>
   </div>
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { productStore } from "../store/product-store";
+
 export default {
+  computed: {
+    ...mapStores(productStore),
+  },
   data() {
     return {
-      items: [
-        {
-          thumbnail: require("@/assets/components/landing/image-2.webp"),
-          name: "Mía siêu ngọt",
-          code: "NSHL-132219",
-          publishedAt: "19/04/2023",
-          author: "Phùng Thanh Độ",
-          qrcode: require("@/assets/components/qrcode-example.png"),
-        },
-      ],
       itemsPerPage: [10, 50, 100],
       headers: [
         {
@@ -106,12 +112,12 @@ export default {
         {
           text: "Tên sản phẩm",
           value: "name",
-          align: "center",
+          align: "start",
         },
         {
           text: "Mã truy xuất",
           value: "code",
-          align: "center",
+          align: "start",
         },
         {
           text: "Ngày tạo",
@@ -138,6 +144,9 @@ export default {
         },
       ],
     };
+  },
+  created() {
+    this.productStore.fetchProducts();
   },
 };
 </script>

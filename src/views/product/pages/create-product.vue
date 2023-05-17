@@ -24,6 +24,8 @@
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
         color="primary"
+        :disabled="!productStore.productForm"
+        @click="productStore.createProduct()"
       >
         <v-icon small>mdi-plus</v-icon>
         <div class="ml-1">Thêm sản phẩm</div>
@@ -33,7 +35,13 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { productStore } from "../store/product-store";
+
 export default {
+  computed: {
+    ...mapStores(productStore),
+  },
   components: {
     CreateProductForm: () => import("../components/product-form.vue"),
   },
@@ -41,6 +49,9 @@ export default {
     onBackClicked() {
       this.$router.push("/product");
     },
+  },
+  created() {
+    this.productStore.fetchCategories();
   },
 };
 </script>
