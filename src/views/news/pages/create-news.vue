@@ -10,7 +10,7 @@
     </v-btn>
     <div class="text-dp-md font-weight-semibold mt-1">Thêm bài viết mới</div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-2 mt-6">
-      <CreateNewsForm />
+      <CreateNewsForm :category="postStore.category" />
     </div>
     <div class="d-flex justify-end mt-6 gap-8">
       <v-btn
@@ -24,6 +24,8 @@
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
         color="primary"
+        @click="createPost()"
+        depressed
       >
         <v-icon small>mdi-plus</v-icon>
         <div class="ml-1">Thêm bài viết</div>
@@ -33,13 +35,24 @@
 </template>
 
 <script>
+import { postStore } from "../stores/news-store";
+import { mapStores } from "pinia";
 export default {
   components: {
     CreateNewsForm: () => import("../components/news-form.vue"),
   },
+  computed: {
+    ...mapStores(postStore),
+  },
+  mounted() {
+    this.postStore.fetchCategory();
+  },
   methods: {
     onBackClicked() {
       this.$router.push("/news");
+    },
+    createPost() {
+      this.postStore.createNewPost();
     },
   },
 };

@@ -158,15 +158,7 @@ export const userStore = defineStore("user", {
   },
   persist: [
     {
-      paths: [
-        "password",
-        "rememberMe",
-        "username",
-        "userData",
-        "jwt",
-        "partner",
-        "role",
-      ],
+      paths: ["password", "rememberMe", "username", "userData", "jwt"],
       storage: localStorage,
     },
   ],

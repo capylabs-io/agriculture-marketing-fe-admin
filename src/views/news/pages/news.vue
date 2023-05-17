@@ -86,7 +86,7 @@
 
 <script>
 import { mapStores } from "pinia";
-import { postStore } from "../store/news-store";
+import { postStore } from "../stores/news-store";
 
 export default {
   computed: {
