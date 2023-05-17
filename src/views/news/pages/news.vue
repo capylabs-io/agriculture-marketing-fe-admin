@@ -24,16 +24,27 @@
       </v-btn>
     </div>
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
-      <v-data-table :headers="headers" :items="items" hide-default-footer>
+      <v-data-table
+        :headers="headers"
+        :items="postStore.slicedPosts"
+        hide-default-footer
+      >
         <template v-slot:[`item.title`]="{ item }">
           <div class="text-start">
             {{ item.title }}
           </div>
         </template>
+        <template v-slot:[`item.publishedAt`]="{ item }">
+          <div class="text-center">
+            {{ item.createdAt | ddmmyyyyhhmmss }}
+          </div>
+        </template>
         <template v-slot:[`item.action`]="{}">
           <div class="d-flex align-center justify-center">
             <v-btn icon dense><v-icon>mdi-eye-outline</v-icon></v-btn>
-            <v-btn icon dense><v-icon>mdi-pencil-outline</v-icon></v-btn>
+            <v-btn icon dense disabled
+              ><v-icon>mdi-pencil-outline</v-icon></v-btn
+            >
             <v-btn icon dense><v-icon>mdi-delete-outline</v-icon></v-btn>
           </div>
         </template>
@@ -74,19 +85,18 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { postStore } from "../store/news-store";
+
 export default {
+  computed: {
+    ...mapStores(postStore),
+  },
+  created() {
+    this.postStore.fetchPosts();
+  },
   data() {
     return {
-      items: [
-        {
-          id: "000001",
-          title:
-            "Lớp tập huấn an toàn thực phẩm và truy xuất nguồn gốc nông, lâm và thuỷ sản",
-          category: "Tin tức",
-          publishedAt: "19/04/2023",
-          author: "Phùng Thanh Độ",
-        },
-      ],
       itemsPerPage: [10, 50, 100],
       headers: [
         {
@@ -99,7 +109,6 @@ export default {
           text: "Tên bài viết",
           value: "title",
           align: "center",
-          width: "40%",
         },
         {
           text: "Danh mục",
