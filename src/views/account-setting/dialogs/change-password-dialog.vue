@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="accountStore.changePasswordDialog"
+    v-model="userStore.changePasswordDialog"
     max-width="432px"
     persistent
     absolute
@@ -97,7 +97,7 @@
 
 <script>
 import { mapStores } from "pinia";
-import { accountStore } from "../stores/accountStore";
+import { userStore } from "@/stores/userStore";
 export default {
   data() {
     return {
@@ -111,18 +111,18 @@ export default {
     };
   },
   computed: {
-    ...mapStores(accountStore),
+    ...mapStores(userStore),
   },
   methods: {
     onCancelClicked() {
-      this.accountStore.changePasswordDialog = false;
+      this.userStore.changePasswordDialog = false;
     },
     async onChangeClicked() {
       if (this.confirmPassword != this.newPassword) {
         this.$alert.error("Confirm password does not match new password!");
         return;
       }
-      await this.accountStore.changePassword(
+      await this.userStore.changePassword(
         this.currentPassword,
         this.newPassword,
         this.confirmPassword

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Post } from "@/plugins/api.js";
+import { Category, Post, User } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
@@ -11,6 +11,9 @@ export const postStore = defineStore("post", {
     post: {},
     posts: [],
     searchKey: "",
+    avatarUrl: [],
+    file: null,
+    category: [],
   }),
   getters: {
     slicedPosts() {
@@ -73,7 +76,10 @@ export const postStore = defineStore("post", {
         loading.show();
         const res = await Post.fetch({});
         if (!res) {
-          alert.error("Error occurred when fetching news!", "Please try again later!");
+          alert.error(
+            "Error occurred when fetching news!",
+            "Please try again later!"
+          );
           return;
         }
         const posts = get(res, "data.data", []);
@@ -92,24 +98,74 @@ export const postStore = defineStore("post", {
         loading.hide();
       }
     },
-    // async fetchVoucher() {
-    //   const user = userStore();
-    //   try {
-    //     loading.show();
-    //     const res = await Voucher.fetchVouchers();
-    //     if (!res) {
-    //       alert.error(`Error occurred! Please try again later!`);
-    //       return;
-    //     }
-    //     this.voucherData = res.data;
-    //     this.voucherDataId = this.voucherData.map((index) => index.id);
-    //   } catch (error) {
-    //     console.error(`Error: ${error}`);
-    //     alert.error(error);
-    //   } finally {
-    //     loading.hide();
-    //   }
-    // },
+    async uploadFile() {
+      try {
+        loading.show();
+        const formData = new FormData();
+        formData.append("files", this.file);
+        console.log("callapi", formData);
+        const filedata = await User.uploadFile(formData);
+        if (!filedata) {
+          alert.error(`Error occurred Upload File! Please try again later!`);
+        }
+        this.avatarUrl = filedata.data.map((index) => index.url);
+      } catch (error) {
+        console.error(`Error: ${error}`);
+        alert.error(error);
+      } finally {
+        loading.hide();
+      }
+    },
+    async fetchCategory() {
+      try {
+        loading.show();
+        const res = await Category.fetchCategory();
+        if (!res) {
+          alert.error(`Error occurred fetch! Please try again later!`);
+          return;
+        }
+        const categories = get(res, "data.data", []);
+
+        const mappedCategories = categories.map((category) => {
+          return {
+            id: category.id,
+            name: get(category, "attributes.name", "Category Name"),
+          };
+        });
+        this.category = mappedCategories;
+      } catch (error) {
+        console.error(`Error: ${error}`);
+        alert.error(error);
+      } finally {
+        loading.hide();
+      }
+    },
+
+    async createNewPost() {
+      if (this.avatarUrl) {
+        try {
+          loading.show();
+          const res = await Post.createPost({
+            data: {
+              ...this.post,
+              images: this.avatarUrl[0],
+              content: `<p>${this.post.content}</p>`,
+            },
+          });
+          if (!res) {
+            alert.error(`Error occurred Update! Please try again later!`);
+            return;
+          }
+          console.log("post ", res.data);
+          alert.success("Update successfully!");
+        } catch (error) {
+          console.error(`Error: ${error}`);
+          alert.error(error);
+        } finally {
+          loading.hide();
+        }
+      }
+    },
   },
 });
 /* eslint-enable */

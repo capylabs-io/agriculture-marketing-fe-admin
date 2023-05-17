@@ -37,6 +37,7 @@
             <v-text-field
               height="36px"
               type="text"
+              v-model="userStore.userSignUpData.email"
               :rules="rules.checkIdentifier"
               class="pa-0 mt-2"
               placeholder="Nhập Tên Tài Khoản"
@@ -49,6 +50,7 @@
             <v-text-field
               height="36px"
               type="text"
+              v-model="userStore.userSignUpData.phoneNumber"
               :rules="rules.checkIdentifier"
               class="pa-0 mt-2"
               placeholder="Nhập số điện thoại"
@@ -63,6 +65,7 @@
               :append-icon="isShowPass ? 'mdi-eye' : 'mdi-eye-off'"
               :type="isShowPass ? 'text' : 'password'"
               :rules="rules.password"
+              v-model="userStore.userSignUpData.password"
               @click:append="isShowPass = !isShowPass"
               class="pa-0 mt-2"
               outlined
@@ -76,7 +79,8 @@
               height="36px"
               :append-icon="isShowPass ? 'mdi-eye' : 'mdi-eye-off'"
               :type="isShowPass ? 'text' : 'password'"
-              :rules="rules.password"
+              :rules="[passwordConfirmationRule]"
+              v-model="userStore.cfpassword"
               @click:append="isShowPass = !isShowPass"
               class="pa-0 mt-2"
               outlined
@@ -121,7 +125,17 @@
 
 <script>
 import { rules } from "@/plugins/rules";
+import { userStore } from "@/stores/userStore";
+import { mapStores } from "pinia";
 export default {
+  computed: {
+    ...mapStores(userStore),
+    passwordConfirmationRule() {
+      return () =>
+        this.userStore.userSignUpData.password === this.userStore.cfpassword ||
+        "Password must match";
+    },
+  },
   data() {
     return {
       rules: rules,
@@ -146,7 +160,7 @@ export default {
     },
     submitForm() {
       if (this.$refs.form.validate()) {
-        this.userStore.signIn();
+        this.userStore.signUp();
       }
     },
   },
