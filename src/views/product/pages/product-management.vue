@@ -54,13 +54,28 @@
             :src="getImageUrl(item.qrCodeImage)"
           ></v-img>
         </template>
-        <template v-slot:[`item.action`]="{}">
+        <template v-slot:[`item.action`]="{ item }">
           <div class="d-flex align-center justify-center">
-            <v-btn icon dense><v-icon>mdi-eye-outline</v-icon></v-btn>
+            <v-btn
+              icon
+              dense
+              @click="onDisableClicked(item.id)"
+              v-if="item.status == 'publish'"
+              ><v-icon>mdi-eye-off-outline</v-icon></v-btn
+            >
+            <v-btn
+              icon
+              dense
+              @click="onEnableClicked(item.id)"
+              v-if="item.status == 'disabled'"
+              ><v-icon>mdi-eye-outline</v-icon></v-btn
+            >
             <v-btn icon dense disabled
               ><v-icon>mdi-pencil-outline</v-icon></v-btn
             >
-            <v-btn icon dense><v-icon>mdi-delete-outline</v-icon></v-btn>
+            <v-btn icon dense @click="onDeleteClicked(item.id)"
+              ><v-icon>mdi-delete-outline</v-icon></v-btn
+            >
           </div>
         </template>
       </v-data-table>
@@ -163,6 +178,42 @@ export default {
     getImageUrl(url) {
       if (!url) return require("@/assets/no-image.png");
       return url;
+    },
+    onDisableClicked(productId) {
+      this.$dialog.confirm({
+        title: "Confirm Disable Product",
+        topContent:
+          "<span class='error--text'>If you disable this product, users will no longer be able to access it!</span>",
+        okText: "Confirm",
+        cancelText: "Cancel",
+        done: async () => {
+          await this.productStore.toggleProduct(productId, false);
+        },
+      });
+    },
+    onEnableClicked(productId) {
+      this.$dialog.confirm({
+        title: "Confirm Enable Product",
+        topContent: "Are you sure you want to enable this product?",
+        okText: "Confirm",
+        cancelText: "Cancel",
+        done: async () => {
+          await this.productStore.toggleProduct(productId, true);
+        },
+      });
+    },
+    onDeleteClicked(productId) {
+      this.$dialog.confirm({
+        title: "Confirm Disable Product",
+        topContent: "Are you sure you want to delete this product?",
+        midContent:
+          "<span class='error--text'>After deleting, you cannot undo it!</span>",
+        okText: "Confirm",
+        cancelText: "Cancel",
+        done: async () => {
+          await this.productStore.deleteProduct(productId);
+        },
+      });
     },
   },
 };

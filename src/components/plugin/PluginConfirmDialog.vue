@@ -19,7 +19,6 @@
       <v-card-actions class="pa-0">
         <v-btn
           v-show="!dialog.hideCancel"
-          color="primary"
           class="px-6 btn text-none"
           outlined
           dense

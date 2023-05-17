@@ -192,6 +192,44 @@ export const productStore = defineStore("product", {
         loading.hide();
       }
     },
+    async toggleProduct(productId, isActive) {
+      if (!productId) return;
+      try {
+        loading.show();
+        const res = await Product.update(productId, {
+          data: {
+            status: isActive ? "publish" : "disabled",
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        alert.success(`${isActive ? "Enable" : "Disable"}  product successfully!"`);
+        await this.fetchProducts();
+      } catch (error) {
+        alert.error("Error occurred!", error);
+      } finally {
+        loading.hide();
+      }
+    },
+    async deleteProduct(productId) {
+      if (!productId) return;
+      try {
+        loading.show();
+        const res = await Product.remove(productId);
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        alert.success("Remove product successfully!");
+        await this.fetchProducts();
+      } catch (error) {
+        alert.error("Error occurred!", error);
+      } finally {
+        loading.hide();
+      }
+    },
     // async fetchVoucher() {
     //   const user = userStore();
     //   try {
