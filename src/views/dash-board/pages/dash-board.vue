@@ -7,7 +7,7 @@
         </div>
       </v-col>
     </v-row>
-    <div class="d-flex justify-space-between align-center mt-6">
+    <!-- <div class="d-flex justify-space-between align-center mt-6">
       <div class="neutral30-border d-flex column-gap-10 tab border-radius-8">
         <v-btn class="tab1 active text-none text-sm" text @click="tab(1)">
           12 Tháng
@@ -38,7 +38,7 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
     <v-row class="mt-5">
       <v-col cols="12" xl="4" md="4">
         <v-card
@@ -54,12 +54,18 @@
           <div
             class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
           >
-            999,999
+            {{
+              dashboardStore.dashboard
+                ? dashboardStore.dashboard.totalProducts
+                : 0
+            }}
           </div>
 
-          <div class="mt-4 text-xs">
-            Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-          </div>
+          <router-link to="/product">
+            <div class="mt-4 text-xs">
+              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
+            </div>
+          </router-link>
         </v-card>
       </v-col>
       <v-col cols="12" xl="4" md="4">
@@ -76,12 +82,17 @@
           <div
             class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
           >
-            999,999
+            {{
+              dashboardStore.dashboard
+                ? dashboardStore.dashboard.totalSupplies
+                : 0
+            }}
           </div>
-
-          <div class="mt-4 text-xs">
-            Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-          </div>
+          <router-link to="/supply">
+            <div class="mt-4 text-xs">
+              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
+            </div>
+          </router-link>
         </v-card>
       </v-col>
       <v-col cols="12" xl="4" md="4">
@@ -98,12 +109,16 @@
           <div
             class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
           >
-            999,999
+            {{
+              dashboardStore.dashboard ? dashboardStore.dashboard.totalPosts : 0
+            }}
           </div>
 
-          <div class="mt-4 text-xs">
-            Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-          </div>
+          <router-link to="/news">
+            <div class="mt-4 text-xs">
+              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
+            </div>
+          </router-link>
         </v-card>
       </v-col>
     </v-row>
@@ -122,12 +137,18 @@
           <div
             class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
           >
-            999,999
+            {{
+              dashboardStore.dashboard
+                ? dashboardStore.dashboard.totalSeedlings
+                : 0
+            }}
           </div>
 
-          <div class="mt-4 text-xs">
-            Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-          </div>
+          <router-link to="/seed">
+            <div class="mt-4 text-xs">
+              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
+            </div>
+          </router-link>
         </v-card>
       </v-col>
       <v-col cols="12" xl="4" md="4">
@@ -144,42 +165,29 @@
           <div
             class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
           >
-            999,999
+            {{
+              dashboardStore.dashboard ? dashboardStore.dashboard.totalUsers : 0
+            }}
           </div>
-
-          <div class="mt-4 text-xs">
-            Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-          </div>
+          <router-link>
+            <div class="mt-4 text-xs">
+              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
+            </div>
+          </router-link>
         </v-card>
       </v-col>
-      <v-col cols="12" xl="4" md="4">
-        <v-card
-          class="number-card border-radius-12 neutral30-border pa-6"
-          :style="{ background: '#FFFFFF' }"
-          outlined
-        >
-          <div class="d-flex align-center">
-            <div class="dashboard-icon neutral30-border mr-2"></div>
-            <div class="neutral70--text text-md">Tổng số sản lượng</div>
-          </div>
-
-          <div
-            class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
-          >
-            999,999
-          </div>
-
-          <div class="mt-4 text-xs">
-            Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-          </div>
-        </v-card>
-      </v-col>
+      <v-col cols="12" xl="4" md="4"> </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import { dashboardStore } from "../stores/dashboardStore";
+import { mapStores } from "pinia";
 export default {
+  computed: {
+    ...mapStores(dashboardStore),
+  },
   methods: {
     tab(show) {
       this.index = 1;
@@ -209,6 +217,9 @@ export default {
         tab3.classList.remove("active");
       }
     },
+  },
+  mounted() {
+    this.dashboardStore.fetchStatistics();
   },
 };
 </script>

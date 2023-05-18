@@ -19,6 +19,7 @@
         <div class="font-weight-semibold mt-4 mb-2">Ảnh đại diện</div>
         <v-file-input
           v-model="userStore.file"
+          :disabled="!userStore.isEditingBrandInfo"
           placeholder="Chọn hình minh hoạ"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
@@ -40,6 +41,7 @@
         <div class="font-weight-semibold mb-2">Tên thành viên</div>
         <v-text-field
           v-model="userStore.userSignUpData.name"
+          :disabled="!userStore.isEditingBrandInfo"
           type="text"
           class="border-radius-8"
           placeholder="Phùng thanh độ"
@@ -54,8 +56,9 @@
       <v-col cols="12" md="4">
         <div class="font-weight-semibold mb-2">Số điện thoại</div>
         <v-text-field
-          type="text"
           v-model="userStore.userSignUpData.phoneNumber"
+          type="text"
+          :disabled="!userStore.isEditingBrandInfo"
           class="border-radius-8"
           placeholder="+84 930-298135"
           solo
@@ -69,8 +72,9 @@
       <v-col cols="12" md="4">
         <div class="font-weight-semibold mb-2">Địa chỉ</div>
         <v-text-field
-          type="text"
           v-model="userStore.userSignUpData.address"
+          type="text"
+          :disabled="!userStore.isEditingBrandInfo"
           class="border-radius-8"
           placeholder="Phùng thanh độ"
           solo

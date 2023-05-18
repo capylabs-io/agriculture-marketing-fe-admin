@@ -75,6 +75,14 @@ export const Common = {
         "Content-Type": "multipart/form-data",
       },
     }),
+  fetchStatistics: () => {
+    const user = userStore();
+    return axios.get("statistics/dashboard", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
 };
 export const Category = {
   fetchCategory: () => {
@@ -98,6 +106,7 @@ export const Post = {
     });
   },
 };
+
 export const Product = {
   ...APIHelper(PRODUCT_API),
 };
