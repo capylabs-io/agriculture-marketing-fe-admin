@@ -120,9 +120,13 @@
             <div
               class="font-weight-bold text-sm neutral100--text text-capitalize"
             >
-              Độ Phùng
+              {{ userStore.userData.name ? userStore.userData.name : "unknown" }}
             </div>
-            <div class="text-caption neutral70--text">admin.123</div>
+            <div class="text-caption neutral70--text">
+              {{
+                userStore.userData.email ? userStore.userData.email : "unknown"
+              }}
+            </div>
           </div>
         </div>
         <v-btn
@@ -153,8 +157,10 @@
 </template>
 
 <script>
+import { userStore } from "@/stores/userStore";
+import { mapStores } from "pinia";
 export default {
-  computed: {},
+  computed: { ...mapStores(userStore) },
   methods: {
     onLogoutClicked() {
       this.$router.push("/login");

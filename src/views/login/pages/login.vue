@@ -19,7 +19,7 @@
             <div>
               <div class="text-dp-md font-weight-bold">Đăng nhập</div>
               <div class="text-md mt-2">
-                Xin chào! Hãy nhập thông tin của đồng chí.
+                Xin chào! Hãy nhập thông tin của bạn.
               </div>
             </div>
             <div class="text-sm neutral70--text font-weight-bold mt-6">

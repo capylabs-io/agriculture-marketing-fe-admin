@@ -123,8 +123,8 @@ export default {
       }
     },
     editAccount() {
+      this.userStore.isEditingBrandInfo = false;
       this.userStore.updateAccountSetting();
-      this.profileEdit = false;
     },
   },
   async created() {
