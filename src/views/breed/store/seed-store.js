@@ -106,11 +106,10 @@ export const seedStore = defineStore("seed", {
           return {
             id: seed.id,
             ...seed.attributes,
-            seedCategory: get(
-              seed,
-              "attributes.seedCategory.data.attributes",
-              {}
-            ),
+            seedlingCategory: {
+              id: get(seed, "attributes.seedlingCategory.data.id", -1),
+              ...get(seed, "attributes.seedlingCategory.data.attributes", {}),
+            },
             author: get(seed, "attributes.user.data.attributes", {}),
           };
         });

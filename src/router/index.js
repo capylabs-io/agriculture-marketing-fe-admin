@@ -80,6 +80,14 @@ const routes = [
         // },
       },
       {
+        path: "/edit-supply",
+        name: "Update Supply",
+        component: () => import("../views/supply/pages/edit-supply.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
         path: "/write-post",
         name: "Write Post",
         component: () => import("../views/news/pages/create-news.vue"),

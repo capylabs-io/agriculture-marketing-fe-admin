@@ -109,11 +109,10 @@ export const supplyStore = defineStore("supply", {
           return {
             id: supply.id,
             ...supply.attributes,
-            supplyCategory: get(
-              supply,
-              "attributes.supplyCategory.data.attributes",
-              {}
-            ),
+            supplyCategory: {
+              id: get(supply, "attributes.supplyCategory.data.id", -1),
+              ...get(supply, "attributes.supplyCategory.data.attributes", {}),
+            },
             author: get(supply, "attributes.user.data.attributes", {}),
           };
         });
@@ -178,6 +177,50 @@ export const supplyStore = defineStore("supply", {
         };
 
         const res = await Supply.create({
+          data: query,
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        this.reset();
+        alert.success("Create supply successfully!");
+        router.push("/supply");
+      } catch (error) {
+        alert.error("Create supply fail! Please try again later!");
+      } finally {
+        loading.hide();
+      }
+    },
+    async updateSupply() {
+      try {
+        if (!this.supply) return;
+        loading.show();
+        //upload images
+        let promises = [
+          await this.uploadFile(this.supplyThumbnail),
+          await this.uploadFile(this.supplyCertification),
+          await this.uploadFile(this.supplyAccreditation),
+        ];
+
+        const [
+          uploadedThumbnail,
+          uploadedCertification,
+          uploadedAccreditation,
+        ] = await Promise.all(promises);
+
+        let query = {
+          ...this.supply,
+          images: uploadedThumbnail ? uploadedThumbnail[0] : this.supply.images,
+          certificationImages: uploadedCertification
+            ? uploadedCertification[0]
+            : this.supply.certificationImages,
+          accreditationImages: uploadedAccreditation
+            ? uploadedAccreditation[0]
+            : this.supply.accreditationImages,
+        };
+
+        const res = await Supply.update(this.supply.id, {
           data: query,
         });
         if (!res) {

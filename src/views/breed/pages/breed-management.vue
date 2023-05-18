@@ -198,7 +198,7 @@ export default {
     },
     onEditClicked(item) {
       this.seedStore.seed = item;
-      this.seedStore.seed.seedCategory = item.seedCategory.id;
+      this.seedStore.seed.seedlingCategory = item.seedlingCategory.id;
       router.push("/edit-seed");
     },
     onDisableClicked(seedId) {

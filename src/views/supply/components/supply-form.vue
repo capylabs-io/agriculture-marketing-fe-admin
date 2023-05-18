@@ -4,12 +4,12 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(supplyStore.supplyThumbnail)"
+          :src="getSupplyImage"
           max-height="192px"
           contain
         ></v-img>
         <div class="font-weight-semibold mt-4 mb-2">
-          Hình ảnh sản phẩm <span class="red--text">*</span>
+          Hình ảnh sản phẩm <span class="red--text" v-if="!isEditing">*</span>
         </div>
         <v-file-input
           v-model="supplyStore.supplyThumbnail"
@@ -17,7 +17,7 @@
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
           prepend-icon=""
-          :rules="[$rules.required]"
+          :rules="isEditing ? [] : [$rules.required]"
           :show-size="1000"
           clearable
           outlined
@@ -48,6 +48,7 @@
           Danh mục <span class="red--text">*</span>
         </div>
         <v-select
+          v-model="supplyStore.supply.supplyCategory"
           class="border-radius-8"
           placeholder="Chọn danh mục vật tư"
           item-text="name"
@@ -137,7 +138,7 @@
           type="text"
           class="border-radius-8"
           placeholder="Nhập hướng dẫn sử dụng"
-          v-model="supplyStore.supply.userInstruction"
+          v-model="supplyStore.supply.useInstruction"
           :rules="[$rules.required]"
           auto-grow
           flat
@@ -150,7 +151,7 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(supplyStore.supplyCertification)"
+          :src="getCertificationImage"
           max-height="192px"
           contain
         ></v-img>
@@ -161,7 +162,6 @@
           class="border-radius-8"
           prepend-icon=""
           v-model="supplyStore.supplyCertification"
-          :src="getImageUrl(supplyStore.supplyCertification)"
           :show-size="1000"
           clearable
           outlined
@@ -173,7 +173,7 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(supplyStore.supplyAccreditation)"
+          :src="getAccreditationImage"
           max-height="192px"
           contain
         ></v-img>
@@ -200,18 +200,46 @@
 import { mapStores } from "pinia";
 import { supplyStore } from "../store/supply-store";
 export default {
-  data() {
-    return {
-      items: ["Tin tức", "Giới thiệu"],
-    };
+  props: {
+    isEditing: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   computed: {
     ...mapStores(supplyStore),
-  },
-  methods: {
-    getImageUrl(file) {
-      if (!file) return require("@/assets/no-image.png");
-      return URL.createObjectURL(file);
+    getSupplyImage() {
+      if (
+        this.supplyStore.supply &&
+        this.supplyStore.supply.images &&
+        !this.supplyStore.supplyThumbnail
+      )
+        return this.supplyStore.supply.images;
+      if (!this.supplyStore.supplyThumbnail)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.supplyStore.supplyThumbnail);
+    },
+    getCertificationImage() {
+      if (
+        this.supplyStore.supply &&
+        this.supplyStore.supply.certificationImages &&
+        !this.supplyStore.supply.certificationImages
+      )
+        return this.supplyStore.supply.certificationImages;
+      if (!this.supplyStore.supplyCertification)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.supplyStore.supplyCertification);
+    },
+    getAccreditationImage() {
+      if (
+        this.supplyStore.supply &&
+        this.supplyStore.supply.accreditationImages &&
+        !this.supplyStore.supply.accreditationImages
+      )
+        return this.supplyStore.supply.accreditationImages;
+      if (!this.supplyStore.supplyAccreditation)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.supplyStore.supplyAccreditation);
     },
   },
 };
