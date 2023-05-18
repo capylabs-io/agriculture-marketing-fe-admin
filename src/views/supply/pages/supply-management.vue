@@ -4,6 +4,7 @@
     <div class="text-dp-md font-weight-semibold">Quản lý vật tư</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <v-text-field
+        v-model="supplyStore.searchKey"
         class="search-field border-radius-8"
         placeholder="Tìm kiếm"
         prepend-inner-icon="mdi-magnify"
@@ -25,24 +26,56 @@
     </div>
 
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
-      <v-data-table :headers="headers" :items="items" hide-default-footer>
+      <v-data-table
+        :headers="headers"
+        :items="supplyStore.slicedSupplies"
+        :items-per-page="supplyStore.suppliesPerPage"
+        hide-default-footer
+      >
         <template v-slot:[`item.thumbnail`]="{ item }">
           <v-img
             class="table-img neutral20-border border-radius-8 mx-auto"
-            :src="item.thumbnail"
+            :src="getImageUrl(item.images)"
           ></v-img>
+        </template>
+        <template v-slot:[`item.publishedAt`]="{ item }">
+          <div>
+            {{ item.createdAt | ddmmyyyyhhmmss }}
+          </div>
+        </template>
+        <template v-slot:[`item.author`]="{ item }">
+          <div>
+            {{ item.author.username }}
+          </div>
         </template>
         <template v-slot:[`item.qrcode`]="{ item }">
           <v-img
             class="table-img border-radius-8 mx-auto"
-            :src="item.qrcode"
+            :src="getImageUrl(item.qrCodeImage)"
           ></v-img>
         </template>
-        <template v-slot:[`item.action`]="{}">
+        <template v-slot:[`item.action`]="{ item }">
           <div class="d-flex align-center justify-center">
-            <v-btn icon dense><v-icon>mdi-eye-outline</v-icon></v-btn>
-            <v-btn icon dense><v-icon>mdi-pencil-outline</v-icon></v-btn>
-            <v-btn icon dense><v-icon>mdi-delete-outline</v-icon></v-btn>
+            <v-btn
+              icon
+              dense
+              @click="onDisableClicked(item.id)"
+              v-if="item.status == 'publish'"
+              ><v-icon>mdi-eye-off-outline</v-icon></v-btn
+            >
+            <v-btn
+              icon
+              dense
+              @click="onEnableClicked(item.id)"
+              v-if="item.status == 'disabled'"
+              ><v-icon>mdi-eye-outline</v-icon></v-btn
+            >
+            <v-btn icon dense disabled
+              ><v-icon>mdi-pencil-outline</v-icon></v-btn
+            >
+            <v-btn icon dense @click="onDeleteClicked(item.id)"
+              ><v-icon>mdi-delete-outline</v-icon></v-btn
+            >
           </div>
         </template>
       </v-data-table>
@@ -54,6 +87,7 @@
         <v-select
           class="border-radius-8 items-per-page-field"
           :items="itemsPerPage"
+          v-model="supplyStore.suppliesPerPage"
           flat
           solo
           outlined
@@ -63,7 +97,7 @@
         trên tổng số
         <v-text-field
           class="border-radius-8 max-item-field"
-          placeholder="100"
+          :value="supplyStore.totalSupply"
           flat
           solo
           outlined
@@ -71,17 +105,21 @@
           hide-details
           readonly
         ></v-text-field>
+        sản phẩm
       </div>
       <v-pagination
         class="pa-0 mr-n2"
         color="primary"
-        :length="1"
+        :length="supplyStore.totalSupplyPage"
+        v-model="supplyStore.supplyPage"
       ></v-pagination>
     </div>
   </div>
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { supplyStore } from "../store/supply-store";
 export default {
   data() {
     return {
@@ -138,6 +176,48 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    ...mapStores(supplyStore),
+  },
+  created() {
+    this.supplyStore.fetchSupplies();
+  },
+  methods: {
+    getImageUrl(url) {
+      if (!url) return require("@/assets/no-image.png");
+      return url;
+    },
+    onDisableClicked(supplyId) {
+      this.$dialog.confirm({
+        title: "Xác nhận ẩn Vật tư",
+        topContent:
+          "<span class='error--text'>Bạn có chắc muốn ẩn giống này không? Người dùng sẽ không thấy giống này nữa!</span>",
+        done: async () => {
+          await this.supplyStore.toggleSupply(supplyId, false);
+        },
+      });
+    },
+    onEnableClicked(supplyId) {
+      this.$dialog.confirm({
+        title: "Xác nhận hiện Vật tư",
+        topContent: "Bạn có muốn hiện lại Vật tư này không?",
+        done: async () => {
+          await this.supplyStore.toggleSupply(supplyId, true);
+        },
+      });
+    },
+    onDeleteClicked(supplyId) {
+      this.$dialog.confirm({
+        title: "Xác nhận xóa Vật tư",
+        topContent: "Bạn có chắc bạn muốn xóa Vật tư này không?",
+        midContent:
+          "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
+        done: async () => {
+          await this.supplyStore.deleteSupply(supplyId);
+        },
+      });
+    },
   },
 };
 </script>

@@ -1,44 +1,44 @@
 import { defineStore } from "pinia";
-import { Product, ProductCategory, Common } from "@/plugins/api.js";
+import { Seed, Common, SeedCategory } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
 import router from "@/router";
 
-export const productStore = defineStore("product", {
+export const seedStore = defineStore("seed", {
   state: () => ({
-    productPage: 1,
-    productsPerPage: 10,
+    seedPage: 1,
+    seedsPerPage: 10,
     categories: [],
-    product: {},
-    products: [],
-    productThumbnail: null,
-    productCertification: null,
-    productAccreditation: null,
-    productForm: false,
+    seed: {},
+    seeds: [],
+    seedThumbnail: null,
+    seedCertification: null,
+    seedAccreditation: null,
+    seedForm: false,
     searchKey: "",
   }),
   getters: {
-    slicedProducts() {
-      if (!this.products || this.products.length == 0) return [];
-      return this.filteredProducts.slice(
-        (this.productPage - 1) * this.productsPerPage,
-        this.productPage * this.productsPerPage
+    slicedSeeds() {
+      if (!this.seeds || this.seeds.length == 0) return [];
+      return this.filteredSeeds.slice(
+        (this.seedPage - 1) * this.seedsPerPage,
+        this.seedPage * this.seedsPerPage
       );
     },
-    filteredProducts() {
-      if (!this.products || this.products.length == 0) return [];
-      let filtered = this.products;
+    filteredSeeds() {
+      if (!this.seeds || this.seeds.length == 0) return [];
+      let filtered = this.seeds;
       if (this.searchKey)
         filtered = filtered.filter(
-          (product) =>
-            product.name
+          (seed) =>
+            seed.name
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            product.code
+            seed.code
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            product.origin
+            seed.origin
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase())
         );
@@ -75,49 +75,46 @@ export const productStore = defineStore("product", {
     //   }
     //   return sortedCampaigns;
     // },
-    totalProductPage() {
-      if (!this.products || this.filteredProducts.length == 0) return 1;
-      if (this.filteredProducts.length % this.productsPerPage == 0)
-        return this.filteredProducts.length / this.productsPerPage;
-      else
-        return (
-          Math.floor(this.filteredProducts.length / this.productsPerPage) + 1
-        );
+    totalSeedPage() {
+      if (!this.seeds || this.filteredSeeds.length == 0) return 1;
+      if (this.filteredSeeds.length % this.seedsPerPage == 0)
+        return this.filteredSeeds.length / this.seedsPerPage;
+      else return Math.floor(this.filteredSeeds.length / this.seedsPerPage) + 1;
     },
-    totalProduct() {
-      if (!this.products || this.filteredProducts.length == 0) return 1;
-      return this.filteredProducts.length;
+    totalSeed() {
+      if (!this.seeds || this.filteredSeeds.length == 0) return 1;
+      return this.filteredSeeds.length;
     },
   },
   actions: {
-    async fetchProducts() {
+    async fetchSeeds() {
       try {
         loading.show();
-        const res = await Product.fetch({
+        const res = await Seed.fetch({
           populate: "*",
         });
         if (!res) {
           alert.error(
-            "Error occurred when fetching products!",
+            "Error occurred when fetching seeds!",
             "Please try again later!"
           );
           return;
         }
-        const products = get(res, "data.data", []);
-        if (!products && products.length == 0) return;
-        const mappedProducts = products.map((product) => {
+        const seeds = get(res, "data.data", []);
+        if (!seeds && seeds.length == 0) return;
+        const mappedSeeds = seeds.map((seed) => {
           return {
-            id: product.id,
-            ...product.attributes,
-            productCategory: get(
-              product,
-              "attributes.productCategory.data.attributes",
+            id: seed.id,
+            ...seed.attributes,
+            seedCategory: get(
+              seed,
+              "attributes.seedCategory.data.attributes",
               {}
             ),
-            author: get(product, "attributes.user.data.attributes", {}),
+            author: get(seed, "attributes.user.data.attributes", {}),
           };
         });
-        this.products = mappedProducts;
+        this.seeds = mappedSeeds;
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
@@ -127,10 +124,10 @@ export const productStore = defineStore("product", {
     async fetchCategories() {
       try {
         loading.show();
-        const res = await ProductCategory.fetch();
+        const res = await SeedCategory.fetch();
         if (!res) {
           alert.error(
-            "Error occurred when fetching product categories!",
+            "Error occurred when fetching seed categories!",
             "Please try again later!"
           );
           return;
@@ -150,14 +147,14 @@ export const productStore = defineStore("product", {
         loading.hide();
       }
     },
-    async createProduct() {
+    async createSeed() {
       try {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.productThumbnail),
-          await this.uploadFile(this.productCertification),
-          await this.uploadFile(this.productAccreditation),
+          await this.uploadFile(this.seedThumbnail),
+          await this.uploadFile(this.seedCertification),
+          await this.uploadFile(this.seedAccreditation),
         ];
 
         const [
@@ -165,8 +162,9 @@ export const productStore = defineStore("product", {
           uploadedCertification,
           uploadedAccreditation,
         ] = await Promise.all(promises);
+
         let query = {
-          ...this.product,
+          ...this.seed,
           images: uploadedThumbnail ? uploadedThumbnail[0] : "",
           certificationImages: uploadedCertification
             ? uploadedCertification[0]
@@ -176,7 +174,7 @@ export const productStore = defineStore("product", {
             : "",
         };
 
-        const res = await Product.create({
+        const res = await Seed.create({
           data: query,
         });
         if (!res) {
@@ -184,10 +182,10 @@ export const productStore = defineStore("product", {
           return;
         }
         this.reset();
-        alert.success("Create product successfully!");
-        router.push("/product");
+        alert.success("Create seed successfully!");
+        router.push("/seed");
       } catch (error) {
-        alert.error("Create product fail! Please try again later!");
+        alert.error("Create seed fail! Please try again later!");
       } finally {
         loading.hide();
       }
@@ -219,11 +217,11 @@ export const productStore = defineStore("product", {
         loading.hide();
       }
     },
-    async toggleProduct(productId, isActive) {
-      if (!productId) return;
+    async toggleSeed(seedId, isActive) {
+      if (!seedId) return;
       try {
         loading.show();
-        const res = await Product.update(productId, {
+        const res = await Seed.update(seedId, {
           data: {
             status: isActive ? "publish" : "disabled",
           },
@@ -233,26 +231,26 @@ export const productStore = defineStore("product", {
           return;
         }
         alert.success(
-          `${isActive ? "Enable" : "Disable"}  product successfully!"`
+          `${isActive ? "Enable" : "Disable"}  seed successfully!"`
         );
-        await this.fetchProducts();
+        await this.fetchSeeds();
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
         loading.hide();
       }
     },
-    async deleteProduct(productId) {
-      if (!productId) return;
+    async deleteSeed(seedId) {
+      if (!seedId) return;
       try {
         loading.show();
-        const res = await Product.remove(productId);
+        const res = await Seed.remove(seedId);
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Remove product successfully!");
-        await this.fetchProducts();
+        alert.success("Remove seed successfully!");
+        await this.fetchSeeds();
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
@@ -260,29 +258,11 @@ export const productStore = defineStore("product", {
       }
     },
     reset() {
-      this.product = {};
-      this.productAccreditation = null;
-      this.productCertification = null;
-      this.productThumbnail = null;
+      this.seed = {};
+      this.seedAccreditation = null;
+      this.seedCertification = null;
+      this.seedThumbnail = null;
     },
-    // async fetchVoucher() {
-    //   const user = userStore();
-    //   try {
-    //     loading.show();
-    //     const res = await Voucher.fetchVouchers();
-    //     if (!res) {
-    //       alert.error(`Error occurred! Please try again later!`);
-    //       return;
-    //     }
-    //     this.voucherData = res.data;
-    //     this.voucherDataId = this.voucherData.map((index) => index.id);
-    //   } catch (error) {
-    //     console.error(`Error: ${error}`);
-    //     alert.error(error);
-    //   } finally {
-    //     loading.hide();
-    //   }
-    // },
   },
 });
 /* eslint-enable */

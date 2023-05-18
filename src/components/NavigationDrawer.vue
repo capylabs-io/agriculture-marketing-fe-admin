@@ -53,7 +53,7 @@
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
-            to="/breed"
+            to="/seed"
             dense
             link
           >

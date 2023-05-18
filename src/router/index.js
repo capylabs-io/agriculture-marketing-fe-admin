@@ -49,7 +49,8 @@ const routes = [
       {
         path: "/product",
         name: "Product Management",
-        component: () => import("../views/product/pages/product-management.vue"),
+        component: () =>
+          import("../views/product/pages/product-management.vue"),
         // meta: {
         //   requiresAuth: true,
         // },
@@ -63,7 +64,7 @@ const routes = [
         // },
       },
       {
-        path: "/breed",
+        path: "/seed",
         name: "Breed Management",
         component: () => import("../views/breed/pages/breed-management.vue"),
         // meta: {
@@ -95,7 +96,7 @@ const routes = [
         // },
       },
       {
-        path: "/create-breed",
+        path: "/create-seed",
         name: "Create Breed",
         component: () => import("../views/breed/pages/create-breed.vue"),
         // meta: {

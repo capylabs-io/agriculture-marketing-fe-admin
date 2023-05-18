@@ -181,11 +181,9 @@ export default {
     },
     onDisableClicked(productId) {
       this.$dialog.confirm({
-        title: "Confirm Disable Product",
+        title: "Xác nhận ẩn Sản phẩm",
         topContent:
-          "<span class='error--text'>If you disable this product, users will no longer be able to access it!</span>",
-        okText: "Confirm",
-        cancelText: "Cancel",
+          "<span class='error--text'>Bạn có chắc muốn ẩn sản phẩm này không? Người dùng sẽ không thấy sản phẩm này nữa!</span>",
         done: async () => {
           await this.productStore.toggleProduct(productId, false);
         },
@@ -193,10 +191,8 @@ export default {
     },
     onEnableClicked(productId) {
       this.$dialog.confirm({
-        title: "Confirm Enable Product",
+        title: "Xác nhận hiện Sản phẩm",
         topContent: "Are you sure you want to enable this product?",
-        okText: "Confirm",
-        cancelText: "Cancel",
         done: async () => {
           await this.productStore.toggleProduct(productId, true);
         },
@@ -204,12 +200,10 @@ export default {
     },
     onDeleteClicked(productId) {
       this.$dialog.confirm({
-        title: "Confirm Disable Product",
-        topContent: "Are you sure you want to delete this product?",
+        title: "Xác nhận xóa sản phẩm",
+        topContent: "Bạn có chắc bạn muốn xóa Sản phẩm này không?",
         midContent:
-          "<span class='error--text'>After deleting, you cannot undo it!</span>",
-        okText: "Confirm",
-        cancelText: "Cancel",
+          "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {
           await this.productStore.deleteProduct(productId);
         },

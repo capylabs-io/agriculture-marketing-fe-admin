@@ -1,44 +1,44 @@
 import { defineStore } from "pinia";
-import { Product, ProductCategory, Common } from "@/plugins/api.js";
+import { Supply, Common, SupplyCategory } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
 import router from "@/router";
 
-export const productStore = defineStore("product", {
+export const supplyStore = defineStore("supply", {
   state: () => ({
-    productPage: 1,
-    productsPerPage: 10,
+    supplyPage: 1,
+    suppliesPerPage: 10,
     categories: [],
-    product: {},
-    products: [],
-    productThumbnail: null,
-    productCertification: null,
-    productAccreditation: null,
-    productForm: false,
+    supply: {},
+    supplies: [],
+    supplyThumbnail: null,
+    supplyCertification: null,
+    supplyAccreditation: null,
+    supplyForm: false,
     searchKey: "",
   }),
   getters: {
-    slicedProducts() {
-      if (!this.products || this.products.length == 0) return [];
-      return this.filteredProducts.slice(
-        (this.productPage - 1) * this.productsPerPage,
-        this.productPage * this.productsPerPage
+    slicedSupplies() {
+      if (!this.supplies || this.supplies.length == 0) return [];
+      return this.filteredSupplies.slice(
+        (this.supplyPage - 1) * this.suppliesPerPage,
+        this.supplyPage * this.suppliesPerPage
       );
     },
-    filteredProducts() {
-      if (!this.products || this.products.length == 0) return [];
-      let filtered = this.products;
+    filteredSupplies() {
+      if (!this.supplies || this.supplies.length == 0) return [];
+      let filtered = this.supplies;
       if (this.searchKey)
         filtered = filtered.filter(
-          (product) =>
-            product.name
+          (supply) =>
+            supply.name
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            product.code
+            supply.code
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            product.origin
+            supply.origin
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase())
         );
@@ -75,49 +75,49 @@ export const productStore = defineStore("product", {
     //   }
     //   return sortedCampaigns;
     // },
-    totalProductPage() {
-      if (!this.products || this.filteredProducts.length == 0) return 1;
-      if (this.filteredProducts.length % this.productsPerPage == 0)
-        return this.filteredProducts.length / this.productsPerPage;
+    totalSupplyPage() {
+      if (!this.supplies || this.filteredSupplies.length == 0) return 1;
+      if (this.filteredSupplies.length % this.suppliesPerPage == 0)
+        return this.filteredSupplies.length / this.suppliesPerPage;
       else
         return (
-          Math.floor(this.filteredProducts.length / this.productsPerPage) + 1
+          Math.floor(this.filteredSupplies.length / this.suppliesPerPage) + 1
         );
     },
-    totalProduct() {
-      if (!this.products || this.filteredProducts.length == 0) return 1;
-      return this.filteredProducts.length;
+    totalSupply() {
+      if (!this.supplies || this.filteredSupplies.length == 0) return 1;
+      return this.filteredSupplies.length;
     },
   },
   actions: {
-    async fetchProducts() {
+    async fetchSupplies() {
       try {
         loading.show();
-        const res = await Product.fetch({
+        const res = await Supply.fetch({
           populate: "*",
         });
         if (!res) {
           alert.error(
-            "Error occurred when fetching products!",
+            "Error occurred when fetching supplies!",
             "Please try again later!"
           );
           return;
         }
-        const products = get(res, "data.data", []);
-        if (!products && products.length == 0) return;
-        const mappedProducts = products.map((product) => {
+        const supplies = get(res, "data.data", []);
+        if (!supplies && supplies.length == 0) return;
+        const mappedSupplies = supplies.map((supply) => {
           return {
-            id: product.id,
-            ...product.attributes,
-            productCategory: get(
-              product,
-              "attributes.productCategory.data.attributes",
+            id: supply.id,
+            ...supply.attributes,
+            supplyCategory: get(
+              supply,
+              "attributes.supplyCategory.data.attributes",
               {}
             ),
-            author: get(product, "attributes.user.data.attributes", {}),
+            author: get(supply, "attributes.user.data.attributes", {}),
           };
         });
-        this.products = mappedProducts;
+        this.supplies = mappedSupplies;
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
@@ -127,10 +127,10 @@ export const productStore = defineStore("product", {
     async fetchCategories() {
       try {
         loading.show();
-        const res = await ProductCategory.fetch();
+        const res = await SupplyCategory.fetch();
         if (!res) {
           alert.error(
-            "Error occurred when fetching product categories!",
+            "Error occurred when fetching supply categories!",
             "Please try again later!"
           );
           return;
@@ -150,14 +150,14 @@ export const productStore = defineStore("product", {
         loading.hide();
       }
     },
-    async createProduct() {
+    async createSupply() {
       try {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.productThumbnail),
-          await this.uploadFile(this.productCertification),
-          await this.uploadFile(this.productAccreditation),
+          await this.uploadFile(this.supplyThumbnail),
+          await this.uploadFile(this.supplyCertification),
+          await this.uploadFile(this.supplyAccreditation),
         ];
 
         const [
@@ -165,8 +165,9 @@ export const productStore = defineStore("product", {
           uploadedCertification,
           uploadedAccreditation,
         ] = await Promise.all(promises);
+
         let query = {
-          ...this.product,
+          ...this.supply,
           images: uploadedThumbnail ? uploadedThumbnail[0] : "",
           certificationImages: uploadedCertification
             ? uploadedCertification[0]
@@ -176,7 +177,7 @@ export const productStore = defineStore("product", {
             : "",
         };
 
-        const res = await Product.create({
+        const res = await Supply.create({
           data: query,
         });
         if (!res) {
@@ -184,10 +185,10 @@ export const productStore = defineStore("product", {
           return;
         }
         this.reset();
-        alert.success("Create product successfully!");
-        router.push("/product");
+        alert.success("Create supply successfully!");
+        router.push("/supply");
       } catch (error) {
-        alert.error("Create product fail! Please try again later!");
+        alert.error("Create supply fail! Please try again later!");
       } finally {
         loading.hide();
       }
@@ -219,11 +220,11 @@ export const productStore = defineStore("product", {
         loading.hide();
       }
     },
-    async toggleProduct(productId, isActive) {
-      if (!productId) return;
+    async toggleSupply(supplyId, isActive) {
+      if (!supplyId) return;
       try {
         loading.show();
-        const res = await Product.update(productId, {
+        const res = await Supply.update(supplyId, {
           data: {
             status: isActive ? "publish" : "disabled",
           },
@@ -233,26 +234,26 @@ export const productStore = defineStore("product", {
           return;
         }
         alert.success(
-          `${isActive ? "Enable" : "Disable"}  product successfully!"`
+          `${isActive ? "Enable" : "Disable"}  supply successfully!"`
         );
-        await this.fetchProducts();
+        await this.fetchSupplies();
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
         loading.hide();
       }
     },
-    async deleteProduct(productId) {
-      if (!productId) return;
+    async deleteSupply(supplyId) {
+      if (!supplyId) return;
       try {
         loading.show();
-        const res = await Product.remove(productId);
+        const res = await Supply.remove(supplyId);
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Remove product successfully!");
-        await this.fetchProducts();
+        alert.success("Remove supply successfully!");
+        await this.fetchSupplies();
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
@@ -260,29 +261,11 @@ export const productStore = defineStore("product", {
       }
     },
     reset() {
-      this.product = {};
-      this.productAccreditation = null;
-      this.productCertification = null;
-      this.productThumbnail = null;
+      this.supply = {};
+      this.supplyAccreditation = null;
+      this.supplyCertification = null;
+      this.supplyThumbnail = null;
     },
-    // async fetchVoucher() {
-    //   const user = userStore();
-    //   try {
-    //     loading.show();
-    //     const res = await Voucher.fetchVouchers();
-    //     if (!res) {
-    //       alert.error(`Error occurred! Please try again later!`);
-    //       return;
-    //     }
-    //     this.voucherData = res.data;
-    //     this.voucherDataId = this.voucherData.map((index) => index.id);
-    //   } catch (error) {
-    //     console.error(`Error: ${error}`);
-    //     alert.error(error);
-    //   } finally {
-    //     loading.hide();
-    //   }
-    // },
   },
 });
 /* eslint-enable */

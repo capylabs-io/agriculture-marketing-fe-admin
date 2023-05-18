@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog.state" max-width="360px">
     <v-card class="pa-6">
-      <v-card-title class="pa-0 title--text card-title mb-4">
+      <v-card-title class="pa-0 title--text card-title mb-4 font-weight-bold">
         {{ dialog.title }}<v-spacer />
       </v-card-title>
       <v-card-text
@@ -60,28 +60,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.card-title {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 24px;
-}
-.card-content {
-  text-align: justify !important;
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px !important;
-  line-height: 20px;
-  color: #3e3e3c !important;
-}
-.btn {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px !important;
-  line-height: 20px;
-}
-</style>
+<style scoped></style>

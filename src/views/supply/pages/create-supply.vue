@@ -24,6 +24,8 @@
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
         color="primary"
+        :disabled="!supplyStore.supplyForm"
+        @click="supplyStore.createSupply()"
       >
         <v-icon small>mdi-plus</v-icon>
         <div class="ml-1">Thêm vật tư</div>
@@ -33,7 +35,12 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { supplyStore } from "../store/supply-store";
 export default {
+  computed: {
+    ...mapStores(supplyStore),
+  },
   components: {
     CreateProductForm: () => import("../components/supply-form.vue"),
   },
@@ -41,6 +48,9 @@ export default {
     onBackClicked() {
       this.$router.push("/supply");
     },
+  },
+  created() {
+    this.supplyStore.fetchCategories();
   },
 };
 </script>

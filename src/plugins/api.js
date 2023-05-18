@@ -8,12 +8,19 @@ axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
 const USER_API = "/users/";
 const POST_API = "/posts/";
 const PRODUCT_API = "/products/";
+const SEED_API = "/seedlings/";
+const SUPPLY_CATEGORY_API = "/supply-categories/";
+const SUPPLY_API = "/supplies/";
 const PRODUCT_CATEGORY_API = "/product-categories/";
+const SEED_CATEGORY_API = "/seedling-categories/";
 
 const APIHelper = (api) => ({
-  search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
-  count: (params, option) => axios.get(api + "count", { params: utils.filterObject(params) }, option),
-  fetch: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
+  search: (params, option) =>
+    axios.get(api, { params: utils.filterObject(params) }, option),
+  count: (params, option) =>
+    axios.get(api + "count", { params: utils.filterObject(params) }, option),
+  fetch: (params, option) =>
+    axios.get(api, { params: utils.filterObject(params) }, option),
   fetchOne: (id, option) => axios.get(api + id, option),
   create: (params, options) =>
     axios.post(api, utils.filterObject(params), {
@@ -22,14 +29,16 @@ const APIHelper = (api) => ({
         Authorization: "Bearer " + userStore().jwt,
       },
     }),
-  update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
+  update: (id, params, option) =>
+    axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option),
 });
 export const APIRespository = APIHelper;
 export const Auth = {
   signIn: (signInData) => axios.post("auth/local", signInData),
   signUp: (signUpData) => axios.post("auth/local/register", signUpData),
-  changePassword: (signUpData) => axios.post("auth/change-password", signUpData),
+  changePassword: (signUpData) =>
+    axios.post("auth/change-password", signUpData),
 };
 export const User = {
   ...APIHelper(USER_API),
@@ -94,4 +103,16 @@ export const Product = {
 };
 export const ProductCategory = {
   ...APIHelper(PRODUCT_CATEGORY_API),
+};
+export const Seed = {
+  ...APIHelper(SEED_API),
+};
+export const SeedCategory = {
+  ...APIHelper(SEED_CATEGORY_API),
+};
+export const Supply = {
+  ...APIHelper(SUPPLY_API),
+};
+export const SupplyCategory = {
+  ...APIHelper(SUPPLY_CATEGORY_API),
 };

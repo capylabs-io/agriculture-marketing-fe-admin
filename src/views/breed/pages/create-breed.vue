@@ -24,6 +24,8 @@
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
         color="primary"
+        :disabled="!seedStore.seedForm"
+        @click="seedStore.createSeed()"
       >
         <v-icon small>mdi-plus</v-icon>
         <div class="ml-1">Thêm giống</div>
@@ -33,14 +35,23 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { seedStore } from "../store/seed-store";
+
 export default {
+  computed: {
+    ...mapStores(seedStore),
+  },
   components: {
     CreateProductForm: () => import("../components/breed-form.vue"),
   },
   methods: {
     onBackClicked() {
-      this.$router.push("/supply");
+      this.$router.push("/seed");
     },
+  },
+  created() {
+    this.seedStore.fetchCategories();
   },
 };
 </script>
