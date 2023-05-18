@@ -4,12 +4,12 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(seedStore.seedThumbnail)"
+          :src="getSeedImage"
           max-height="192px"
           contain
         ></v-img>
         <div class="font-weight-semibold mt-4 mb-2">
-          Hình ảnh sản phẩm <span class="red--text">*</span>
+          Hình ảnh sản phẩm <span class="red--text" v-if="!isEditing">*</span>
         </div>
         <v-file-input
           v-model="seedStore.seedThumbnail"
@@ -18,7 +18,7 @@
           class="border-radius-8"
           prepend-icon=""
           :show-size="1000"
-          :rules="[$rules.required]"
+          :rules="isEditing ? [] : [$rules.required]"
           clearable
           outlined
           solo
@@ -134,7 +134,7 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(seedStore.seedCertification)"
+          :src="getCertificationImage"
           max-height="192px"
           contain
         ></v-img>
@@ -145,7 +145,6 @@
           class="border-radius-8"
           prepend-icon=""
           v-model="seedStore.seedCertification"
-          :src="getImageUrl(seedStore.seedCertification)"
           :show-size="1000"
           clearable
           outlined
@@ -157,7 +156,7 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(seedStore.seedAccreditation)"
+          :src="getAccreditationImage"
           max-height="192px"
           contain
         ></v-img>
@@ -184,6 +183,12 @@
 import { mapStores } from "pinia";
 import { seedStore } from "../store/seed-store";
 export default {
+  props: {
+    isEditing: {
+      type: Boolean,
+      default: () => false,
+    },
+  },
   data() {
     return {
       items: ["Tin tức", "Giới thiệu"],
@@ -191,11 +196,38 @@ export default {
   },
   computed: {
     ...mapStores(seedStore),
-  },
-  methods: {
-    getImageUrl(file) {
-      if (!file) return require("@/assets/no-image.png");
-      return URL.createObjectURL(file);
+    getSeedImage() {
+      if (
+        this.seedStore.seed &&
+        this.seedStore.seed.images &&
+        !this.seedStore.seedThumbnail
+      )
+        return this.seedStore.seed.images;
+      if (!this.seedStore.seedThumbnail)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.seedStore.seedThumbnail);
+    },
+    getCertificationImage() {
+      if (
+        this.seedStore.seed &&
+        this.seedStore.seed.certificationImages &&
+        !this.seedStore.seed.certificationImages
+      )
+        return this.seedStore.seed.certificationImages;
+      if (!this.seedStore.seedCertification)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.seedStore.seedCertification);
+    },
+    getAccreditationImage() {
+      if (
+        this.seedStore.seed &&
+        this.seedStore.seed.accreditationImages &&
+        !this.seedStore.seed.accreditationImages
+      )
+        return this.seedStore.seed.accreditationImages;
+      if (!this.seedStore.seedAccreditation)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.seedStore.seedAccreditation);
     },
   },
 };

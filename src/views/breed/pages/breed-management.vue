@@ -70,11 +70,14 @@
               v-if="item.status == 'disabled'"
               ><v-icon>mdi-eye-outline</v-icon></v-btn
             >
-            <v-btn icon dense disabled
+            <v-btn icon dense @click="onEditClicked(item)"
               ><v-icon>mdi-pencil-outline</v-icon></v-btn
             >
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
+            >
+            <v-btn icon dense @click="onOpenClicked(item.code)"
+              ><v-icon>mdi-web</v-icon></v-btn
             >
           </div>
         </template>
@@ -120,6 +123,7 @@
 <script>
 import { mapStores } from "pinia";
 import { seedStore } from "../store/seed-store";
+import router from "@/router";
 export default {
   computed: {
     ...mapStores(seedStore),
@@ -187,6 +191,15 @@ export default {
     getImageUrl(url) {
       if (!url) return require("@/assets/no-image.png");
       return url;
+    },
+    onOpenClicked(code) {
+      const link = process.env.VUE_APP_USER_PAGE + "seedling/" + code;
+      window.open(link);
+    },
+    onEditClicked(item) {
+      this.seedStore.seed = item;
+      this.seedStore.seed.seedCategory = item.seedCategory.id;
+      router.push("/edit-seed");
     },
     onDisableClicked(seedId) {
       this.$dialog.confirm({

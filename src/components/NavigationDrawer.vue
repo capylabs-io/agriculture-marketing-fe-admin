@@ -78,7 +78,7 @@
               >Quản lý bài viết</v-list-item-title
             >
           </v-list-item>
-          <v-list-item
+          <!-- <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             dense
@@ -90,7 +90,7 @@
             <v-list-item-title class="text-md font-weight-medium"
               >Quản lý hội viên</v-list-item-title
             >
-          </v-list-item>
+          </v-list-item> -->
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             to="/account-setting"

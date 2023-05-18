@@ -182,7 +182,51 @@ export const seedStore = defineStore("seed", {
           return;
         }
         this.reset();
-        alert.success("Create seed successfully!");
+        alert.success("Tạo Giống mới thành công!");
+        router.push("/seed");
+      } catch (error) {
+        alert.error("Create seed fail! Please try again later!");
+      } finally {
+        loading.hide();
+      }
+    },
+    async updateSeed() {
+      try {
+        if (!this.seed) return;
+        loading.show();
+        //upload images
+        let promises = [
+          await this.uploadFile(this.seedThumbnail),
+          await this.uploadFile(this.seedCertification),
+          await this.uploadFile(this.seedAccreditation),
+        ];
+
+        const [
+          uploadedThumbnail,
+          uploadedCertification,
+          uploadedAccreditation,
+        ] = await Promise.all(promises);
+
+        let query = {
+          ...this.seed,
+          images: uploadedThumbnail ? uploadedThumbnail[0] : this.seed.images,
+          certificationImages: uploadedCertification
+            ? uploadedCertification[0]
+            : this.seed.certificationImages,
+          accreditationImages: uploadedAccreditation
+            ? uploadedAccreditation[0]
+            : this.seed.accreditationImages,
+        };
+
+        const res = await Seed.update(this.seed.id, {
+          data: query,
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        this.reset();
+        alert.success("Cập nhật Giống thành công!");
         router.push("/seed");
       } catch (error) {
         alert.error("Create seed fail! Please try again later!");
@@ -208,7 +252,7 @@ export const seedStore = defineStore("seed", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Upload Image successfully!");
+        alert.success("Upload ảnh thành công!");
         return uploadedUrls;
       } catch (error) {
         alert.error("Error occurred!", error.message);
@@ -249,7 +293,7 @@ export const seedStore = defineStore("seed", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Remove seed successfully!");
+        alert.success("Xóa Giống thành công!");
         await this.fetchSeeds();
       } catch (error) {
         alert.error("Error occurred!", error);
