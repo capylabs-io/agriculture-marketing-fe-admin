@@ -96,6 +96,14 @@ const routes = [
         // },
       },
       {
+        path: "/edit-product",
+        name: "Create Product",
+        component: () => import("../views/product/pages/edit-product.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
         path: "/create-seed",
         name: "Create Breed",
         component: () => import("../views/breed/pages/create-breed.vue"),

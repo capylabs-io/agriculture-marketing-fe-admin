@@ -4,12 +4,12 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(productStore.productThumbnail)"
+          :src="getProductImage"
           max-height="192px"
           contain
         ></v-img>
         <div class="font-weight-semibold mt-4 mb-2">
-          Hình ảnh sản phẩm <span class="red--text">*</span>
+          Hình ảnh sản phẩm <span class="red--text" v-if="!isEditing">*</span>
         </div>
         <v-file-input
           v-model="productStore.productThumbnail"
@@ -19,7 +19,7 @@
           prepend-icon=""
           accept="image/*"
           :show-size="1000"
-          :rules="[$rules.required]"
+          :rules="isEditing ? [] : [$rules.required]"
           clearable
           outlined
           solo
@@ -133,7 +133,7 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(productStore.productCertification)"
+          :src="getCertificationImage"
           max-height="192px"
           contain
         ></v-img>
@@ -144,7 +144,6 @@
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
           prepend-icon=""
-          :src="getImageUrl(productStore.productCertification)"
           :show-size="1000"
           clearable
           outlined
@@ -156,7 +155,7 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getImageUrl(productStore.productAccreditation)"
+          :src="getAccreditationImage"
           max-height="192px"
           contain
         ></v-img>
@@ -184,14 +183,48 @@ import { mapStores } from "pinia";
 import { productStore } from "../store/product-store";
 
 export default {
-  computed: {
-    ...mapStores(productStore),
-  },
-  methods: {
-    getImageUrl(file) {
-      if (!file) return require("@/assets/no-image.png");
-      return URL.createObjectURL(file);
+  props: {
+    isEditing: {
+      type: Boolean,
+      default: () => false,
     },
   },
+  computed: {
+    ...mapStores(productStore),
+    getProductImage() {
+      if (
+        this.productStore.product &&
+        this.productStore.product.images &&
+        !this.productStore.productThumbnail
+      )
+        return this.productStore.product.images;
+      if (!this.productStore.productThumbnail)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.productStore.productThumbnail);
+    },
+    getCertificationImage() {
+      if (
+        this.productStore.product &&
+        this.productStore.product.certificationImages &&
+        !this.productStore.product.certificationImages
+      )
+        return this.productStore.product.certificationImages;
+      if (!this.productStore.productCertification)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.productStore.productCertification);
+    },
+    getAccreditationImage() {
+      if (
+        this.productStore.product &&
+        this.productStore.product.accreditationImages &&
+        !this.productStore.product.accreditationImages
+      )
+        return this.productStore.product.accreditationImages;
+      if (!this.productStore.productAccreditation)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.productStore.productAccreditation);
+    },
+  },
+  methods: {},
 };
 </script>

@@ -70,11 +70,14 @@
               v-if="item.status == 'disabled'"
               ><v-icon>mdi-eye-outline</v-icon></v-btn
             >
-            <v-btn icon dense disabled
+            <v-btn icon dense @click="onEditClicked(item)"
               ><v-icon>mdi-pencil-outline</v-icon></v-btn
             >
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
+            >
+            <v-btn icon dense @click="onOpenClicked(item.code)"
+              ><v-icon>mdi-web</v-icon></v-btn
             >
           </div>
         </template>
@@ -120,7 +123,7 @@
 <script>
 import { mapStores } from "pinia";
 import { productStore } from "../store/product-store";
-
+import router from "@/router/index";
 export default {
   computed: {
     ...mapStores(productStore),
@@ -178,6 +181,15 @@ export default {
     getImageUrl(url) {
       if (!url) return require("@/assets/no-image.png");
       return url;
+    },
+    onOpenClicked(code) {
+      const link = process.env.VUE_APP_USER_PAGE + "product/" + code;
+      window.open(link);
+    },
+    onEditClicked(item) {
+      this.productStore.product = item;
+      this.productStore.product.productCategory = item.productCategory.id;
+      router.push("/edit-product");
     },
     onDisableClicked(productId) {
       this.$dialog.confirm({

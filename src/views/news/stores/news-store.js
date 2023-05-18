@@ -71,6 +71,10 @@ export const postStore = defineStore("post", {
     },
   },
   actions: {
+    reset() {
+      this.post = {};
+      this.file = null;
+    },
     async fetchPosts() {
       try {
         loading.show();
@@ -156,8 +160,8 @@ export const postStore = defineStore("post", {
             alert.error(`Error occurred Update! Please try again later!`);
             return;
           }
-          console.log("post ", res.data);
-          alert.success("Update successfully!");
+          alert.success("Tạo bài viết mới thành công!");
+          this.reset();
         } catch (error) {
           console.error(`Error: ${error}`);
           alert.error(error);

@@ -109,11 +109,10 @@ export const productStore = defineStore("product", {
           return {
             id: product.id,
             ...product.attributes,
-            productCategory: get(
-              product,
-              "attributes.productCategory.data.attributes",
-              {}
-            ),
+            productCategory: {
+              id: get(product, "attributes.productCategory.data.id", -1),
+              ...get(product, "attributes.productCategory.data.attributes", {}),
+            },
             author: get(product, "attributes.user.data.attributes", {}),
           };
         });
@@ -184,10 +183,55 @@ export const productStore = defineStore("product", {
           return;
         }
         this.reset();
-        alert.success("Create product successfully!");
+        alert.success("Tạo sản phẩm mới thành công!");
         router.push("/product");
       } catch (error) {
         alert.error("Create product fail! Please try again later!");
+      } finally {
+        loading.hide();
+      }
+    },
+    async updateProduct() {
+      try {
+        if (!this.product) return;
+        loading.show();
+        //upload images
+        let promises = [
+          await this.uploadFile(this.productThumbnail),
+          await this.uploadFile(this.productCertification),
+          await this.uploadFile(this.productAccreditation),
+        ];
+
+        const [
+          uploadedThumbnail,
+          uploadedCertification,
+          uploadedAccreditation,
+        ] = await Promise.all(promises);
+        let query = {
+          ...this.product,
+          images: uploadedThumbnail
+            ? uploadedThumbnail[0]
+            : this.product.images,
+          certificationImages: uploadedCertification
+            ? uploadedCertification[0]
+            : this.product.certificationImages,
+          accreditationImages: uploadedAccreditation
+            ? uploadedAccreditation[0]
+            : this.product.accreditationImages,
+        };
+
+        const res = await Product.update(this.product.id, {
+          data: query,
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        this.reset();
+        alert.success("Cập nhật sản phẩm mới thành công!");
+        router.push("/product");
+      } catch (error) {
+        alert.error("Update product fail! Please try again later!");
       } finally {
         loading.hide();
       }
@@ -210,7 +254,7 @@ export const productStore = defineStore("product", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Upload Image successfully!");
+        alert.success("Upload ảnh thành công!");
         return uploadedUrls;
       } catch (error) {
         alert.error("Error occurred!", error.message);
@@ -232,9 +276,7 @@ export const productStore = defineStore("product", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success(
-          `${isActive ? "Enable" : "Disable"}  product successfully!"`
-        );
+        alert.success(`${isActive ? "Hiện" : "Ẩn"}  sản phẩm thành công!"`);
         await this.fetchProducts();
       } catch (error) {
         alert.error("Error occurred!", error);
@@ -251,7 +293,7 @@ export const productStore = defineStore("product", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Remove product successfully!");
+        alert.success("Xóa sản phẩm thành công!");
         await this.fetchProducts();
       } catch (error) {
         alert.error("Error occurred!", error);

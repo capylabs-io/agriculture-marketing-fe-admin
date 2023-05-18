@@ -8,9 +8,9 @@
       <v-icon class="mr-1" small>mdi-arrow-left</v-icon>
       Quay lại
     </v-btn>
-    <div class="text-dp-md font-weight-semibold mt-1">Thêm sản phẩm mới</div>
+    <div class="text-dp-md font-weight-semibold mt-1">Chỉnh sửa sản phẩm</div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-4 mt-6">
-      <CreateProductForm />
+      <CreateProductForm :isEditing="true" />
     </div>
     <div class="d-flex justify-end mt-6 gap-8">
       <v-btn
@@ -25,10 +25,10 @@
         elevation="0"
         color="primary"
         :disabled="!productStore.productForm"
-        @click="productStore.createProduct()"
+        @click="productStore.updateProduct()"
       >
         <v-icon small>mdi-plus</v-icon>
-        <div class="ml-1">Thêm sản phẩm</div>
+        <div class="ml-1">Cập nhật sản phẩm</div>
       </v-btn>
     </div>
   </div>
@@ -47,11 +47,17 @@ export default {
   },
   methods: {
     onBackClicked() {
+      this.productStore.reset();
       this.$router.push("/product");
     },
   },
   created() {
-    this.productStore.fetchCategories();
+    if (!this.productStore.product || !this.productStore.product.id) {
+      this.$alert.error("Invalid action!");
+      this.$router.push("/product");
+    } else {
+      this.productStore.fetchCategories();
+    }
   },
 };
 </script>
