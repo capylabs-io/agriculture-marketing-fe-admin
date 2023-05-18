@@ -96,6 +96,14 @@ const routes = [
         // },
       },
       {
+        path: "/edit-post",
+        name: "Update Post",
+        component: () => import("../views/news/pages/edit-news.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
         path: "/create-product",
         name: "Create Product",
         component: () => import("../views/product/pages/create-product.vue"),

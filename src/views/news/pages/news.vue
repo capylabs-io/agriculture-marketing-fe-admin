@@ -34,18 +34,46 @@
             {{ item.title }}
           </div>
         </template>
+        <template v-slot:[`item.category`]="{ item }">
+          <div class="text-start">
+            {{ item.postCategory.name }}
+          </div>
+        </template>
+        <template v-slot:[`item.author`]="{ item }">
+          <div class="text-start">
+            {{ item.author.username }}
+          </div>
+        </template>
         <template v-slot:[`item.publishedAt`]="{ item }">
           <div class="text-center">
             {{ item.createdAt | ddmmyyyyhhmmss }}
           </div>
         </template>
-        <template v-slot:[`item.action`]="{}">
+        <template v-slot:[`item.action`]="{ item }">
           <div class="d-flex align-center justify-center">
-            <v-btn icon dense><v-icon>mdi-eye-outline</v-icon></v-btn>
-            <v-btn icon dense disabled
+            <v-btn
+              icon
+              dense
+              @click="onDisableClicked(item.id)"
+              v-if="item.status == 'publish'"
+              ><v-icon>mdi-eye-off-outline</v-icon></v-btn
+            >
+            <v-btn
+              icon
+              dense
+              @click="onEnableClicked(item.id)"
+              v-if="item.status == 'disabled'"
+              ><v-icon>mdi-eye-outline</v-icon></v-btn
+            >
+            <v-btn icon dense @click="onEditClicked(item)"
               ><v-icon>mdi-pencil-outline</v-icon></v-btn
             >
-            <v-btn icon dense><v-icon>mdi-delete-outline</v-icon></v-btn>
+            <v-btn icon dense @click="onDeleteClicked(item.id)"
+              ><v-icon>mdi-delete-outline</v-icon></v-btn
+            >
+            <v-btn icon dense @click="onOpenClicked(item.id)"
+              ><v-icon>mdi-web</v-icon></v-btn
+            >
           </div>
         </template>
       </v-data-table>
@@ -57,6 +85,7 @@
         <v-select
           class="border-radius-8 items-per-page-field"
           :items="itemsPerPage"
+          v-model="postStore.postsPerPage"
           flat
           solo
           outlined
@@ -66,7 +95,7 @@
         trên tổng số
         <v-text-field
           class="border-radius-8 max-item-field"
-          placeholder="100"
+          :value="postStore.totalPostPage"
           flat
           solo
           outlined
@@ -74,11 +103,13 @@
           hide-details
           readonly
         ></v-text-field>
+        sản phẩm
       </div>
       <v-pagination
         class="pa-0 mr-n2"
         color="primary"
-        :length="1"
+        :length="postStore.totalPostPage"
+        v-model="postStore.postPage"
       ></v-pagination>
     </div>
   </div>
@@ -87,7 +118,7 @@
 <script>
 import { mapStores } from "pinia";
 import { postStore } from "../stores/news-store";
-
+import router from "@/router";
 export default {
   computed: {
     ...mapStores(postStore),
@@ -134,6 +165,48 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    onOpenClicked(id) {
+      const link = process.env.VUE_APP_USER_PAGE + "news/" + id;
+      window.open(link);
+    },
+    onEditClicked(item) {
+      console.log("select post", item);
+      this.postStore.post = item;
+      this.postStore.post.postCategory = item.postCategory.id;
+      router.push("/edit-post");
+    },
+    onDisableClicked(postId) {
+      this.$dialog.confirm({
+        title: "Xác nhận ẩn Bài viết",
+        topContent:
+          "<span class='error--text'>Bạn có chắc muốn ẩn sản phẩm này không? Người dùng sẽ không thấy sản phẩm này nữa!</span>",
+        done: async () => {
+          await this.postStore.togglePost(postId, false);
+        },
+      });
+    },
+    onEnableClicked(postId) {
+      this.$dialog.confirm({
+        title: "Xác nhận hiện Bài viết",
+        topContent: "Are you sure you want to enable this post?",
+        done: async () => {
+          await this.postStore.togglePost(postId, true);
+        },
+      });
+    },
+    onDeleteClicked(postId) {
+      this.$dialog.confirm({
+        title: "Xác nhận xóa Bài viết",
+        topContent: "Bạn có chắc bạn muốn xóa Bài viết này không?",
+        midContent:
+          "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
+        done: async () => {
+          await this.postStore.deletePost(postId);
+        },
+      });
+    },
   },
 };
 </script>
