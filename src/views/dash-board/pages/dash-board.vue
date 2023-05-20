@@ -62,9 +62,7 @@
           </div>
 
           <router-link to="/product">
-            <div class="mt-4 text-xs">
-              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-            </div>
+            <div class="mt-4 text-xs">Xem chi tiết</div>
           </router-link>
         </v-card>
       </v-col>
@@ -89,9 +87,7 @@
             }}
           </div>
           <router-link to="/supply">
-            <div class="mt-4 text-xs">
-              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-            </div>
+            <div class="mt-4 text-xs">Xem chi tiết</div>
           </router-link>
         </v-card>
       </v-col>
@@ -115,9 +111,7 @@
           </div>
 
           <router-link to="/news">
-            <div class="mt-4 text-xs">
-              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-            </div>
+            <div class="mt-4 text-xs">Xem chi tiết</div>
           </router-link>
         </v-card>
       </v-col>
@@ -145,9 +139,7 @@
           </div>
 
           <router-link to="/seed">
-            <div class="mt-4 text-xs">
-              Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
-            </div>
+            <div class="mt-4 text-xs">Xem chi tiết</div>
           </router-link>
         </v-card>
       </v-col>
@@ -169,11 +161,11 @@
               dashboardStore.dashboard ? dashboardStore.dashboard.totalUsers : 0
             }}
           </div>
-          <router-link>
+          <!-- <router-link>
             <div class="mt-4 text-xs">
               Xem chi tiết <v-icon small class="ml-1">mdi-arrow-right</v-icon>
             </div>
-          </router-link>
+          </router-link> -->
         </v-card>
       </v-col>
       <v-col cols="12" xl="4" md="4"> </v-col>
