@@ -120,7 +120,9 @@
             <div
               class="font-weight-bold text-sm neutral100--text text-capitalize"
             >
-              {{ userStore.userData.name ? userStore.userData.name : "unknown" }}
+              {{
+                userStore.userData.name ? userStore.userData.name : "unknown"
+              }}
             </div>
             <div class="text-caption neutral70--text">
               {{
@@ -163,7 +165,8 @@ export default {
   computed: { ...mapStores(userStore) },
   methods: {
     onLogoutClicked() {
-      this.$router.push("/login");
+      this.userStore.logout();
+      this.$router.push("/");
     },
   },
 };
