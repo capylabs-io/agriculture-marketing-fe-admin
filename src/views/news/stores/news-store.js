@@ -174,7 +174,7 @@ export const postStore = defineStore("post", {
           ...this.post,
           images: uploadedThumbnail ? uploadedThumbnail[0] : "",
           status: "publish",
-          users: userStore().userData.id,
+          user: userStore().userData.id,
         };
 
         const res = await Post.create({
