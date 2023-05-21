@@ -114,8 +114,13 @@
         <div class="d-flex align-center">
           <v-img
             class="avatar-img"
-            :src="require(`@/assets/components/landing/profile.webp`)"
+            :src="
+              userStore.userData.avatar
+                ? userStore.userData.avatar
+                : require(`@/assets/components/landing/profile.webp`)
+            "
           />
+
           <div class="ml-4">
             <div
               class="font-weight-bold text-sm neutral100--text text-capitalize"

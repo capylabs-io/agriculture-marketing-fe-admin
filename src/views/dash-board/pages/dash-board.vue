@@ -243,4 +243,9 @@ v-btn {
   background: white;
   border-radius: 100px;
 }
+
+a {
+  color: inherit;
+  text-decoration: none !important;
+}
 </style>

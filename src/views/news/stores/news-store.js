@@ -3,6 +3,7 @@ import { Category, Common, Post } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
+import { userStore } from "@/stores/userStore";
 import router from "@/router";
 
 export const postStore = defineStore("post", {
@@ -70,6 +71,10 @@ export const postStore = defineStore("post", {
       if (this.filteredPosts.length % this.postsPerPage == 0)
         return this.filteredPosts.length / this.postsPerPage;
       else return Math.floor(this.filteredPosts.length / this.postsPerPage) + 1;
+    },
+    totalPost() {
+      if (!this.posts || this.filteredPosts.length == 0) return 1;
+      return this.filteredPosts.length;
     },
   },
   actions: {
@@ -169,6 +174,7 @@ export const postStore = defineStore("post", {
           ...this.post,
           images: uploadedThumbnail ? uploadedThumbnail[0] : "",
           status: "publish",
+          users: userStore().userData.id,
         };
 
         const res = await Post.create({

@@ -95,7 +95,7 @@
         trên tổng số
         <v-text-field
           class="border-radius-8 max-item-field"
-          :value="postStore.totalPostPage"
+          :value="postStore.totalPost"
           flat
           solo
           outlined

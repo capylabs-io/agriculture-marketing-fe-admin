@@ -10,10 +10,10 @@
         >
           <div class="d-flex">
             <v-img
-              width="176px"
-              height="32px"
-              :src="require(`@/assets/logo.png`)"
-            />
+              width="375px"
+              height="64px"
+              :src="require('@/assets/components/landing/web-logo-black.png')"
+            ></v-img>
           </div>
           <div class="d-flex flex-column full-width form-input">
             <div>
@@ -140,9 +140,10 @@ export default {
       isShow: true,
       isShowPass: false,
       imageUrls: [
-        require("@/assets/components/landing/section1-right.webp"),
-        require("@/assets/components/landing/right1.png"),
-        require("@/assets/components/landing/right2.png"),
+        require("@/assets/components/landing/section1-right3.jpeg"),
+        require("@/assets/components/landing/section1-right1.png"),
+        require("@/assets/components/landing/section1-right2.jpeg"),
+        require("@/assets/components/landing/section1-right4.jpeg"),
       ],
     };
   },
