@@ -2,7 +2,7 @@
   <v-navigation-drawer class="pa-0" width="284px" permanent app>
     <div class="d-flex flex-column full-height overflow-hidden pa-4">
       <div class="d-flex justify-center align-center py-7 logo-img mx-auto">
-        <v-img :src="require(`@/assets/logo.png`)" />
+        <v-img :src="require('@/assets/components/landing/web-logo-black.webp')" />
       </div>
 
       <v-divider class="mt-2"></v-divider>

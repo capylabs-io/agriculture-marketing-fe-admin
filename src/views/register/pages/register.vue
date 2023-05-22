@@ -8,11 +8,11 @@
           lazy-validation
           class="full-width d-flex flex-column align-center justify-center"
         >
-          <div class="d-flex">
+          <div class="d-flex" @click="goToHome()">
             <v-img
-              width="176px"
-              height="32px"
-              :src="require(`@/assets/logo.png`)"
+              width="235px"
+              height="64px"
+              :src="require('@/assets/components/landing/web-logo-black.webp')"
             />
           </div>
           <div class="d-flex flex-column full-width form-input">
@@ -40,7 +40,7 @@
               v-model="userStore.userSignUpData.email"
               :rules="rules.checkIdentifier"
               class="pa-0 mt-2"
-              placeholder="Nhập Tên Tài Khoản"
+              placeholder="Nhập tên tài khoản"
               outlined
               dense
             />
@@ -69,7 +69,7 @@
               @click:append="isShowPass = !isShowPass"
               class="pa-0 mt-2"
               outlined
-              placeholder="Nhập Mật Khẩu"
+              placeholder="Nhập mật khẩu"
               dense
             />
             <div class="text-sm neutral70--text font-weight-bold mt-2">
@@ -84,7 +84,7 @@
               @click:append="isShowPass = !isShowPass"
               class="pa-0 mt-2"
               outlined
-              placeholder="Nhập Mật Khẩu"
+              placeholder="Nhập lại mật khẩu"
               dense
             />
           </div>
@@ -95,7 +95,7 @@
             height="56px"
             @click="submitForm"
             depressed
-            ><span class="black--text text-capitalize text-btn"
+            ><span class="black--text text-none text-btn"
               >Tạo tài khoản</span
             ></v-btn
           >
@@ -142,9 +142,10 @@ export default {
       isShow: true,
       isShowPass: false,
       imageUrls: [
-        require("@/assets/components/landing/section1-right.webp"),
-        require("@/assets/components/landing/right1.png"),
-        require("@/assets/components/landing/right2.png"),
+        require("@/assets/components/landing/section1-right3.jpeg"),
+        require("@/assets/components/landing/section1-right1.png"),
+        require("@/assets/components/landing/section1-right2.jpeg"),
+        require("@/assets/components/landing/section1-right4.jpeg"),
       ],
     };
   },
@@ -162,6 +163,9 @@ export default {
       if (this.$refs.form.validate()) {
         this.userStore.signUp();
       }
+    },
+    goToHome() {
+      window.open("https://trungtamcaycanh.capylabs.io/");
     },
   },
 };

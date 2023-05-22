@@ -8,11 +8,11 @@
           lazy-validation
           class="full-width d-flex flex-column align-center justify-center"
         >
-          <div class="d-flex">
+          <div class="d-flex" @click="goToHome()">
             <v-img
-              width="375px"
+              width="235px"
               height="64px"
-              :src="require('@/assets/components/landing/web-logo-black.png')"
+              :src="require('@/assets/components/landing/web-logo-black.webp')"
             ></v-img>
           </div>
           <div class="d-flex flex-column full-width form-input">
@@ -31,7 +31,7 @@
               v-model="userStore.username"
               :rules="rules.checkIdentifier"
               class="pa-0 mt-2"
-              placeholder="Nhập Tên Tài Khoản"
+              placeholder="Nhập tên tài khoản"
               outlined
               dense
             />
@@ -47,19 +47,19 @@
               @click:append="isShowPass = !isShowPass"
               class="pa-0 mt-2"
               outlined
-              placeholder="Nhập Mật Khẩu"
+              placeholder="Nhập mật khẩu"
               dense
             />
           </div>
           <div
             class="d-flex align-center justify-space-between text-sm full-width remember-me"
           >
-            <v-checkbox>
+            <v-checkbox v-model="userStore.rememberMe">
               <template v-slot:label>
                 <div class="text-sm font-weight-bold">Lưu mật khẩu</div>
               </template>
             </v-checkbox>
-            <router-link
+            <!-- <router-link
               to="/forgot-password"
               :style="{
                 color: 'var(--v-blue60-base)',
@@ -67,7 +67,7 @@
               class="text-decoration-none font-weight-bold"
             >
               <div class="text-none nav-link">Quên mật khẩu</div>
-            </router-link>
+            </router-link> -->
           </div>
 
           <v-btn
@@ -76,7 +76,7 @@
             height="56px"
             @click="submitForm"
             depressed
-            ><span class="black--text text-capitalize text-btn"
+            ><span class="black--text text-none text-btn"
               >Đăng nhập</span
             ></v-btn
           >
@@ -161,6 +161,9 @@ export default {
       if (this.$refs.form.validate()) {
         this.userStore.signIn();
       }
+    },
+    goToHome() {
+      window.open("https://trungtamcaycanh.capylabs.io/");
     },
   },
 };

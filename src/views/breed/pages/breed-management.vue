@@ -193,7 +193,7 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "seedling/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "seedlings/" + code;
       window.open(link);
     },
     onEditClicked(item) {
