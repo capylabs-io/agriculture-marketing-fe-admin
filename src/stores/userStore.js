@@ -86,11 +86,11 @@ export const userStore = defineStore("user", {
           alert.error(`Đăng ký thất bại!`);
           return;
         }
-        alert.success("Đăng ký thành công!");
         if (!this.rememberMe) {
           this.password = "";
         }
-        this.router.push("/dashboard");
+        alert.success("Đăng ký thành công!");
+        this.router.push("/");
       } catch (error) {
         console.error(`Error: ${error}`);
         alert.error(error);
