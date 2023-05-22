@@ -181,7 +181,7 @@
         <div class="font-weight-semibold mt-4 mb-2">Giấy kiểm định</div>
         <v-file-input
           v-model="supplyStore.supplyAccreditation"
-          placeholder="Chọn hình giấy kiểm định"
+          placeholder="Chọn hình Giấy kiểm định"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
           prepend-icon=""
