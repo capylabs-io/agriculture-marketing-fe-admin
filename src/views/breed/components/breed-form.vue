@@ -48,6 +48,7 @@
           Danh mục <span class="red--text">*</span>
         </div>
         <v-select
+          :disabled="isEditing"
           v-model="seedStore.seed.seedlingCategory"
           class="border-radius-8"
           placeholder="Chọn danh mục giống"

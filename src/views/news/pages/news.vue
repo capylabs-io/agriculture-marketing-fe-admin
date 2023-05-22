@@ -4,6 +4,7 @@
     <div class="text-dp-md font-weight-semibold">Quản lý bài viết</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <v-text-field
+        v-model="postStore.searchKey"
         class="search-field border-radius-8"
         placeholder="Tìm kiếm"
         prepend-inner-icon="mdi-magnify"

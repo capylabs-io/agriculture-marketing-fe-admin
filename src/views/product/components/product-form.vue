@@ -50,6 +50,7 @@
           Danh mục sản phẩm <span class="red--text">*</span>
         </div>
         <v-select
+          :disabled="isEditing"
           class="border-radius-8"
           placeholder="Chọn danh mục sản phẩm"
           v-model="productStore.product.productCategory"
