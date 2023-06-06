@@ -269,25 +269,43 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async toggleartisan(artisanId, isActive) {
-      if (!artisanId) return;
+    async toggleartisan(artisanId) {
       try {
         loading.show();
-        const res = await Artisan.update(artisanId, {
-          data: {
-            status: isActive ? "publish" : "disabled",
+        const res = await Artisan.fetch({
+          sort: "updatedAt:desc",
+          populate: "*",
+          filters: {
+            code: artisanId,
           },
         });
         if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
+          alert.error(`Error occurred! Please try again later!`);
           return;
         }
-        alert.success(
-          `${isActive ? "Enable" : "Disable"}  artisan successfully!"`
-        );
-        await this.fetchartisans();
+        const artisans = get(res, "data.data", []);
+        if (!artisans || artisans.length == 0) return;
+        this.artisan = {
+          id: artisans[0],
+          ...artisans[0].attributes,
+          artisanCategory: get(
+            artisans[0],
+            "attributes.artisanCategory.data.attributes.name",
+            []
+          ),
+          products: get(artisans[0], "attributes.products.data", []),
+        };
+        this.products = this.artisan.products
+          .filter((product) => product.attributes.status == "publish")
+          .map((product) => {
+            return {
+              id: product.id,
+              ...product.attributes,
+            };
+          });
       } catch (error) {
-        alert.error("Error occurred!", error);
+        console.error(`Error: ${error}`);
+        alert.error(error);
       } finally {
         loading.hide();
       }

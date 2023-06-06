@@ -56,6 +56,7 @@ export default new Vuetify({
         green10: "#F4FEF6",
         green60: "#53B06C",
         green70: "#419056",
+        green100: "#084C2E",
 
         //Red
         red10: "#FEF6F4",

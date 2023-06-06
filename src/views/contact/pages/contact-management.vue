@@ -1,10 +1,12 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-    <div class="text-dp-md font-weight-semibold">Quản lý nghệ nhân</div>
+    <DetailDrawer />
+
+    <div class="text-dp-md font-weight-semibold">Hòm thư, liên hệ</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <v-text-field
-        v-model="artisanStore.searchKey"
+        v-model="contactStore.searchKey"
         class="search-field border-radius-8"
         placeholder="Tìm kiếm"
         prepend-inner-icon="mdi-magnify"
@@ -17,7 +19,7 @@
       <!-- <v-btn
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
-        to="/create-artisan"
+        to="/create-contact"
         outlined
       >
         <v-icon small>mdi-plus</v-icon>
@@ -28,31 +30,20 @@
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
       <v-data-table
         :headers="headers"
-        :items="artisanStore.slicedartisans"
-        :items-per-page="artisanStore.artisansPerPage"
+        :items="contactStore.slicedcontacts"
+        :items-per-page="contactStore.contactsPerPage"
         hide-default-footer
+        @click:row="onRowClicked($event)"
       >
-        <template v-slot:[`item.thumbnail`]="{ item }">
-          <v-img
-            class="table-img neutral20-border border-radius-8 mx-auto"
-            :src="getImageUrl(item.thumbnail)"
-          ></v-img>
+        <template v-slot:[`item.id`]="{ item }">
+          <div class="d-flex flex-column align-center">
+            <v-checkbox :key="item.id"></v-checkbox>
+          </div>
         </template>
-        <template v-slot:[`item.publishedAt`]="{ item }">
+        <template v-slot:[`item.createdAt`]="{ item }">
           <div>
             {{ item.createdAt | ddmmyyyyhhmmss }}
           </div>
-        </template>
-        <template v-slot:[`item.author`]="{ item }">
-          <div>
-            {{ item.artisanCategory.name }}
-          </div>
-        </template>
-        <template v-slot:[`item.qrcode`]="{ item }">
-          <v-img
-            class="table-img border-radius-8 mx-auto"
-            :src="getImageUrl(item.qrCode)"
-          ></v-img>
         </template>
         <template v-slot:[`item.action`]="{ item }">
           <div class="d-flex align-center justify-center">
@@ -76,9 +67,6 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <v-btn icon dense @click="onOpenClicked(item.code)"
-              ><v-icon>mdi-web</v-icon></v-btn
-            >
           </div>
         </template>
       </v-data-table>
@@ -90,7 +78,7 @@
         <v-select
           class="border-radius-8 items-per-page-field"
           :items="itemsPerPage"
-          v-model="artisanStore.artisansPerPage"
+          v-model="contactStore.contactsPerPage"
           flat
           solo
           outlined
@@ -100,7 +88,7 @@
         trên tổng số
         <v-text-field
           class="border-radius-8 max-item-field"
-          :value="artisanStore.totalartisan"
+          :value="contactStore.totalcontact"
           flat
           solo
           outlined
@@ -113,20 +101,24 @@
       <v-pagination
         class="pa-0 mr-n2"
         color="primary"
-        :length="artisanStore.totalartisanPage"
-        v-model="artisanStore.artisanPage"
+        :length="contactStore.totalcontactPage"
+        v-model="contactStore.contactPage"
       ></v-pagination>
     </div>
   </div>
 </template>
+ontact
 
 <script>
 import { mapStores } from "pinia";
-import { artisanStore } from "../store/artisan-store";
+import { contactStore } from "../store/contact-store";
 import router from "@/router";
 export default {
+  components: {
+    DetailDrawer: () => import("../components/faq-detail-drawer.vue"),
+  },
   computed: {
-    ...mapStores(artisanStore),
+    ...mapStores(contactStore),
   },
   data() {
     return {
@@ -143,35 +135,31 @@ export default {
       itemsPerPage: [10, 50, 100],
       headers: [
         {
-          text: "Ảnh đại diện",
-          value: "thumbnail",
+          text: "",
+          value: "id",
           align: "center",
           sortable: false,
         },
         {
-          text: "Họ và tên",
+          text: "Người gửi",
           value: "name",
           align: "center",
         },
         {
-          text: "Mã truy xuất",
-          value: "code",
+          text: "Email",
+          value: "email",
           align: "center",
         },
+
         {
-          text: "Số điện thoại",
-          value: "phone",
+          text: "Tiêu đề",
+          value: "title",
           align: "center",
           sortable: false,
         },
         {
-          text: "Chức vụ",
-          value: "author",
-          align: "center",
-        },
-        {
-          text: "QR Code",
-          value: "qrcode",
+          text: "Ngày gửi",
+          value: "createdAt",
           align: "center",
           sortable: false,
         },
@@ -185,7 +173,7 @@ export default {
     };
   },
   created() {
-    this.artisanStore.fetchArtisans();
+    this.contactStore.fetchContacts();
   },
   methods: {
     getImageUrl(url) {
@@ -193,41 +181,27 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "artisans/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "contacts/" + code;
       window.open(link);
     },
-    onEditClicked(item) {
-      this.artisanStore.artisan = item;
-      this.artisanStore.artisan.artisanCategory = item.artisanCategory.id;
-      router.push("/edit-artisan");
+    onRowClicked(item) {
+      this.contactStore.drawerDetail = true;
+      this.contactStore.contact = item;
+      this.contactStore.contact.contactCategory = item.contactCategory.id;
     },
-    // onDisableClicked(artisanId) {
-    //   this.$dialog.confirm({
-    //     title: "Xác nhận ẩn Giống",
-    //     topContent:
-    //       "<span class='error--text'>Bạn có chắc muốn ẩn giống này không? Người dùng sẽ không thấy giống này nữa!</span>",
-    //     done: async () => {
-    //       await this.artisanStore.toggleartisan(artisanId, false);
-    //     },
-    //   });
-    // },
-    // onEnableClicked(artisanId) {
-    //   this.$dialog.confirm({
-    //     title: "Xác nhận hiện Giống",
-    //     topContent: "Bạn có muốn hiện lại Giống này không?",
-    //     done: async () => {
-    //       await this.artisanStore.toggleartisan(artisanId, true);
-    //     },
-    //   });
-    // },
-    onDeleteClicked(artisanId) {
+    onEditClicked(item) {
+      this.contactStore.contact = item;
+      this.contactStore.contact.contactCategory = item.contactCategory.id;
+      router.push("/edit-contact");
+    },
+    onDeleteClicked(contactId) {
       this.$dialog.confirm({
         title: "Xác nhận xóa Giống",
         topContent: "Bạn có chắc bạn muốn xóa Giống này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {
-          await this.artisanStore.deleteartisan(artisanId);
+          await this.contactStore.deletecontact(contactId);
         },
       });
     },

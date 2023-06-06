@@ -23,6 +23,7 @@ export const userStore = defineStore("user", {
     createPartnerDialog: false,
     file: null,
     avatarUrl: [],
+    mini: true
   }),
   getters: {
     isConnected() {

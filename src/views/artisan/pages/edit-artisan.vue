@@ -8,9 +8,11 @@
       <v-icon class="mr-1" small>mdi-arrow-left</v-icon>
       Quay lại
     </v-btn>
-    <div class="text-dp-md font-weight-semibold mt-1">Chỉnh sửa bài viết</div>
+    <div class="text-dp-md font-weight-semibold mt-1">
+      Chỉnh sửa thông tin nghệ nhân
+    </div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-2 mt-6">
-      <CreateForm :category="artisanStore.categories" />
+      <CreateForm />
     </div>
     <div class="d-flex justify-end mt-6 gap-8">
       <v-btn
@@ -28,7 +30,7 @@
         depressed
       >
         <v-icon small>mdi-plus</v-icon>
-        <div class="ml-1">Chỉnh sửa bài viết</div>
+        <div class="ml-1">Chỉnh sửa thông tin</div>
       </v-btn>
     </div>
   </div>
@@ -47,13 +49,13 @@ export default {
   methods: {
     onBackClicked() {
       this.artisanStore.reset();
-      this.$router.push("/news");
+      this.$router.push("/artisan");
     },
   },
   created() {
     if (!this.artisanStore.artisan || !this.artisanStore.artisan.id) {
       this.$alert.error("Invalid action!");
-      this.$router.push("/news");
+      this.$router.push("/artisan");
     } else {
       this.artisanStore.fetchCategories();
     }

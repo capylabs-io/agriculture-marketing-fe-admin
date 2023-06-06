@@ -1,12 +1,49 @@
 <template>
-  <v-navigation-drawer class="pa-0" width="284px" permanent app>
+  <v-navigation-drawer
+    class="pa-0"
+    width="284px"
+    permanent
+    app
+    :mini-variant="mini"
+    mini-variant-width="80px"
+  >
     <div class="d-flex flex-column full-height overflow-hidden pa-4">
-      <div class="d-flex justify-center align-center py-7 logo-img mx-auto">
-        <v-img
-          :src="require('@/assets/components/landing/web-logo-black.webp')"
-        />
+      <v-btn
+        icon
+        elevation="3"
+        @click.stop="mini = false"
+        v-if="mini"
+        class="mx-auto"
+      >
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-btn>
+      <v-list-item-avatar v-if="mini">
+        <v-img :src="require('@/assets/quochuy.png')"
+      /></v-list-item-avatar>
+
+      <div
+        class="d-flex justify-center align-center py-7 logo-img mx-auto"
+        v-if="!mini"
+      >
+        <v-img :src="require('@/assets/quochuy.png')" />
+        <v-btn
+          icon
+          @click.stop="mini = true"
+          v-if="!mini"
+          elevation="3"
+          class="btn-toggle-drawer"
+        >
+          <v-icon>mdi-chevron-left</v-icon>
+        </v-btn>
       </div>
 
+      <div
+        v-if="!mini"
+        class="font-weight-bold green100--text text-sm text-center text-uppercase mt-4 mb-2"
+      >
+        cổng thông tin giới thiệu sản phẩm và truy xuất nguồn gốc hoa, cây cảnh
+        tỉnh bến tre
+      </div>
       <v-divider class="mt-2"></v-divider>
       <div class="py-6">
         <v-list class="py-0">
@@ -17,10 +54,10 @@
             dense
             link
           >
-            <v-list-item-icon class="mr-2">
-              <v-icon>mdi-view-dashboard</v-icon>
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-view-dashboard-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium"
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
               >Báo cáo thống kê</v-list-item-title
             >
           </v-list-item>
@@ -31,11 +68,11 @@
             dense
             link
           >
-            <v-list-item-icon class="mr-2">
-              <v-icon>mdi-pine-tree</v-icon>
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-tree-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium"
-              >Quản lý sản phẩm</v-list-item-title
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Cây và Hoa</v-list-item-title
             >
           </v-list-item>
           <v-list-item
@@ -45,10 +82,10 @@
             dense
             link
           >
-            <v-list-item-icon class="mr-2">
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
               <v-icon>mdi-warehouse</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium"
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
               >Quản lý vật tư</v-list-item-title
             >
           </v-list-item>
@@ -59,10 +96,10 @@
             dense
             link
           >
-            <v-list-item-icon class="mr-2">
-              <v-icon>mdi-leaf</v-icon>
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-seed-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium"
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
               >Quản lý giống</v-list-item-title
             >
           </v-list-item>
@@ -73,10 +110,10 @@
             dense
             link
           >
-            <v-list-item-icon class="mr-2">
-              <v-icon>mdi-pencil</v-icon>
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-newspaper-variant-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium"
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
               >Quản lý bài viết</v-list-item-title
             >
           </v-list-item>
@@ -87,11 +124,53 @@
             dense
             link
           >
-            <v-list-item-icon class="mr-2">
-              <v-icon>mdi-google-street-view</v-icon>
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-face-man</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium"
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
               >Quản lý nghệ nhân</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
+            to="/contact"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-email-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Hòm thư, liên hệ</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
+            to="/document"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-file-document-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Quản lý văn bản</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
+            to="/faq"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-help-circle-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Quản lý hỏi đáp</v-list-item-title
             >
           </v-list-item>
           <!-- <v-list-item
@@ -100,7 +179,7 @@
             dense
             link
           >
-            <v-list-item-icon class="mr-2">
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
               <v-icon>mdi-account </v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium"
@@ -114,10 +193,10 @@
             dense
             link
           >
-            <v-list-item-icon class="mr-2">
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
               <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium"
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
               >Thông tin tài khoản
             </v-list-item-title>
           </v-list-item>
@@ -127,7 +206,16 @@
       <v-spacer></v-spacer>
       <v-divider></v-divider>
       <div class="d-flex align-center justify-space-between mt-6">
-        <div class="d-flex align-center">
+        <v-list-item-avatar v-if="mini">
+          <v-img
+            :src="
+              userStore.userData.avatar
+                ? userStore.userData.avatar
+                : require(`@/assets/components/landing/profile.webp`)
+            "
+          />
+        </v-list-item-avatar>
+        <div class="d-flex align-center" v-if="!mini">
           <v-img
             class="avatar-img"
             :src="
@@ -156,6 +244,7 @@
           class="d-flex red60--text px-0 text-none mb-2 text-btn align-center"
           @click="onLogoutClicked"
           icon
+          v-if="!mini"
         >
           <v-icon class="mt-2" color="neutral60"> mdi-logout </v-icon>
         </v-btn>
@@ -167,7 +256,7 @@
           @click="onLogoutClicked"
           text
         >
-          <v-icon class="mr-2" color="red60"> mdi-power </v-icon>
+          <v-icon :class="mini ? '' : 'mr-2'" color="red60"> mdi-power </v-icon>
           <div>Log Out</div>
         </v-btn>
         <v-divider></v-divider>
@@ -190,6 +279,11 @@ export default {
       this.$router.push("/");
     },
   },
+  data() {
+    return {
+      mini: false,
+    };
+  },
 };
 </script>
 
@@ -200,11 +294,16 @@ export default {
   border-radius: 18px !important;
 }
 .logo-img {
-  width: 180px;
-  height: 32px;
+  width: 56px;
+  height: 56px;
 }
 
 .active-item {
   background: var(--v-primary40-base) !important;
+}
+.btn-toggle-drawer {
+  position: fixed;
+  z-index: 99;
+  margin-left: 80%;
 }
 </style>

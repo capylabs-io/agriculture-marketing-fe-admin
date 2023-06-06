@@ -33,7 +33,8 @@ const routes = [
       {
         path: "/account-setting",
         name: "Admin Account",
-        component: () => import("../views/account-setting/pages/account-setting.vue"),
+        component: () =>
+          import("../views/account-setting/pages/account-setting.vue"),
 
         meta: {
           requiresAuth: true,
@@ -50,7 +51,8 @@ const routes = [
       {
         path: "/product",
         name: "Product Management",
-        component: () => import("../views/product/pages/product-management.vue"),
+        component: () =>
+          import("../views/product/pages/product-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -74,10 +76,19 @@ const routes = [
       {
         path: "/artisan",
         name: "Artisan Management",
-        component: () => import("../views/artisan/pages/artisan-management.vue"),
+        component: () =>
+          import("../views/artisan/pages/artisan-management.vue"),
         meta: {
           requiresAuth: true,
         },
+      },
+      {
+        path: "/edit-artisan",
+        name: "Update Artisan",
+        component: () => import("../views/artisan/pages/edit-artisan.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
       },
       {
         path: "/create-supply",
@@ -142,6 +153,33 @@ const routes = [
         // meta: {
         //   requiresAuth: true,
         // },
+      },
+      {
+        path: "/contact",
+        name: "Contact Management",
+        component: () =>
+          import("../views/contact/pages/contact-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/document",
+        name: "Document Management",
+        component: () =>
+          import("../views/document/pages/document-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/faq",
+        name: "FAQ Management",
+        component: () =>
+          import("../views/faq/pages/faq-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
     ],
   },

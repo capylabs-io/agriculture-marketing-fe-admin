@@ -1,10 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-    <div class="text-dp-md font-weight-semibold">Quản lý nghệ nhân</div>
+    <div class="text-dp-md font-weight-semibold">Quản lý văn bản</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <v-text-field
-        v-model="artisanStore.searchKey"
+        v-model="documentStore.searchKey"
         class="search-field border-radius-8"
         placeholder="Tìm kiếm"
         prepend-inner-icon="mdi-magnify"
@@ -17,7 +17,7 @@
       <!-- <v-btn
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
-        to="/create-artisan"
+        to="/create-document"
         outlined
       >
         <v-icon small>mdi-plus</v-icon>
@@ -28,31 +28,14 @@
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
       <v-data-table
         :headers="headers"
-        :items="artisanStore.slicedartisans"
-        :items-per-page="artisanStore.artisansPerPage"
+        :items="documentStore.slicedDocuments"
+        :items-per-page="documentStore.documentsPerPage"
         hide-default-footer
       >
-        <template v-slot:[`item.thumbnail`]="{ item }">
-          <v-img
-            class="table-img neutral20-border border-radius-8 mx-auto"
-            :src="getImageUrl(item.thumbnail)"
-          ></v-img>
-        </template>
-        <template v-slot:[`item.publishedAt`]="{ item }">
+        <template v-slot:[`item.category`]="{ item }">
           <div>
-            {{ item.createdAt | ddmmyyyyhhmmss }}
+            {{ item.documentCategory.name }}
           </div>
-        </template>
-        <template v-slot:[`item.author`]="{ item }">
-          <div>
-            {{ item.artisanCategory.name }}
-          </div>
-        </template>
-        <template v-slot:[`item.qrcode`]="{ item }">
-          <v-img
-            class="table-img border-radius-8 mx-auto"
-            :src="getImageUrl(item.qrCode)"
-          ></v-img>
         </template>
         <template v-slot:[`item.action`]="{ item }">
           <div class="d-flex align-center justify-center">
@@ -90,7 +73,7 @@
         <v-select
           class="border-radius-8 items-per-page-field"
           :items="itemsPerPage"
-          v-model="artisanStore.artisansPerPage"
+          v-model="documentStore.documentsPerPage"
           flat
           solo
           outlined
@@ -100,7 +83,7 @@
         trên tổng số
         <v-text-field
           class="border-radius-8 max-item-field"
-          :value="artisanStore.totalartisan"
+          :value="documentStore.totaldocument"
           flat
           solo
           outlined
@@ -113,20 +96,21 @@
       <v-pagination
         class="pa-0 mr-n2"
         color="primary"
-        :length="artisanStore.totalartisanPage"
-        v-model="artisanStore.artisanPage"
+        :length="documentStore.totaldocumentPage"
+        v-model="documentStore.documentPage"
       ></v-pagination>
     </div>
   </div>
 </template>
+ontact
 
 <script>
 import { mapStores } from "pinia";
-import { artisanStore } from "../store/artisan-store";
+import { documentStore } from "../store/document-store";
 import router from "@/router";
 export default {
   computed: {
-    ...mapStores(artisanStore),
+    ...mapStores(documentStore),
   },
   data() {
     return {
@@ -143,37 +127,32 @@ export default {
       itemsPerPage: [10, 50, 100],
       headers: [
         {
-          text: "Ảnh đại diện",
-          value: "thumbnail",
+          text: "Số ký hiệu",
+          value: "numberOf",
+          align: "center",
+          sortable: false,
+        },
+
+        {
+          text: "Người phát hành",
+          value: "issuer",
+          align: "center",
+        },
+        {
+          text: "Tiêu đề",
+          value: "field",
           align: "center",
           sortable: false,
         },
         {
-          text: "Họ và tên",
-          value: "name",
+          text: "Ngày phát hành",
+          value: "issueDate",
           align: "center",
         },
         {
-          text: "Mã truy xuất",
-          value: "code",
+          text: "Loại văn bản",
+          value: "category",
           align: "center",
-        },
-        {
-          text: "Số điện thoại",
-          value: "phone",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: "Chức vụ",
-          value: "author",
-          align: "center",
-        },
-        {
-          text: "QR Code",
-          value: "qrcode",
-          align: "center",
-          sortable: false,
         },
         {
           text: "Hành động",
@@ -185,49 +164,45 @@ export default {
     };
   },
   created() {
-    this.artisanStore.fetchArtisans();
+    this.documentStore.fetchDocuments();
   },
   methods: {
-    getImageUrl(url) {
-      if (!url) return require("@/assets/no-image.png");
-      return url;
-    },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "artisans/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "documents/" + code;
       window.open(link);
     },
     onEditClicked(item) {
-      this.artisanStore.artisan = item;
-      this.artisanStore.artisan.artisanCategory = item.artisanCategory.id;
-      router.push("/edit-artisan");
+      this.documentStore.document = item;
+      this.documentStore.document.documentCategory = item.documentCategory.id;
+      router.push("/edit-document");
     },
-    // onDisableClicked(artisanId) {
+    // onDisableClicked(documentId) {
     //   this.$dialog.confirm({
     //     title: "Xác nhận ẩn Giống",
     //     topContent:
     //       "<span class='error--text'>Bạn có chắc muốn ẩn giống này không? Người dùng sẽ không thấy giống này nữa!</span>",
     //     done: async () => {
-    //       await this.artisanStore.toggleartisan(artisanId, false);
+    //       await this.documentStore.toggledocument(documentId, false);
     //     },
     //   });
     // },
-    // onEnableClicked(artisanId) {
+    // onEnableClicked(documentId) {
     //   this.$dialog.confirm({
     //     title: "Xác nhận hiện Giống",
     //     topContent: "Bạn có muốn hiện lại Giống này không?",
     //     done: async () => {
-    //       await this.artisanStore.toggleartisan(artisanId, true);
+    //       await this.documentStore.toggledocument(documentId, true);
     //     },
     //   });
     // },
-    onDeleteClicked(artisanId) {
+    onDeleteClicked(documentId) {
       this.$dialog.confirm({
         title: "Xác nhận xóa Giống",
         topContent: "Bạn có chắc bạn muốn xóa Giống này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {
-          await this.artisanStore.deleteartisan(artisanId);
+          await this.documentStore.deletedocument(documentId);
         },
       });
     },

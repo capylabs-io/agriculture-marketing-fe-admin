@@ -4,7 +4,7 @@
       <v-col cols="12" md="6">
         <v-img
           class="neutral20-border border-radius-16"
-          :src="getProductImage"
+          :src="getImage"
           max-height="192px"
           contain
         ></v-img>
@@ -97,15 +97,20 @@ export default {
   },
   computed: {
     ...mapStores(artisanStore),
-    getProductImage() {
-      if (
-        this.artisanStore.artisan &&
-        this.artisanStore.artisan.images &&
-        !this.artisanStore.file
-      )
-        return this.artisanStore.artisan.images;
-      if (!this.artisanStore.file) return require("@/assets/no-image.png");
-      return URL.createObjectURL(this.artisanStore.file);
+    // getImage() {
+    //   if (
+    //     this.artisanStore.artisan &&
+    //     this.artisanStore.artisan.images &&
+    //     !this.artisanStore.file
+    //   )
+    //     return this.artisanStore.artisan.images;
+    //   if (!this.artisanStore.file) return require("@/assets/no-image.png");
+    //   return URL.createObjectURL(this.artisanStore.file);
+    // },
+    getImage() {
+      if (!this.artisanStore.artisan ||  !this.artisanStore.artisan.thumbnail)
+        return require("@/assets/no-image.png");
+      return this.artisanStore.artisan.thumbnail;
     },
   },
   methods: {
