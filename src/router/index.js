@@ -72,6 +72,14 @@ const routes = [
         },
       },
       {
+        path: "/artisan",
+        name: "Artisan Management",
+        component: () => import("../views/artisan/pages/artisan-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: "/create-supply",
         name: "Create Supply",
         component: () => import("../views/supply/pages/create-supply.vue"),

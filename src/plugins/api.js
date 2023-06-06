@@ -13,6 +13,19 @@ const SUPPLY_CATEGORY_API = "/supply-categories/";
 const SUPPLY_API = "/supplies/";
 const PRODUCT_CATEGORY_API = "/product-categories/";
 const SEED_CATEGORY_API = "/seedling-categories/";
+const FAQ_CATEGORY_API = "/faq-categories/";
+const FAQ_API = "/faqs/";
+const DOCUMENT_CATEGORY_API = "/document-categories/";
+const DOCUMENT_API = "/documents/";
+const ARTISAN_CATEGORY_API = "/artisan-categories/";
+const ARTISAN_API = "/artisans/";
+const AREA_CATEGORY_API = "/area-categories/";
+const AREA_API = "/areas/";
+const COOPERATIVE_CATEGORY_API = "/cooperative-categories/";
+const COOPERATIVE_API = "/cooperatives/";
+const AGENCY_CATEGORY_API = "/store-categories/";
+const AGENCY_API = "/stores/";
+const CONTACT_API = "/contacts/";
 
 const APIHelper = (api) => ({
   search: (params, option) =>
@@ -124,4 +137,44 @@ export const Supply = {
 };
 export const SupplyCategory = {
   ...APIHelper(SUPPLY_CATEGORY_API),
+};
+
+export const FAQ = {
+  ...APIHelper(FAQ_API),
+};
+export const FAQCategory = {
+  ...APIHelper(FAQ_CATEGORY_API),
+};
+export const Artisan = {
+  ...APIHelper(ARTISAN_API),
+};
+export const ArtisanCategory = {
+  ...APIHelper(ARTISAN_CATEGORY_API),
+};
+export const Agency = {
+  ...APIHelper(AGENCY_API),
+};
+export const AgencyCategory = {
+  ...APIHelper(AGENCY_CATEGORY_API),
+};
+export const Area = {
+  ...APIHelper(AREA_API),
+};
+export const AreaCategory = {
+  ...APIHelper(AREA_CATEGORY_API),
+};
+export const Cooperative = {
+  ...APIHelper(COOPERATIVE_API),
+};
+export const CooperativeCategory = {
+  ...APIHelper(COOPERATIVE_CATEGORY_API),
+};
+export const Contact = {
+  ...APIHelper(CONTACT_API),
+};
+export const Document = {
+  ...APIHelper(DOCUMENT_API),
+};
+export const DocumentCategory = {
+  ...APIHelper(DOCUMENT_CATEGORY_API),
 };

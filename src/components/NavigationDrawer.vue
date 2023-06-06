@@ -2,7 +2,9 @@
   <v-navigation-drawer class="pa-0" width="284px" permanent app>
     <div class="d-flex flex-column full-height overflow-hidden pa-4">
       <div class="d-flex justify-center align-center py-7 logo-img mx-auto">
-        <v-img :src="require('@/assets/components/landing/web-logo-black.webp')" />
+        <v-img
+          :src="require('@/assets/components/landing/web-logo-black.webp')"
+        />
       </div>
 
       <v-divider class="mt-2"></v-divider>
@@ -76,6 +78,20 @@
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium"
               >Quản lý bài viết</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
+            to="/artisan"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon class="mr-2">
+              <v-icon>mdi-google-street-view</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium"
+              >Quản lý nghệ nhân</v-list-item-title
             >
           </v-list-item>
           <!-- <v-list-item
