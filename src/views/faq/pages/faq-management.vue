@@ -14,15 +14,15 @@
         dense
         hide-details
       ></v-text-field>
-      <!-- <v-btn
+      <v-btn
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
         to="/create-faq"
         outlined
       >
         <v-icon small>mdi-plus</v-icon>
-        <div class="ml-1">Thêm giống</div>
-      </v-btn> -->
+        <div class="ml-1">Thêm mới</div>
+      </v-btn>
     </div>
 
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">

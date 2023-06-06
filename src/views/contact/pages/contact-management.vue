@@ -61,9 +61,9 @@
               v-if="item.status == 'disabled'"
               ><v-icon color="success">mdi-eye-outline</v-icon></v-btn
             >
-            <v-btn icon dense @click="onEditClicked(item)"
+            <!-- <v-btn icon dense @click="onEditClicked(item)"
               ><v-icon>mdi-pencil-outline</v-icon></v-btn
-            >
+            > -->
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >

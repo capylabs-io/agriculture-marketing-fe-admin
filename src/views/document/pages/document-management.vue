@@ -14,15 +14,15 @@
         dense
         hide-details
       ></v-text-field>
-      <!-- <v-btn
+      <v-btn
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
         to="/create-document"
         outlined
       >
         <v-icon small>mdi-plus</v-icon>
-        <div class="ml-1">Thêm giống</div>
-      </v-btn> -->
+        <div class="ml-1">Thêm văn bản</div>
+      </v-btn>
     </div>
 
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
@@ -35,6 +35,11 @@
         <template v-slot:[`item.category`]="{ item }">
           <div>
             {{ item.documentCategory.name }}
+          </div>
+        </template>
+        <template v-slot:[`item.title`]="{ item }">
+          <div class="text-left">
+            {{ item.title }}
           </div>
         </template>
         <template v-slot:[`item.action`]="{ item }">
@@ -59,9 +64,9 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <v-btn icon dense @click="onOpenClicked(item.code)"
+            <!-- <v-btn icon dense @click="onOpenClicked(item.code)"
               ><v-icon>mdi-web</v-icon></v-btn
-            >
+            > -->
           </div>
         </template>
       </v-data-table>
@@ -140,9 +145,10 @@ export default {
         },
         {
           text: "Tiêu đề",
-          value: "field",
+          value: "title",
           align: "center",
           sortable: false,
+          width: "300px",
         },
         {
           text: "Ngày phát hành",

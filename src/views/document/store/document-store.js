@@ -87,6 +87,11 @@ export const documentStore = defineStore("document", {
     },
   },
   actions: {
+    changeDocumentDuration(date) {
+      if (!this.filterForm || !date || date.length < 2) return;
+      this.filterForm.startDate = date[0];
+      this.filterForm.endDate = date[1];
+    },
     async fetchCategories() {
       try {
         loading.show();

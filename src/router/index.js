@@ -173,13 +173,38 @@ const routes = [
         },
       },
       {
-        path: "/faq",
-        name: "FAQ Management",
-        component: () =>
-          import("../views/faq/pages/faq-management.vue"),
+        path: "/create-document",
+        name: "Create Document",
+        component: () => import("../views/document/pages/create-document.vue"),
         meta: {
           requiresAuth: true,
         },
+      },
+      {
+        path: "/edit-document",
+        name: "Edit Document",
+        component: () => import("../views/document/pages/edit-document.vue"),
+      },
+      {
+        path: "/faq",
+        name: "FAQ Management",
+        component: () => import("../views/faq/pages/faq-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-faq",
+        name: "Create FAQ",
+        component: () => import("../views/faq/pages/create-faq.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-faq",
+        name: "Edit FAQ",
+        component: () => import("../views/faq/pages/edit-faq.vue"),
       },
     ],
   },
