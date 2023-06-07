@@ -62,6 +62,62 @@
             >
           </v-list-item>
           <v-list-item
+            class="border-radius-8 py-0 px-2"
+            active-class="active-item"
+            dense
+            to="/region"
+            link
+          >
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-warehouse</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Vùng sản xuất</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2"
+            active-class="active-item"
+            to="/htx"
+            dense
+            link
+          >
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-home-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Hợp tác xã</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2"
+            active-class="active-item"
+            to="/agency"
+            dense
+            link
+          >
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-store-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Đại lý</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
+            to="/artisan"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-star-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Quản lý nghệ nhân</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             to="/product"
@@ -83,7 +139,7 @@
             link
           >
             <v-list-item-icon :class="mini ? '' : 'mr-2'">
-              <v-icon>mdi-warehouse</v-icon>
+              <v-icon>mdi-shovel</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
               >Quản lý vật tư</v-list-item-title
@@ -117,20 +173,7 @@
               >Quản lý bài viết</v-list-item-title
             >
           </v-list-item>
-          <v-list-item
-            class="border-radius-8 py-0 px-2 mt-2"
-            to="/artisan"
-            active-class="active-item"
-            dense
-            link
-          >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
-              <v-icon>mdi-face-man</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
-              >Quản lý nghệ nhân</v-list-item-title
-            >
-          </v-list-item>
+
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             to="/contact"
@@ -188,13 +231,26 @@
           </v-list-item> -->
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
-            to="/account-setting"
             active-class="active-item"
             dense
             link
           >
             <v-list-item-icon :class="mini ? '' : 'mr-2'">
               <v-icon>mdi-cog</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+              >Cấu hình trang chủ
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
+            to="/account-setting"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+              <v-icon>mdi-account-box-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
               >Thông tin tài khoản

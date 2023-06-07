@@ -22,7 +22,7 @@
           class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
           elevation="0"
           color="primary"
-          @click="createPost()"
+          @click="createFAQ()"
           :disabled="!faqStore.faqForm"
           depressed
         >
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-2 mt-6">
-      <CreateForm :category="faqStore.categories" />
+      <CreateForm :isEditing="true" />
     </div>
   </div>
 </template>
@@ -52,10 +52,10 @@ export default {
   },
   methods: {
     onBackClicked() {
-      this.$router.push("/document");
+      this.$router.push("/faq");
     },
-    createPost() {
-      this.faqStore.createdocument();
+    createFAQ() {
+      this.faqStore.createfaq();
     },
   },
 };

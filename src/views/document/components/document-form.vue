@@ -47,7 +47,8 @@
       <v-col cols="12" md="7">
         <RangeDatePicker
           @change="documentStore.changeDocumentDuration"
-          :chosenDate="[documentStore.issueDate]"
+          :isEditing="isEditing"
+          :chosenDate="[documentStore.document.issueDate]"
         />
       </v-col>
       <v-col cols="12" md="2"> </v-col>
@@ -83,6 +84,26 @@
           type="text"
           class="border-radius-8"
           v-model="documentStore.document.field"
+          placeholder="Nhập tiêu đề bài viết"
+          :rules="[$rules.required]"
+          solo
+          outlined
+          dense
+          flat
+        />
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Người ký</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-text-field
+          type="text"
+          class="border-radius-8"
+          v-model="documentStore.document.signatory"
           placeholder="Nhập tiêu đề bài viết"
           :rules="[$rules.required]"
           solo
@@ -145,7 +166,7 @@
       </v-col>
       <v-col cols="12" md="7">
         <v-file-input
-          v-model="documentStore.document.attachment"
+          v-model="documentStore.file"
           placeholder="Chọn tệp"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"

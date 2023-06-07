@@ -32,10 +32,10 @@ export const faqStore = defineStore("faq", {
       if (this.searchKey)
         filtered = filtered.filter(
           (faq) =>
-            faq.name
+            faq.anwser
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            faq.title
+            faq.question
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase())
         );
@@ -76,10 +76,7 @@ export const faqStore = defineStore("faq", {
       if (!this.faqs || this.filteredfaqs.length == 0) return 1;
       if (this.filteredfaqs.length % this.faqsPerPage == 0)
         return this.filteredfaqs.length / this.faqsPerPage;
-      else
-        return (
-          Math.floor(this.filteredfaqs.length / this.faqsPerPage) + 1
-        );
+      else return Math.floor(this.filteredfaqs.length / this.faqsPerPage) + 1;
     },
     totalfaq() {
       if (!this.faqs || this.filteredfaqs.length == 0) return 1;
@@ -158,11 +155,7 @@ export const faqStore = defineStore("faq", {
             ...faqs.attributes,
             faqCategory: {
               id: get(faqs, "attributes.faqCategory.data.id", -1),
-              ...get(
-                faqs,
-                "attributes.faqCategory.data.attributes",
-                {}
-              ),
+              ...get(faqs, "attributes.faqCategory.data.attributes", {}),
             },
           };
         });
@@ -177,31 +170,11 @@ export const faqStore = defineStore("faq", {
       try {
         loading.show();
         //upload images
-        let promises = [
-          await this.uploadFile(this.faqThumbnail),
-          await this.uploadFile(this.faqCertification),
-          await this.uploadFile(this.faqAccreditation),
-        ];
-
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
         let query = {
           ...this.faq,
-          images: uploadedThumbnail ? uploadedThumbnail[0] : "",
-          certificationImages: uploadedCertification
-            ? uploadedCertification[0]
-            : "",
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : "",
         };
 
-        const res = await FAQ.create({
-          data: query,
-        });
+        const res = await FAQ.create({ data: query });
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;
@@ -217,36 +190,11 @@ export const faqStore = defineStore("faq", {
     },
     async updatefaq() {
       try {
-        if (!this.faq) return;
-        loading.show();
-        //upload images
-        let promises = [
-          await this.uploadFile(this.faqThumbnail),
-          await this.uploadFile(this.faqCertification),
-          await this.uploadFile(this.faqAccreditation),
-        ];
-
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
         let query = {
           ...this.faq,
-          images: uploadedThumbnail
-            ? uploadedThumbnail[0]
-            : this.faq.images,
-          certificationImages: uploadedCertification
-            ? uploadedCertification[0]
-            : this.faq.certificationImages,
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : this.faq.accreditationImages,
         };
 
-        const res = await FAQ.update(this.faq.id, {
-          data: query,
-        });
+        const res = await FAQ.update(this.faq.id, query);
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;

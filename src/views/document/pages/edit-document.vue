@@ -22,8 +22,8 @@
           class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
           elevation="0"
           color="primary"
-          @click="documentStore.updatedocument"
-          :disabled="!documentStore.postForm"
+          @click="createPost()"
+          :disabled="!documentStore.documentForm"
           depressed
         >
           <v-icon small>mdi-plus</v-icon>
@@ -56,7 +56,7 @@ export default {
       this.$router.push("/document");
     },
     createPost() {
-      this.documentStore.createdocument();
+      this.documentStore.updateDocument();
     },
   },
 };

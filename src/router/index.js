@@ -83,9 +83,89 @@ const routes = [
         },
       },
       {
+        path: "/create-artisan",
+        name: "Create Artisan",
+        component: () => import("../views/artisan/pages/create-artisan.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: "/edit-artisan",
         name: "Update Artisan",
         component: () => import("../views/artisan/pages/edit-artisan.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/agency",
+        name: "Agency Management",
+        component: () => import("../views/agency/pages/agency-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-agency",
+        name: "Create Agency",
+        component: () => import("../views/agency/pages/create-agency.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-agency",
+        name: "Update Agency",
+        component: () => import("../views/agency/pages/edit-agency.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/htx",
+        name: "HTX Management",
+        component: () => import("../views/htx/pages/htx-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-htx",
+        name: "Create HTX",
+        component: () => import("../views/htx/pages/create-htx.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-htx",
+        name: "Update HTX",
+        component: () => import("../views/htx/pages/edit-htx.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/region",
+        name: "Region Management",
+        component: () => import("../views/region/pages/region-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-region",
+        name: "Create Region",
+        component: () => import("../views/region/pages/create-region.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-region",
+        name: "Update Region",
+        component: () => import("../views/region/pages/edit-region.vue"),
         // meta: {
         //   requiresAuth: true,
         // },
@@ -163,6 +243,7 @@ const routes = [
           requiresAuth: true,
         },
       },
+
       {
         path: "/document",
         name: "Document Management",
@@ -185,6 +266,7 @@ const routes = [
         name: "Edit Document",
         component: () => import("../views/document/pages/edit-document.vue"),
       },
+
       {
         path: "/faq",
         name: "FAQ Management",

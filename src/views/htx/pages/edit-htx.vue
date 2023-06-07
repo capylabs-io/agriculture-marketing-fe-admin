@@ -9,7 +9,9 @@
       Quay lại
     </v-btn>
     <div class="mt-1 d-flex justify-space-between">
-      <div class="text-dp-md font-weight-semibold">Thêm nghệ nhân mới</div>
+      <div class="text-dp-md font-weight-semibold">
+        Chỉnh sửa thông tin Hợp tác xã
+      </div>
       <div class="d-flex gap-8">
         <v-btn
           class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
@@ -22,40 +24,47 @@
           class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
           elevation="0"
           color="primary"
-          depressed
           @click="createPost()"
+          :disabled="!htxStore.htxForm"
+          depressed
         >
           <v-icon small>mdi-plus</v-icon>
-          <div class="ml-1">Thêm nghệ nhân</div>
+          <div class="ml-1">Chỉnh sửa</div>
         </v-btn>
       </div>
     </div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-2 mt-6">
-      <CreateForm :category="artisanStore.category" />
+      <CreateForm :isEditing="true" />
     </div>
   </div>
 </template>
 
 <script>
-import { artisanStore } from "../store/artisan-store";
+import { htxStore } from "../store/htx-store";
 import { mapStores } from "pinia";
 export default {
   components: {
-    CreateForm: () => import("../components/artisan-list-form.vue"),
+    CreateForm: () => import("../components/htx-form.vue"),
   },
   computed: {
-    ...mapStores(artisanStore),
-  },
-  mounted() {
-    this.artisanStore.fetchCategories();
+    ...mapStores(htxStore),
   },
   methods: {
     onBackClicked() {
-      this.$router.push("/artisan");
+      this.htxStore.reset();
+      this.$router.push("/htx");
     },
     createPost() {
-      this.artisanStore.createartisan();
+      this.htxStore.updatehtx();
     },
+  },
+  created() {
+    if (!this.htxStore.htx || !this.htxStore.htx.id) {
+      this.$alert.error("Invalid action!");
+      this.$router.push("/htx");
+    } else {
+      this.htxStore.fetchCategories();
+    }
   },
 };
 </script>

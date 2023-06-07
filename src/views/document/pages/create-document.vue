@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-2 mt-6">
-      <CreateForm :category="documentStore.category" />
+      <CreateForm />
     </div>
   </div>
 </template>
@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     onBackClicked() {
+      this.documentStore.reset();
       this.$router.push("/document");
     },
     createDocument() {

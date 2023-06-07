@@ -1,45 +1,45 @@
 import { defineStore } from "pinia";
-import { Artisan, ArtisanCategory, Common } from "@/plugins/api.js";
+import { Cooperative, CooperativeCategory, Common } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
 import router from "@/router";
 
-export const artisanStore = defineStore("artisan", {
+export const htxStore = defineStore("htx", {
   state: () => ({
-    artisanPage: 1,
-    artisansPerPage: 10,
+    htxPage: 1,
+    htxsPerPage: 10,
     categories: [],
-    artisan: {},
-    artisans: [],
-    artisanThumbnail: null,
-    artisanCertification: null,
-    artisanAccreditation: null,
-    artisanForm: false,
+    htx: {},
+    htxs: [],
+    htxThumbnail: null,
+    htxCertification: null,
+    htxAccreditation: null,
+    htxForm: false,
     searchKey: "",
     file: null,
   }),
   getters: {
-    slicedartisans() {
-      if (!this.artisans || this.artisans.length == 0) return [];
-      return this.filteredartisans.slice(
-        (this.artisanPage - 1) * this.artisansPerPage,
-        this.artisanPage * this.artisansPerPage
+    slicedhtxs() {
+      if (!this.htxs || this.htxs.length == 0) return [];
+      return this.filteredhtxs.slice(
+        (this.htxPage - 1) * this.htxsPerPage,
+        this.htxPage * this.htxsPerPage
       );
     },
-    filteredartisans() {
-      if (!this.artisans || this.artisans.length == 0) return [];
-      let filtered = this.artisans;
+    filteredhtxs() {
+      if (!this.htxs || this.htxs.length == 0) return [];
+      let filtered = this.htxs;
       if (this.searchKey)
         filtered = filtered.filter(
-          (artisan) =>
-            artisan.name
+          (htx) =>
+            htx.name
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            artisan.code
+            htx.code
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            artisan.origin
+            htx.origin
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase())
         );
@@ -76,49 +76,46 @@ export const artisanStore = defineStore("artisan", {
     //   }
     //   return sortedCampaigns;
     // },
-    totalartisanPage() {
-      if (!this.artisans || this.filteredartisans.length == 0) return 1;
-      if (this.filteredartisans.length % this.artisansPerPage == 0)
-        return this.filteredartisans.length / this.artisansPerPage;
-      else
-        return (
-          Math.floor(this.filteredartisans.length / this.artisansPerPage) + 1
-        );
+    totalhtxPage() {
+      if (!this.htxs || this.filteredhtxs.length == 0) return 1;
+      if (this.filteredhtxs.length % this.htxsPerPage == 0)
+        return this.filteredhtxs.length / this.htxsPerPage;
+      else return Math.floor(this.filteredhtxs.length / this.htxsPerPage) + 1;
     },
-    totalartisan() {
-      if (!this.artisans || this.filteredartisans.length == 0) return 1;
-      return this.filteredartisans.length;
+    totalhtx() {
+      if (!this.htxs || this.filteredhtxs.length == 0) return 1;
+      return this.filteredhtxs.length;
     },
   },
   actions: {
-    async fetchArtisans() {
+    async fetchhtxs() {
       try {
         loading.show();
-        const res = await Artisan.fetch({
+        const res = await Cooperative.fetch({
           sort: "updatedAt:desc",
           populate: "*",
         });
         if (!res) {
           alert.error(
-            "Error occurred when fetching artisans!",
+            "Error occurred when fetching htxs!",
             "Please try again later!"
           );
           return;
         }
-        const artisans = get(res, "data.data", []);
-        if (!artisans && artisans.length == 0) return;
-        const mappedArtisans = artisans.map((artisan) => {
+        const htxs = get(res, "data.data", []);
+        if (!htxs && htxs.length == 0) return;
+        const mappedHtxs = htxs.map((htx) => {
           return {
-            id: artisan.id,
-            ...artisan.attributes,
-            artisanCategory: {
-              id: get(artisan, "attributes.artisanCategory.data.id", -1),
-              ...get(artisan, "attributes.artisanCategory.data.attributes", {}),
+            id: htx.id,
+            ...htx.attributes,
+            htxCategory: {
+              id: get(htx, "attributes.cooperativeCategory.data.id", -1),
+              ...get(htx, "attributes.cooperativeCategory.data.attributes", {}),
             },
           };
         });
 
-        this.artisans = mappedArtisans;
+        this.htxs = mappedHtxs;
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
@@ -128,10 +125,10 @@ export const artisanStore = defineStore("artisan", {
     async fetchCategories() {
       try {
         loading.show();
-        const res = await ArtisanCategory.fetch();
+        const res = await CooperativeCategory.fetch();
         if (!res) {
           alert.error(
-            "Error occurred when fetching artisan categories!",
+            "Error occurred when fetching htx categories!",
             "Please try again later!"
           );
           return;
@@ -154,13 +151,13 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async createartisan() {
+    async createhtx() {
       try {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.artisan.thumbnail),
-          await this.uploadFile(this.artisan.certification),
+          await this.uploadFile(this.htx.thumbnail),
+          await this.uploadFile(this.htx.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -168,7 +165,7 @@ export const artisanStore = defineStore("artisan", {
         );
 
         let query = {
-          ...this.artisan,
+          ...this.htx,
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
                 .slice(0, uploadedThumbnail.length() - 5)
@@ -181,7 +178,7 @@ export const artisanStore = defineStore("artisan", {
             : "",
         };
 
-        const res = await Artisan.create({
+        const res = await Cooperative.create({
           data: query,
         });
         if (!res) {
@@ -190,21 +187,21 @@ export const artisanStore = defineStore("artisan", {
         }
         this.reset();
         alert.success("Tạo nghệ nhân mới thành công!");
-        router.push("/artisan");
+        router.push("/htx");
       } catch (error) {
-        alert.error("Create artisan fail! Please try again later!");
+        alert.error("Create htx fail! Please try again later!");
       } finally {
         loading.hide();
       }
     },
-    async updateartisan() {
+    async updatehtx() {
       try {
-        if (!this.artisan) return;
+        if (!this.htx) return;
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.artisan.thumbnail),
-          await this.uploadFile(this.artisan.certification),
+          await this.uploadFile(this.htx.thumbnail),
+          await this.uploadFile(this.htx.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -212,16 +209,16 @@ export const artisanStore = defineStore("artisan", {
         );
 
         let query = {
-          ...this.artisan,
+          ...this.htx,
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
-            : this.artisan.thumbnail,
+            : this.htx.thumbnail,
           certification: uploadedCertification
             ? uploadedCertification[0]
-            : this.artisan.certification,
+            : this.htx.certification,
         };
 
-        const res = await Artisan.update(this.artisan.id, {
+        const res = await Cooperative.update(this.htx.id, {
           data: query,
         });
         if (!res) {
@@ -230,9 +227,9 @@ export const artisanStore = defineStore("artisan", {
         }
         this.reset();
         alert.success("Cập nhật Giống thành công!");
-        router.push("/artisan");
+        router.push("/htx");
       } catch (error) {
-        alert.error("Create artisan fail! Please try again later!");
+        alert.error("Create htx fail! Please try again later!");
       } finally {
         loading.hide();
       }
@@ -264,58 +261,18 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async toggleartisan(artisanId) {
+
+    async deletehtx(htxId) {
+      if (!htxId) return;
       try {
         loading.show();
-        const res = await Artisan.fetch({
-          sort: "updatedAt:desc",
-          populate: "*",
-          filters: {
-            code: artisanId,
-          },
-        });
-        if (!res) {
-          alert.error(`Error occurred! Please try again later!`);
-          return;
-        }
-        const artisans = get(res, "data.data", []);
-        if (!artisans || artisans.length == 0) return;
-        this.artisan = {
-          id: artisans[0],
-          ...artisans[0].attributes,
-          artisanCategory: get(
-            artisans[0],
-            "attributes.artisanCategory.data.attributes.name",
-            []
-          ),
-          products: get(artisans[0], "attributes.products.data", []),
-        };
-        this.products = this.artisan.products
-          .filter((product) => product.attributes.status == "publish")
-          .map((product) => {
-            return {
-              id: product.id,
-              ...product.attributes,
-            };
-          });
-      } catch (error) {
-        console.error(`Error: ${error}`);
-        alert.error(error);
-      } finally {
-        loading.hide();
-      }
-    },
-    async deleteartisan(artisanId) {
-      if (!artisanId) return;
-      try {
-        loading.show();
-        const res = await Artisan.remove(artisanId);
+        const res = await Cooperative.remove(htxId);
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
         alert.success("Xóa Giống thành công!");
-        await this.fetchArtisans();
+        await this.fetchhtxs();
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
@@ -323,10 +280,10 @@ export const artisanStore = defineStore("artisan", {
       }
     },
     reset() {
-      this.artisan = {};
-      this.artisanAccreditation = null;
-      this.artisanCertification = null;
-      this.artisanThumbnail = null;
+      this.htx = {};
+      this.htxAccreditation = null;
+      this.htxCertification = null;
+      this.htxThumbnail = null;
       this.file = null;
     },
   },

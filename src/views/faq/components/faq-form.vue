@@ -29,7 +29,6 @@
         <v-textarea
           type="text"
           v-model="faqStore.faq.question"
-          readonly
           background-color="neutral10"
           class="border-radius-8"
           placeholder="Nội dung"
@@ -51,7 +50,6 @@
         <v-textarea
           type="text"
           v-model="faqStore.faq.anwser"
-          readonly
           background-color="neutral10"
           class="border-radius-8"
           placeholder="Nội dung"

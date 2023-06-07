@@ -8,6 +8,7 @@
     transition="scale-transition"
     offset-y
     min-width="auto"
+    :disabled="isEditing ? true : false"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
@@ -49,15 +50,15 @@ export default {
       type: Array,
       default: null,
     },
+    isEditing: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   computed: {
     ...mapStores(documentStore),
     formattedDate() {
-      if (
-        !this.date ||
-        this.date.length == 0
-      )
-        return;
+      if (!this.date || this.date.length == 0) return;
       return (
         moment.utc(this.date[0]).format("DD/MM/YYYY") +
         "-" +
@@ -75,7 +76,7 @@ export default {
         if (!currentDate || currentDate.length == 0) return;
         if (currentDate.length == 1)
           this.date = [
-            moment.now().toISOString().substring(0, 10),  
+            moment.now().toISOString().substring(0, 10),
             moment(currentDate[0]).toISOString().substring(0, 10),
           ];
         else
@@ -83,6 +84,7 @@ export default {
             moment(currentDate[0]).toISOString().substring(0, 10),
             moment(currentDate[1]).toISOString().substring(0, 10),
           ];
+        console.log("date", this.date);
       },
       immediate: true,
     },
@@ -100,14 +102,8 @@ export default {
       }
       this.$refs.menu.save(this.date);
       this.$emit("change", [
-        moment
-          .utc(this.date[0], "YYYY-MM-DD")
-          .startOf("day")
-          .toISOString(),
-        moment
-          .utc(this.date[1], "YYYY-MM-DD")
-          .endOf("day")
-          .toISOString(),
+        moment.utc(this.date[0], "YYYY-MM-DD").startOf("day").toISOString(),
+        moment.utc(this.date[1], "YYYY-MM-DD").endOf("day").toISOString(),
       ]);
       this.menu = false;
     },

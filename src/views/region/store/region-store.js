@@ -1,45 +1,45 @@
 import { defineStore } from "pinia";
-import { Artisan, ArtisanCategory, Common } from "@/plugins/api.js";
+import { Area, AreaCategory, Common } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
 import router from "@/router";
 
-export const artisanStore = defineStore("artisan", {
+export const regionStore = defineStore("region", {
   state: () => ({
-    artisanPage: 1,
-    artisansPerPage: 10,
+    regionPage: 1,
+    regionsPerPage: 10,
     categories: [],
-    artisan: {},
-    artisans: [],
-    artisanThumbnail: null,
-    artisanCertification: null,
-    artisanAccreditation: null,
-    artisanForm: false,
+    region: {},
+    regions: [],
+    regionThumbnail: null,
+    regionCertification: null,
+    regionAccreditation: null,
+    regionForm: false,
     searchKey: "",
     file: null,
   }),
   getters: {
-    slicedartisans() {
-      if (!this.artisans || this.artisans.length == 0) return [];
-      return this.filteredartisans.slice(
-        (this.artisanPage - 1) * this.artisansPerPage,
-        this.artisanPage * this.artisansPerPage
+    slicedregions() {
+      if (!this.regions || this.regions.length == 0) return [];
+      return this.filteredregions.slice(
+        (this.regionPage - 1) * this.regionsPerPage,
+        this.regionPage * this.regionsPerPage
       );
     },
-    filteredartisans() {
-      if (!this.artisans || this.artisans.length == 0) return [];
-      let filtered = this.artisans;
+    filteredregions() {
+      if (!this.regions || this.regions.length == 0) return [];
+      let filtered = this.regions;
       if (this.searchKey)
         filtered = filtered.filter(
-          (artisan) =>
-            artisan.name
+          (region) =>
+            region.name
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            artisan.code
+            region.code
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            artisan.origin
+            region.origin
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase())
         );
@@ -76,49 +76,50 @@ export const artisanStore = defineStore("artisan", {
     //   }
     //   return sortedCampaigns;
     // },
-    totalartisanPage() {
-      if (!this.artisans || this.filteredartisans.length == 0) return 1;
-      if (this.filteredartisans.length % this.artisansPerPage == 0)
-        return this.filteredartisans.length / this.artisansPerPage;
+    totalregionPage() {
+      if (!this.regions || this.filteredregions.length == 0) return 1;
+      if (this.filteredregions.length % this.regionsPerPage == 0)
+        return this.filteredregions.length / this.regionsPerPage;
       else
         return (
-          Math.floor(this.filteredartisans.length / this.artisansPerPage) + 1
+          Math.floor(this.filteredregions.length / this.regionsPerPage) + 1
         );
     },
-    totalartisan() {
-      if (!this.artisans || this.filteredartisans.length == 0) return 1;
-      return this.filteredartisans.length;
+    totalregion() {
+      if (!this.regions || this.filteredregions.length == 0) return 1;
+      return this.filteredregions.length;
     },
   },
   actions: {
-    async fetchArtisans() {
+    async fetchregions() {
       try {
         loading.show();
-        const res = await Artisan.fetch({
+        const res = await Area.fetch({
           sort: "updatedAt:desc",
           populate: "*",
         });
         if (!res) {
           alert.error(
-            "Error occurred when fetching artisans!",
+            "Error occurred when fetching regions!",
             "Please try again later!"
           );
           return;
         }
-        const artisans = get(res, "data.data", []);
-        if (!artisans && artisans.length == 0) return;
-        const mappedArtisans = artisans.map((artisan) => {
+        const regions = get(res, "data.data", []);
+        if (!regions && regions.length == 0) return;
+        const mappedRegions = regions.map((region) => {
           return {
-            id: artisan.id,
-            ...artisan.attributes,
-            artisanCategory: {
-              id: get(artisan, "attributes.artisanCategory.data.id", -1),
-              ...get(artisan, "attributes.artisanCategory.data.attributes", {}),
+            id: region.id,
+            ...region.attributes,
+            regionCategory: {
+              id: get(region, "attributes.areaCategory.data.id", -1),
+              ...get(region, "attributes.areaCategory.data.attributes", {}),
             },
+            author: get(region, "attributes.user.data.attributes", {}),
           };
         });
 
-        this.artisans = mappedArtisans;
+        this.regions = mappedRegions;
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
@@ -128,10 +129,10 @@ export const artisanStore = defineStore("artisan", {
     async fetchCategories() {
       try {
         loading.show();
-        const res = await ArtisanCategory.fetch();
+        const res = await AreaCategory.fetch();
         if (!res) {
           alert.error(
-            "Error occurred when fetching artisan categories!",
+            "Error occurred when fetching region categories!",
             "Please try again later!"
           );
           return;
@@ -154,13 +155,13 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async createartisan() {
+    async createregion() {
       try {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.artisan.thumbnail),
-          await this.uploadFile(this.artisan.certification),
+          await this.uploadFile(this.region.thumbnail),
+          await this.uploadFile(this.region.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -168,7 +169,7 @@ export const artisanStore = defineStore("artisan", {
         );
 
         let query = {
-          ...this.artisan,
+          ...this.region,
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
                 .slice(0, uploadedThumbnail.length() - 5)
@@ -181,7 +182,7 @@ export const artisanStore = defineStore("artisan", {
             : "",
         };
 
-        const res = await Artisan.create({
+        const res = await Area.create({
           data: query,
         });
         if (!res) {
@@ -190,21 +191,21 @@ export const artisanStore = defineStore("artisan", {
         }
         this.reset();
         alert.success("Tạo nghệ nhân mới thành công!");
-        router.push("/artisan");
+        router.push("/region");
       } catch (error) {
-        alert.error("Create artisan fail! Please try again later!");
+        alert.error("Create region fail! Please try again later!");
       } finally {
         loading.hide();
       }
     },
-    async updateartisan() {
+    async updateregion() {
       try {
-        if (!this.artisan) return;
+        if (!this.region) return;
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.artisan.thumbnail),
-          await this.uploadFile(this.artisan.certification),
+          await this.uploadFile(this.region.thumbnail),
+          await this.uploadFile(this.region.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -212,16 +213,16 @@ export const artisanStore = defineStore("artisan", {
         );
 
         let query = {
-          ...this.artisan,
+          ...this.region,
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
-            : this.artisan.thumbnail,
+            : this.region.thumbnail,
           certification: uploadedCertification
             ? uploadedCertification[0]
-            : this.artisan.certification,
+            : this.region.certification,
         };
 
-        const res = await Artisan.update(this.artisan.id, {
+        const res = await Area.update(this.region.id, {
           data: query,
         });
         if (!res) {
@@ -230,9 +231,9 @@ export const artisanStore = defineStore("artisan", {
         }
         this.reset();
         alert.success("Cập nhật Giống thành công!");
-        router.push("/artisan");
+        router.push("/region");
       } catch (error) {
-        alert.error("Create artisan fail! Please try again later!");
+        alert.error("Create region fail! Please try again later!");
       } finally {
         loading.hide();
       }
@@ -264,33 +265,33 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async toggleartisan(artisanId) {
+    async toggleregion(regionId) {
       try {
         loading.show();
-        const res = await Artisan.fetch({
+        const res = await Area.fetch({
           sort: "updatedAt:desc",
           populate: "*",
           filters: {
-            code: artisanId,
+            code: regionId,
           },
         });
         if (!res) {
           alert.error(`Error occurred! Please try again later!`);
           return;
         }
-        const artisans = get(res, "data.data", []);
-        if (!artisans || artisans.length == 0) return;
-        this.artisan = {
-          id: artisans[0],
-          ...artisans[0].attributes,
-          artisanCategory: get(
-            artisans[0],
-            "attributes.artisanCategory.data.attributes.name",
+        const regions = get(res, "data.data", []);
+        if (!regions || regions.length == 0) return;
+        this.region = {
+          id: regions[0],
+          ...regions[0].attributes,
+          regionCategory: get(
+            regions[0],
+            "attributes.regionCategory.data.attributes.name",
             []
           ),
-          products: get(artisans[0], "attributes.products.data", []),
+          products: get(regions[0], "attributes.products.data", []),
         };
-        this.products = this.artisan.products
+        this.products = this.region.products
           .filter((product) => product.attributes.status == "publish")
           .map((product) => {
             return {
@@ -305,17 +306,17 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async deleteartisan(artisanId) {
-      if (!artisanId) return;
+    async deleteregion(regionId) {
+      if (!regionId) return;
       try {
         loading.show();
-        const res = await Artisan.remove(artisanId);
+        const res = await Area.remove(regionId);
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
         alert.success("Xóa Giống thành công!");
-        await this.fetchArtisans();
+        await this.fetchregions();
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
@@ -323,10 +324,10 @@ export const artisanStore = defineStore("artisan", {
       }
     },
     reset() {
-      this.artisan = {};
-      this.artisanAccreditation = null;
-      this.artisanCertification = null;
-      this.artisanThumbnail = null;
+      this.region = {};
+      this.regionAccreditation = null;
+      this.regionCertification = null;
+      this.regionThumbnail = null;
       this.file = null;
     },
   },

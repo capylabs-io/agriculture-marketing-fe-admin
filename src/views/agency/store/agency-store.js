@@ -1,45 +1,45 @@
 import { defineStore } from "pinia";
-import { Artisan, ArtisanCategory, Common } from "@/plugins/api.js";
+import { Agency, AgencyCategory, Common } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
 import router from "@/router";
 
-export const artisanStore = defineStore("artisan", {
+export const agencyStore = defineStore("agency", {
   state: () => ({
-    artisanPage: 1,
-    artisansPerPage: 10,
+    agencyPage: 1,
+    agencysPerPage: 10,
     categories: [],
-    artisan: {},
-    artisans: [],
-    artisanThumbnail: null,
-    artisanCertification: null,
-    artisanAccreditation: null,
-    artisanForm: false,
+    agency: {},
+    agencys: [],
+    agencyThumbnail: null,
+    agencyCertification: null,
+    agencyAccreditation: null,
+    agencyForm: false,
     searchKey: "",
     file: null,
   }),
   getters: {
-    slicedartisans() {
-      if (!this.artisans || this.artisans.length == 0) return [];
-      return this.filteredartisans.slice(
-        (this.artisanPage - 1) * this.artisansPerPage,
-        this.artisanPage * this.artisansPerPage
+    slicedagencys() {
+      if (!this.agencys || this.agencys.length == 0) return [];
+      return this.filteredagencys.slice(
+        (this.agencyPage - 1) * this.agencysPerPage,
+        this.agencyPage * this.agencysPerPage
       );
     },
-    filteredartisans() {
-      if (!this.artisans || this.artisans.length == 0) return [];
-      let filtered = this.artisans;
+    filteredagencys() {
+      if (!this.agencys || this.agencys.length == 0) return [];
+      let filtered = this.agencys;
       if (this.searchKey)
         filtered = filtered.filter(
-          (artisan) =>
-            artisan.name
+          (agency) =>
+            agency.name
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            artisan.code
+            agency.code
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            artisan.origin
+            agency.origin
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase())
         );
@@ -76,49 +76,49 @@ export const artisanStore = defineStore("artisan", {
     //   }
     //   return sortedCampaigns;
     // },
-    totalartisanPage() {
-      if (!this.artisans || this.filteredartisans.length == 0) return 1;
-      if (this.filteredartisans.length % this.artisansPerPage == 0)
-        return this.filteredartisans.length / this.artisansPerPage;
+    totalagencyPage() {
+      if (!this.agencys || this.filteredagencys.length == 0) return 1;
+      if (this.filteredagencys.length % this.agencysPerPage == 0)
+        return this.filteredagencys.length / this.agencysPerPage;
       else
         return (
-          Math.floor(this.filteredartisans.length / this.artisansPerPage) + 1
+          Math.floor(this.filteredagencys.length / this.agencysPerPage) + 1
         );
     },
-    totalartisan() {
-      if (!this.artisans || this.filteredartisans.length == 0) return 1;
-      return this.filteredartisans.length;
+    totalagency() {
+      if (!this.agencys || this.filteredagencys.length == 0) return 1;
+      return this.filteredagencys.length;
     },
   },
   actions: {
-    async fetchArtisans() {
+    async fetchagencys() {
       try {
         loading.show();
-        const res = await Artisan.fetch({
+        const res = await Agency.fetch({
           sort: "updatedAt:desc",
           populate: "*",
         });
         if (!res) {
           alert.error(
-            "Error occurred when fetching artisans!",
+            "Error occurred when fetching agencys!",
             "Please try again later!"
           );
           return;
         }
-        const artisans = get(res, "data.data", []);
-        if (!artisans && artisans.length == 0) return;
-        const mappedArtisans = artisans.map((artisan) => {
+        const agencys = get(res, "data.data", []);
+        if (!agencys && agencys.length == 0) return;
+        const mappedagencys = agencys.map((agency) => {
           return {
-            id: artisan.id,
-            ...artisan.attributes,
-            artisanCategory: {
-              id: get(artisan, "attributes.artisanCategory.data.id", -1),
-              ...get(artisan, "attributes.artisanCategory.data.attributes", {}),
+            id: agency.id,
+            ...agency.attributes,
+            agencyCategory: {
+              id: get(agency, "attributes.storeCategory.data.id", -1),
+              ...get(agency, "attributes.storeCategory.data.attributes", {}),
             },
           };
         });
 
-        this.artisans = mappedArtisans;
+        this.agencys = mappedagencys;
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
@@ -128,10 +128,10 @@ export const artisanStore = defineStore("artisan", {
     async fetchCategories() {
       try {
         loading.show();
-        const res = await ArtisanCategory.fetch();
+        const res = await AgencyCategory.fetch();
         if (!res) {
           alert.error(
-            "Error occurred when fetching artisan categories!",
+            "Error occurred when fetching agency categories!",
             "Please try again later!"
           );
           return;
@@ -154,13 +154,13 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async createartisan() {
+    async createagency() {
       try {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.artisan.thumbnail),
-          await this.uploadFile(this.artisan.certification),
+          await this.uploadFile(this.agency.thumbnail),
+          await this.uploadFile(this.agency.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -168,7 +168,7 @@ export const artisanStore = defineStore("artisan", {
         );
 
         let query = {
-          ...this.artisan,
+          ...this.agency,
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
                 .slice(0, uploadedThumbnail.length() - 5)
@@ -181,7 +181,7 @@ export const artisanStore = defineStore("artisan", {
             : "",
         };
 
-        const res = await Artisan.create({
+        const res = await Agency.create({
           data: query,
         });
         if (!res) {
@@ -190,21 +190,21 @@ export const artisanStore = defineStore("artisan", {
         }
         this.reset();
         alert.success("Tạo nghệ nhân mới thành công!");
-        router.push("/artisan");
+        router.push("/agency");
       } catch (error) {
-        alert.error("Create artisan fail! Please try again later!");
+        alert.error("Create agency fail! Please try again later!");
       } finally {
         loading.hide();
       }
     },
-    async updateartisan() {
+    async updateagency() {
       try {
-        if (!this.artisan) return;
+        if (!this.agency) return;
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.artisan.thumbnail),
-          await this.uploadFile(this.artisan.certification),
+          await this.uploadFile(this.agency.thumbnail),
+          await this.uploadFile(this.agency.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -212,16 +212,16 @@ export const artisanStore = defineStore("artisan", {
         );
 
         let query = {
-          ...this.artisan,
+          ...this.agency,
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
-            : this.artisan.thumbnail,
+            : this.agency.thumbnail,
           certification: uploadedCertification
             ? uploadedCertification[0]
-            : this.artisan.certification,
+            : this.agency.certification,
         };
 
-        const res = await Artisan.update(this.artisan.id, {
+        const res = await Agency.update(this.agency.id, {
           data: query,
         });
         if (!res) {
@@ -230,9 +230,9 @@ export const artisanStore = defineStore("artisan", {
         }
         this.reset();
         alert.success("Cập nhật Giống thành công!");
-        router.push("/artisan");
+        router.push("/agency");
       } catch (error) {
-        alert.error("Create artisan fail! Please try again later!");
+        alert.error("Create agency fail! Please try again later!");
       } finally {
         loading.hide();
       }
@@ -264,33 +264,33 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async toggleartisan(artisanId) {
+    async toggleagency(agencyId) {
       try {
         loading.show();
-        const res = await Artisan.fetch({
+        const res = await Agency.fetch({
           sort: "updatedAt:desc",
           populate: "*",
           filters: {
-            code: artisanId,
+            code: agencyId,
           },
         });
         if (!res) {
           alert.error(`Error occurred! Please try again later!`);
           return;
         }
-        const artisans = get(res, "data.data", []);
-        if (!artisans || artisans.length == 0) return;
-        this.artisan = {
-          id: artisans[0],
-          ...artisans[0].attributes,
-          artisanCategory: get(
-            artisans[0],
-            "attributes.artisanCategory.data.attributes.name",
+        const agencys = get(res, "data.data", []);
+        if (!agencys || agencys.length == 0) return;
+        this.agency = {
+          id: agencys[0],
+          ...agencys[0].attributes,
+          agencyCategory: get(
+            agencys[0],
+            "attributes.agencyCategory.data.attributes.name",
             []
           ),
-          products: get(artisans[0], "attributes.products.data", []),
+          products: get(agencys[0], "attributes.products.data", []),
         };
-        this.products = this.artisan.products
+        this.products = this.agency.products
           .filter((product) => product.attributes.status == "publish")
           .map((product) => {
             return {
@@ -305,17 +305,17 @@ export const artisanStore = defineStore("artisan", {
         loading.hide();
       }
     },
-    async deleteartisan(artisanId) {
-      if (!artisanId) return;
+    async deleteagency(agencyId) {
+      if (!agencyId) return;
       try {
         loading.show();
-        const res = await Artisan.remove(artisanId);
+        const res = await Agency.remove(agencyId);
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
         alert.success("Xóa Giống thành công!");
-        await this.fetchArtisans();
+        await this.fetchagencys();
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
@@ -323,10 +323,10 @@ export const artisanStore = defineStore("artisan", {
       }
     },
     reset() {
-      this.artisan = {};
-      this.artisanAccreditation = null;
-      this.artisanCertification = null;
-      this.artisanThumbnail = null;
+      this.agency = {};
+      this.agencyAccreditation = null;
+      this.agencyCertification = null;
+      this.agencyThumbnail = null;
       this.file = null;
     },
   },

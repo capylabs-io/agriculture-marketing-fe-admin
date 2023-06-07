@@ -4,7 +4,7 @@
     <div class="text-dp-md font-weight-semibold">Quản lý nghệ nhân</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <v-text-field
-        v-model="artisanStore.searchKey"
+        v-model="htxStore.searchKey"
         class="search-field border-radius-8"
         placeholder="Tìm kiếm"
         prepend-inner-icon="mdi-magnify"
@@ -17,7 +17,7 @@
       <v-btn
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
-        to="/create-artisan"
+        to="/create-htx"
         outlined
       >
         <v-icon small>mdi-plus</v-icon>
@@ -28,8 +28,8 @@
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
       <v-data-table
         :headers="headers"
-        :items="artisanStore.slicedartisans"
-        :items-per-page="artisanStore.artisansPerPage"
+        :items="htxStore.slicedhtxs"
+        :items-per-page="htxStore.htxsPerPage"
         hide-default-footer
       >
         <template v-slot:[`item.thumbnail`]="{ item }">
@@ -38,14 +38,9 @@
             :src="getImageUrl(item.thumbnail)"
           ></v-img>
         </template>
-        <template v-slot:[`item.publishedAt`]="{ item }">
+        <template v-slot:[`item.category`]="{ item }">
           <div>
-            {{ item.createdAt | ddmmyyyyhhmmss }}
-          </div>
-        </template>
-        <template v-slot:[`item.author`]="{ item }">
-          <div>
-            {{ item.artisanCategory.name }}
+            {{ item.htxCategory.name }}
           </div>
         </template>
         <template v-slot:[`item.qrcode`]="{ item }">
@@ -90,7 +85,7 @@
         <v-select
           class="border-radius-8 items-per-page-field"
           :items="itemsPerPage"
-          v-model="artisanStore.artisansPerPage"
+          v-model="htxStore.htxsPerPage"
           flat
           solo
           outlined
@@ -100,7 +95,7 @@
         trên tổng số
         <v-text-field
           class="border-radius-8 max-item-field"
-          :value="artisanStore.totalartisan"
+          :value="htxStore.totalhtx"
           flat
           solo
           outlined
@@ -113,8 +108,8 @@
       <v-pagination
         class="pa-0 mr-n2"
         color="primary"
-        :length="artisanStore.totalartisanPage"
-        v-model="artisanStore.artisanPage"
+        :length="htxStore.totalhtxPage"
+        v-model="htxStore.htxPage"
       ></v-pagination>
     </div>
   </div>
@@ -122,11 +117,11 @@
 
 <script>
 import { mapStores } from "pinia";
-import { artisanStore } from "../store/artisan-store";
+import { htxStore } from "../store/htx-store";
 import router from "@/router";
 export default {
   computed: {
-    ...mapStores(artisanStore),
+    ...mapStores(htxStore),
   },
   data() {
     return {
@@ -149,7 +144,7 @@ export default {
           sortable: false,
         },
         {
-          text: "Họ và tên",
+          text: "Tên Hợp tác xã",
           value: "name",
           align: "center",
         },
@@ -159,15 +154,15 @@ export default {
           align: "center",
         },
         {
-          text: "Số điện thoại",
-          value: "phone",
+          text: "Danh mục",
+          value: "category",
           align: "center",
           sortable: false,
-        },
-        {
-          text: "Chức vụ",
-          value: "author",
+        },    {
+          text: "Người tạo",
+          value: "representative",
           align: "center",
+          sortable: false,
         },
         {
           text: "QR Code",
@@ -185,7 +180,7 @@ export default {
     };
   },
   created() {
-    this.artisanStore.fetchArtisans();
+    this.htxStore.fetchhtxs();
   },
   methods: {
     getImageUrl(url) {
@@ -193,41 +188,42 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "artisans/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "htxs/" + code;
       window.open(link);
     },
     onEditClicked(item) {
-      this.artisanStore.artisan = item;
-      this.artisanStore.artisan.artisanCategory = item.artisanCategory.id;
-      router.push("/edit-artisan");
+      this.htxStore.htx = item;
+      this.htxStore.htx.htxCategory = item.htxCategory.id;
+      console.log("htx", this.htxStore.htx);
+      router.push("/edit-htx");
     },
-    // onDisableClicked(artisanId) {
+    // onDisableClicked(htxId) {
     //   this.$dialog.confirm({
     //     title: "Xác nhận ẩn Giống",
     //     topContent:
     //       "<span class='error--text'>Bạn có chắc muốn ẩn giống này không? Người dùng sẽ không thấy giống này nữa!</span>",
     //     done: async () => {
-    //       await this.artisanStore.toggleartisan(artisanId, false);
+    //       await this.htxStore.togglehtx(htxId, false);
     //     },
     //   });
     // },
-    // onEnableClicked(artisanId) {
+    // onEnableClicked(htxId) {
     //   this.$dialog.confirm({
     //     title: "Xác nhận hiện Giống",
     //     topContent: "Bạn có muốn hiện lại Giống này không?",
     //     done: async () => {
-    //       await this.artisanStore.toggleartisan(artisanId, true);
+    //       await this.htxStore.togglehtx(htxId, true);
     //     },
     //   });
     // },
-    onDeleteClicked(artisanId) {
+    onDeleteClicked(htxId) {
       this.$dialog.confirm({
         title: "Xác nhận xóa Giống",
         topContent: "Bạn có chắc bạn muốn xóa Giống này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {
-          await this.artisanStore.deleteartisan(artisanId);
+          await this.htxStore.deletehtx(htxId);
         },
       });
     },

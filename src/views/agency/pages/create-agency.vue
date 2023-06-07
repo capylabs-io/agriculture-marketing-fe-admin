@@ -9,7 +9,7 @@
       Quay lại
     </v-btn>
     <div class="mt-1 d-flex justify-space-between">
-      <div class="text-dp-md font-weight-semibold">Thêm nghệ nhân mới</div>
+      <div class="text-dp-md font-weight-semibold">Thêm Đại lý mới</div>
       <div class="d-flex gap-8">
         <v-btn
           class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
@@ -26,35 +26,35 @@
           @click="createPost()"
         >
           <v-icon small>mdi-plus</v-icon>
-          <div class="ml-1">Thêm nghệ nhân</div>
+          <div class="ml-1">Thêm Đại lý</div>
         </v-btn>
       </div>
     </div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-2 mt-6">
-      <CreateForm :category="artisanStore.category" />
+      <CreateForm />
     </div>
   </div>
 </template>
 
 <script>
-import { artisanStore } from "../store/artisan-store";
+import { agencyStore } from "../store/agency-store";
 import { mapStores } from "pinia";
 export default {
   components: {
-    CreateForm: () => import("../components/artisan-list-form.vue"),
+    CreateForm: () => import("../components/agency-form.vue"),
   },
   computed: {
-    ...mapStores(artisanStore),
+    ...mapStores(agencyStore),
   },
   mounted() {
-    this.artisanStore.fetchCategories();
+    this.agencyStore.fetchCategories();
   },
   methods: {
     onBackClicked() {
-      this.$router.push("/artisan");
+      this.$router.push("/agency");
     },
     createPost() {
-      this.artisanStore.createartisan();
+      this.agencyStore.createagency();
     },
   },
 };

@@ -108,7 +108,7 @@ export default {
     //   return URL.createObjectURL(this.artisanStore.file);
     // },
     getImage() {
-      if (!this.artisanStore.artisan ||  !this.artisanStore.artisan.thumbnail)
+      if (!this.artisanStore.artisan || !this.artisanStore.artisan.thumbnail)
         return require("@/assets/no-image.png");
       return this.artisanStore.artisan.thumbnail;
     },

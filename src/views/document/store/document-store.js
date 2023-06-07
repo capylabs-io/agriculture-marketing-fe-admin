@@ -17,6 +17,7 @@ export const documentStore = defineStore("document", {
     documentAccreditation: null,
     documentForm: false,
     searchKey: "",
+    file: null,
   }),
   getters: {
     slicedDocuments() {
@@ -32,10 +33,10 @@ export const documentStore = defineStore("document", {
       if (this.searchKey)
         filtered = filtered.filter(
           (document) =>
-            document.name
+            document.title
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            document.title
+            document.numberOf
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase())
         );
@@ -88,9 +89,13 @@ export const documentStore = defineStore("document", {
   },
   actions: {
     changeDocumentDuration(date) {
-      if (!this.filterForm || !date || date.length < 2) return;
-      this.filterForm.startDate = date[0];
-      this.filterForm.endDate = date[1];
+      if (!this.filterForm || !date) {
+        this.document.issueDate = date[0];
+      }
+      if (date.length < 2) {
+        this.filterForm.startDate = date[0];
+        this.filterForm.endDate = date[1];
+      }
     },
     async fetchCategories() {
       try {
@@ -182,29 +187,14 @@ export const documentStore = defineStore("document", {
       try {
         loading.show();
         //upload images
-        let promises = [
-          await this.uploadFile(this.documentThumbnail),
-          await this.uploadFile(this.documentCertification),
-          await this.uploadFile(this.documentAccreditation),
-        ];
-
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
+        let promises = [await this.uploadFile(this.file)];
+        const [uploadedFile] = await Promise.all(promises);
         let query = {
           ...this.document,
-          images: uploadedThumbnail ? uploadedThumbnail[0] : "",
-          certificationImages: uploadedCertification
-            ? uploadedCertification[0]
-            : "",
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : "",
+          attachment: uploadedFile ? uploadedFile[0] : "",
         };
 
-        const res = await document.create({
+        const res = await Document.create({
           data: query,
         });
         if (!res) {
@@ -220,36 +210,18 @@ export const documentStore = defineStore("document", {
         loading.hide();
       }
     },
-    async updatedocument() {
+    async updateDocument() {
       try {
         if (!this.document) return;
         loading.show();
-        //upload images
-        let promises = [
-          await this.uploadFile(this.documentThumbnail),
-          await this.uploadFile(this.documentCertification),
-          await this.uploadFile(this.documentAccreditation),
-        ];
-
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
+        //upload file
+        let promises = [await this.uploadFile(this.file)];
+        const [uploadedFile] = await Promise.all(promises);
         let query = {
           ...this.document,
-          images: uploadedThumbnail
-            ? uploadedThumbnail[0]
-            : this.document.images,
-          certificationImages: uploadedCertification
-            ? uploadedCertification[0]
-            : this.document.certificationImages,
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : this.document.accreditationImages,
+          attachment: uploadedFile ? uploadedFile[0] : "",
         };
-
-        const res = await document.update(this.document.id, {
+        const res = await Document.update(this.document.id, {
           data: query,
         });
         if (!res) {
@@ -296,13 +268,13 @@ export const documentStore = defineStore("document", {
       if (!documentId) return;
       try {
         loading.show();
-        const res = await document.remove(documentId);
+        const res = await Document.remove(documentId);
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
         alert.success("Xóa sản phẩm thành công!");
-        await this.fetchdocuments();
+        await this.fetchDocuments();
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
@@ -314,6 +286,7 @@ export const documentStore = defineStore("document", {
       this.documentAccreditation = null;
       this.documentCertification = null;
       this.documentThumbnail = null;
+      this.file = null;
     },
   },
 });

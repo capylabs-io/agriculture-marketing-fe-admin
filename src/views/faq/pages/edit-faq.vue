@@ -53,10 +53,10 @@ export default {
   methods: {
     onBackClicked() {
       this.faqStore.reset();
-      this.$router.push("/document");
+      this.$router.push("/faq");
     },
     createPost() {
-      this.faqStore.createdocument();
+      this.faqStore.updatefaq();
     },
   },
 };
