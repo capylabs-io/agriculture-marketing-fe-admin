@@ -110,6 +110,22 @@ export const seedStore = defineStore("seed", {
               id: get(seed, "attributes.seedlingCategory.data.id", -1),
               ...get(seed, "attributes.seedlingCategory.data.attributes", {}),
             },
+            cooperative: {
+              id: get(seed, "attributes.cooperative.data.id", -1),
+              ...get(seed, "attributes.cooperative.data.attributes", {}),
+            },
+            artisan: {
+              id: get(seed, "attributes.artisan.data.id", -1),
+              ...get(seed, "attributes.artisan.data.attributes", {}),
+            },
+            store: {
+              id: get(seed, "attributes.store.data.id", -1),
+              ...get(seed, "attributes.store.data.attributes", {}),
+            },
+            area: {
+              id: get(seed, "attributes.area.data.id", -1),
+              ...get(seed, "attributes.area.data.attributes", {}),
+            },
             author: get(seed, "attributes.user.data.attributes", {}),
           };
         });

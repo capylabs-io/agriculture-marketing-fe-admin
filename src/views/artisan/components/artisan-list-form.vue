@@ -30,7 +30,7 @@
             <v-img
               class="neutral20-border border-radius-16"
               :src="getArtisanImage"
-              max-height="130px"
+              max-height="192px"
               cover
             ></v-img>
           </v-col>
@@ -243,7 +243,7 @@
             <v-img
               class="neutral20-border border-radius-16"
               :src="getArtisanImage"
-              max-height="130px"
+              max-height="192px"
               cover
             ></v-img>
           </v-col>
@@ -287,7 +287,7 @@
             <v-img
               class="neutral20-border border-radius-16"
               :src="image"
-              max-height="130px"
+              max-height="192px"
               cover
             ></v-img>
           </v-col>

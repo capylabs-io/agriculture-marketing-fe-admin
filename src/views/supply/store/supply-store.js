@@ -113,6 +113,10 @@ export const supplyStore = defineStore("supply", {
               id: get(supply, "attributes.supplyCategory.data.id", -1),
               ...get(supply, "attributes.supplyCategory.data.attributes", {}),
             },
+            store: {
+              id: get(supply, "attributes.store.data.id", -1),
+              ...get(supply, "attributes.store.data.attributes", {}),
+            },
             author: get(supply, "attributes.user.data.attributes", {}),
           };
         });

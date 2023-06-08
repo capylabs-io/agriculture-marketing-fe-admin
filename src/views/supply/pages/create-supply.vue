@@ -10,7 +10,7 @@
     </v-btn>
     <div class="text-dp-md font-weight-semibold mt-1">Thêm vật tư mới</div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-4 mt-6">
-      <CreateProductForm />
+      <CreateProductForm :agencyCategory="agencyCategory" />
     </div>
     <div class="d-flex justify-end mt-6 gap-8">
       <v-btn
@@ -37,9 +37,11 @@
 <script>
 import { mapStores } from "pinia";
 import { supplyStore } from "../store/supply-store";
+import { agencyStore } from "../../agency/store/agency-store";
 export default {
   computed: {
     ...mapStores(supplyStore),
+    ...mapStores(agencyStore),
   },
   components: {
     CreateProductForm: () => import("../components/supply-form.vue"),
@@ -49,8 +51,20 @@ export default {
       this.$router.push("/supply");
     },
   },
-  created() {
-    this.supplyStore.fetchCategories();
+  data() {
+    return {
+      agencyCategory: [],
+    };
+  },
+  async created() {
+    await this.supplyStore.fetchCategories();
+    await this.agencyStore.fetchagencys();
+    this.agencyCategory = this.agencyStore.agencys.map((agency) => {
+      return {
+        id: agency.id,
+        name: agency.name,
+      };
+    });
   },
 };
 </script>

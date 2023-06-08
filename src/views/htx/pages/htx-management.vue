@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-    <div class="text-dp-md font-weight-semibold">Quản lý nghệ nhân</div>
+    <div class="text-dp-md font-weight-semibold">Quản lý Hợp tác xã</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <v-text-field
         v-model="htxStore.searchKey"
@@ -21,7 +21,7 @@
         outlined
       >
         <v-icon small>mdi-plus</v-icon>
-        <div class="ml-1">Thêm nghệ nhân mới</div>
+        <div class="ml-1">Thêm Hợp tác xã mới</div>
       </v-btn>
     </div>
 
@@ -158,7 +158,8 @@ export default {
           value: "category",
           align: "center",
           sortable: false,
-        },    {
+        },
+        {
           text: "Người tạo",
           value: "representative",
           align: "center",

@@ -1,16 +1,15 @@
 <template>
   <v-form v-model="supplyStore.supplyForm">
     <v-row>
-      <v-col cols="12" md="6">
-        <v-img
-          class="neutral20-border border-radius-16"
-          :src="getSupplyImage"
-          max-height="192px"
-          contain
-        ></v-img>
-        <div class="font-weight-semibold mt-4 mb-2">
-          Hình ảnh sản phẩm <span class="red--text" v-if="!isEditing">*</span>
+      <v-col cols="12" md="3">
+        <div class="">
+          <div class="font-weight-semibold">Ảnh sản phẩm</div>
+          <div class="mb-2 text-sm neutral80--text">
+            This will be displayed on your profile
+          </div>
         </div>
+      </v-col>
+      <v-col cols="12" md="7">
         <v-file-input
           v-model="supplyStore.supplyThumbnail"
           placeholder="Chọn hình ảnh sản phẩm"
@@ -25,28 +24,25 @@
           dense
           flat
         />
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-img
+              class="neutral20-border border-radius-16"
+              :src="getSupplyImage"
+              max-height="192px"
+              cover
+            ></v-img>
+          </v-col>
+        </v-row>
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row class="mt-n4">
-      <v-col cols="12" md="6">
-        <div class="font-weight-semibold mb-2">
-          Tên sản phẩm <span class="red--text">*</span>
-        </div>
-        <v-text-field
-          v-model="supplyStore.supply.name"
-          type="text"
-          class="border-radius-8"
-          placeholder="Nhập tên sản phẩm"
-          solo
-          outlined
-          dense
-          flat
-        />
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Danh mục</div>
       </v-col>
-      <v-col cols="12" md="6">
-        <div class="font-weight-semibold mb-2">
-          Danh mục <span class="red--text">*</span>
-        </div>
+      <v-col cols="12" md="7">
         <v-select
           :disabled="isEditing"
           v-model="supplyStore.supply.supplyCategory"
@@ -62,43 +58,33 @@
           dense
         ></v-select>
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row class="mt-n4">
-      <v-col cols="12" md="6">
-        <div class="font-weight-semibold mb-2">Giá</div>
-        <v-text-field
-          v-model="supplyStore.supply.price"
-          type="number"
-          class="border-radius-8"
-          placeholder="Nhập giá sản phẩm"
-          solo
-          outlined
-          dense
-          flat
-        />
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Tên sản phẩm</div>
       </v-col>
-      <v-col cols="12" md="6">
-        <div class="font-weight-semibold mb-2">
-          Xuất xứ <span class="red--text">*</span>
-        </div>
+      <v-col cols="12" md="7">
         <v-text-field
+          v-model="supplyStore.supply.name"
           type="text"
           class="border-radius-8"
-          placeholder="Nhập nguồn gốc xuất xứ"
-          v-model="supplyStore.supply.origin"
-          :rules="[$rules.required]"
+          placeholder="Nhập tên sản phẩm"
           solo
           outlined
           dense
           flat
         />
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row class="mt-n4">
-      <v-col cols="12" md="12">
-        <div class="font-weight-semibold mb-2">
-          Mô tả sản phẩm <span class="red--text">*</span>
-        </div>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Mô tả sản phẩm</div>
+      </v-col>
+      <v-col cols="12" md="7">
         <v-textarea
           type="text"
           class="border-radius-8"
@@ -111,30 +97,54 @@
           outlined
         />
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row class="mt-n4">
-      <v-col cols="12" md="12">
-        <div class="font-weight-semibold mb-2">
-          Công dụng sản phẩm <span class="red--text">*</span>
-        </div>
-        <v-textarea
+    <v-divider class="mt-3"></v-divider>
+
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Xuất xứ</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-text-field
           type="text"
           class="border-radius-8"
-          placeholder="Nhập công dụng sản phẩm"
-          v-model="supplyStore.supply.usage"
+          placeholder="Nhập nguồn gốc xuất xứ"
+          v-model="supplyStore.supply.origin"
           :rules="[$rules.required]"
-          auto-grow
-          flat
           solo
           outlined
+          dense
+          flat
         />
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row class="mt-n4">
-      <v-col cols="12" md="12">
-        <div class="font-weight-semibold mb-2">
-          Hướng dẫn sử dụng <span class="red--text">*</span>
-        </div>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Giá</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-text-field
+          v-model="supplyStore.supply.price"
+          type="number"
+          class="border-radius-8"
+          placeholder="Nhập giá sản phẩm"
+          suffix="vnđ"
+          solo
+          outlined
+          dense
+          flat
+        />
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Hướng dẫn sử dụng</div>
+      </v-col>
+      <v-col cols="12" md="7">
         <v-textarea
           type="text"
           class="border-radius-8"
@@ -147,16 +157,60 @@
           outlined
         />
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="12" md="6">
-        <v-img
-          class="neutral20-border border-radius-16"
-          :src="getCertificationImage"
-          max-height="192px"
-          contain
-        ></v-img>
-        <div class="font-weight-semibold mt-4 mb-2">Giấy chứng nhận</div>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Công dụng</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-textarea
+          type="text"
+          class="border-radius-8"
+          placeholder="Nhập công dụng sản phẩm"
+          v-model="supplyStore.supply.usage"
+          :rules="[$rules.required]"
+          auto-grow
+          flat
+          solo
+          outlined
+        />
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Hướng dẫn sử dụng</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-textarea
+          type="text"
+          class="border-radius-8"
+          placeholder="Nhập hướng dẫn sử dụng"
+          v-model="supplyStore.supply.useInstruction"
+          :rules="[$rules.required]"
+          auto-grow
+          flat
+          solo
+          outlined
+        />
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="">
+          <div class="font-weight-semibold">Hình ảnh chứng nhận</div>
+          <div class="mb-2 text-sm neutral80--text">
+            This will be displayed on your profile
+          </div>
+        </div>
+      </v-col>
+      <v-col cols="12" md="7">
         <v-file-input
           placeholder="Chọn hình Giấy chứng nhận"
           prepend-inner-icon="mdi-paperclip"
@@ -170,29 +224,41 @@
           dense
           flat
         />
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-img
+              class="neutral20-border border-radius-16"
+              :src="getCertificationImage"
+              max-height="192px"
+              cover
+            ></v-img>
+          </v-col>
+        </v-row>
       </v-col>
-      <v-col cols="12" md="6">
-        <v-img
-          class="neutral20-border border-radius-16"
-          :src="getAccreditationImage"
-          max-height="192px"
-          contain
-        ></v-img>
-        <div class="font-weight-semibold mt-4 mb-2">Giấy kiểm định</div>
-        <v-file-input
-          v-model="supplyStore.supplyAccreditation"
-          placeholder="Chọn hình Giấy kiểm định"
-          prepend-inner-icon="mdi-paperclip"
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Thuộc Đại lý</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-select
+          :disabled="isEditing"
+          v-model="supplyStore.supply.store"
           class="border-radius-8"
-          prepend-icon=""
-          :show-size="1000"
-          clearable
-          outlined
-          solo
-          dense
+          placeholder="Chọn Đại lý"
+          item-text="name"
+          item-value="id"
+          :rules="[$rules.required]"
+          :items="agencyCategory"
           flat
-        />
+          solo
+          outlined
+          dense
+        ></v-select>
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
   </v-form>
 </template>
@@ -205,6 +271,10 @@ export default {
     isEditing: {
       type: Boolean,
       default: () => false,
+    },
+    agencyCategory: {
+      type: Array,
+      default: () => [],
     },
   },
   computed: {

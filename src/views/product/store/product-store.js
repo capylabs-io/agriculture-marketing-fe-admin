@@ -113,6 +113,22 @@ export const productStore = defineStore("product", {
               id: get(product, "attributes.productCategory.data.id", -1),
               ...get(product, "attributes.productCategory.data.attributes", {}),
             },
+            cooperative: {
+              id: get(product, "attributes.cooperative.data.id", -1),
+              ...get(product, "attributes.cooperative.data.attributes", {}),
+            },
+            artisan: {
+              id: get(product, "attributes.artisan.data.id", -1),
+              ...get(product, "attributes.artisan.data.attributes", {}),
+            },
+            store: {
+              id: get(product, "attributes.store.data.id", -1),
+              ...get(product, "attributes.store.data.attributes", {}),
+            },
+            area: {
+              id: get(product, "attributes.area.data.id", -1),
+              ...get(product, "attributes.area.data.attributes", {}),
+            },
             author: get(product, "attributes.user.data.attributes", {}),
           };
         });

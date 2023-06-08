@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-    <div class="text-dp-md font-weight-semibold">Quản lý nghệ nhân</div>
+    <div class="text-dp-md font-weight-semibold">Quản lý Vùng sản xuất</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <v-text-field
         v-model="regionStore.searchKey"
@@ -21,7 +21,7 @@
         outlined
       >
         <v-icon small>mdi-plus</v-icon>
-        <div class="ml-1">Thêm nghệ nhân mới</div>
+        <div class="ml-1">Thêm Vùng sản xuất mới</div>
       </v-btn>
     </div>
 

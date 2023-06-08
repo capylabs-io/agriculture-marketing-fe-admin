@@ -10,7 +10,7 @@
     </v-btn>
     <div class="text-dp-md font-weight-semibold mt-1">Chỉnh sửa vật tư</div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-4 mt-6">
-      <CreateProductForm :isEditing="true" />
+      <CreateProductForm :isEditing="true" :agencyCategory="agencyCategory" />
     </div>
     <div class="d-flex justify-end mt-6 gap-8">
       <v-btn
@@ -37,12 +37,20 @@
 <script>
 import { mapStores } from "pinia";
 import { supplyStore } from "../store/supply-store";
+import { agencyStore } from "../../agency/store/agency-store";
+
 export default {
   computed: {
     ...mapStores(supplyStore),
+    ...mapStores(agencyStore),
   },
   components: {
     CreateProductForm: () => import("../components/supply-form.vue"),
+  },
+  data() {
+    return {
+      agencyCategory: [],
+    };
   },
   methods: {
     onBackClicked() {
@@ -50,12 +58,21 @@ export default {
       this.$router.push("/supply");
     },
   },
-  created() {
+  async created() {
     if (!this.supplyStore.supply || !this.supplyStore.supply.id) {
       this.$alert.error("Invalid action!");
       this.$router.push("/supply");
     } else {
-      this.supplyStore.fetchCategories();
+      await this.supplyStore.fetchCategories();
+      await this.agencyStore.fetchagencys();
+      this.agencyCategory = this.agencyStore.agencys.map((agency) => {
+        return {
+          id: agency.id,
+          name: agency.name,
+        };
+      });
+      console.log("item", this.supplyStore.supply);
+      console.log("agencyCategory", this.agencyCategory);
     }
   },
 };
