@@ -89,12 +89,11 @@ export const documentStore = defineStore("document", {
   },
   actions: {
     changeDocumentDuration(date) {
-      if (!this.filterForm || !date) {
+      if (!this.document.issueDate || !date) {
         this.document.issueDate = date[0];
       }
       if (date.length < 2) {
-        this.filterForm.startDate = date[0];
-        this.filterForm.endDate = date[1];
+        this.document.issueDate = date[0];
       }
     },
     async fetchCategories() {
@@ -214,13 +213,16 @@ export const documentStore = defineStore("document", {
       try {
         if (!this.document) return;
         loading.show();
+        let query = {};
         //upload file
+
         let promises = [await this.uploadFile(this.file)];
         const [uploadedFile] = await Promise.all(promises);
-        let query = {
+        query = {
           ...this.document,
-          attachment: uploadedFile ? uploadedFile[0] : "",
+          attachment: uploadedFile ? uploadedFile[0] : this.document.attachment,
         };
+
         const res = await Document.update(this.document.id, {
           data: query,
         });

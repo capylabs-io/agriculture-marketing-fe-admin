@@ -10,14 +10,14 @@
     app
   >
     <div class="pa-4 drawer-container d-flex flex-column">
-      <v-btn
+      <!-- <v-btn
         icon
         elevation="3"
         @click.stop="contactStore.drawerDetail = false"
         class="mb-6"
       >
         <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
+      </v-btn> -->
       <div class="text-dp-sm font-weight-semibold">Chi tiết</div>
       <div class="font-weight-semibold mb-2 mt-6">Họ và tên</div>
       <v-text-field

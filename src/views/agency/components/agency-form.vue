@@ -12,7 +12,7 @@
       <v-col cols="12" md="7">
         <v-file-input
           placeholder="Chọn ảnh"
-          v-model="agencyStore.agency.thumbnail"
+          v-model="agencyStore.thumbnail"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
           ref="myfile"
@@ -240,7 +240,7 @@
       <v-col cols="12" md="2"> </v-col>
     </v-row>
     <v-divider class="mt-3"></v-divider>
-    <v-row class="mt-3">
+    <!-- <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="">
           <div class="font-weight-semibold">Hình ảnh căn cước công dân</div>
@@ -277,7 +277,7 @@
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-divider class="mt-3"></v-divider>
+    <v-divider class="mt-3"></v-divider> -->
     <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="">
@@ -289,7 +289,7 @@
       </v-col>
       <v-col cols="12" md="7">
         <v-file-input
-          v-model="agencyStore.agency.certification"
+          v-model="agencyStore.certification"
           placeholder="Chọn ảnh"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
@@ -303,16 +303,16 @@
           dense
           flat
         />
-        <v-row v-if="isEditing">
+        <v-row>
           <v-col
             cols="12"
             md="4"
-            v-for="(image, index) in getCertificationImage"
+            v-for="(value, index) in getCertificationImage.quality"
             :key="index"
           >
             <v-img
               class="neutral20-border border-radius-16"
-              :src="image"
+              :src="value"
               max-height="192px"
               cover
             ></v-img>
@@ -341,21 +341,22 @@ export default {
       if (
         this.agencyStore.agency &&
         this.agencyStore.agency.thumbnail &&
-        !this.agencyStore.file
+        !this.agencyStore.thumbnail
       )
         return this.agencyStore.agency.thumbnail;
-      if (!this.agencyStore.file) return require("@/assets/no-image.png");
-      return URL.createObjectURL(this.agencyStore.file);
+      if (!this.agencyStore.thumbnail) return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.agencyStore.thumbnail);
     },
     getCertificationImage() {
       if (
         this.agencyStore.agency &&
-        this.agencyStore.agency.certification.quality
+        this.agencyStore.agency.certification &&
+        !this.agencyStore.certification
       )
-        return this.agencyStore.agency.certification.quality;
-      if (!this.agencyStore.certification.quality)
+        return this.agencyStore.agency.certification;
+      if (!this.agencyStore.certification)
         return require("@/assets/no-image.png");
-      return URL.createObjectURL(this.agencyStore.file);
+      return URL.createObjectURL(this.agencyStore.certification);
     },
   },
   methods: {

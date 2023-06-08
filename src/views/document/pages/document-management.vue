@@ -37,11 +37,11 @@
             {{ item.documentCategory.name }}
           </div>
         </template>
-        <template v-slot:[`item.title`]="{ item }">
+        <!-- <template v-slot:[`item.title`]="{ item }">
           <div class="text-left">
             {{ item.title }}
           </div>
-        </template>
+        </template> -->
         <template v-slot:[`item.action`]="{ item }">
           <div class="d-flex align-center justify-center">
             <v-btn
@@ -141,24 +141,25 @@ export default {
         {
           text: "Người phát hành",
           value: "issuer",
-          align: "center",
+          align: "start",
         },
         {
           text: "Tiêu đề",
           value: "title",
-          align: "center",
-          sortable: false,
+          align: "start",
           width: "300px",
         },
         {
           text: "Ngày phát hành",
           value: "issueDate",
           align: "center",
+          sortable: false,
         },
         {
           text: "Loại văn bản",
           value: "category",
           align: "center",
+          sortable: false,
         },
         {
           text: "Hành động",

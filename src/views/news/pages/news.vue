@@ -169,7 +169,7 @@ export default {
   },
   methods: {
     onOpenClicked(id) {
-      const link = process.env.VUE_APP_USER_PAGE + "news/" + id;
+      const link = process.env.VUE_APP_USER_PAGE + "bai-viet/" + id;
       window.open(link);
     },
     onEditClicked(item) {

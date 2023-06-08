@@ -74,9 +74,9 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <v-btn icon dense @click="onOpenClicked()"
+            <!-- <v-btn icon dense @click="onOpenClicked()"
               ><v-icon>mdi-web</v-icon></v-btn
-            >
+            > -->
           </div>
         </template>
       </v-data-table>
@@ -158,18 +158,19 @@ export default {
           text: "Trả lời",
           value: "anwser",
           align: "center",
-          sortable: false,
           width: "400px",
         },
         {
           text: "Ngày tạo",
           value: "createdAt",
           align: "center",
+          sortable: false,
         },
         {
           text: "Loại câu hỏi",
           value: "category",
           align: "center",
+          sortable: false,
         },
         {
           text: "Hành động",
@@ -218,8 +219,8 @@ export default {
     // },
     onDeleteClicked(faqId) {
       this.$dialog.confirm({
-        title: "Xác nhận xóa Giống",
-        topContent: "Bạn có chắc bạn muốn xóa Giống này không?",
+        title: "Xác nhận xóa câu hỏi",
+        topContent: "Bạn có chắc bạn muốn xóa câu hỏi này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {

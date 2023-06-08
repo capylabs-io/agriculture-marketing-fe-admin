@@ -12,7 +12,7 @@
       <v-col cols="12" md="7">
         <v-file-input
           placeholder="Chọn ảnh"
-          v-model="htxStore.htx.thumbnail"
+          v-model="htxStore.thumbnail"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
           ref="myfile"
@@ -240,7 +240,7 @@
       <v-col cols="12" md="2"> </v-col>
     </v-row>
     <v-divider class="mt-3"></v-divider>
-    <v-row class="mt-3">
+    <!-- <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="">
           <div class="font-weight-semibold">Hình ảnh căn cước công dân</div>
@@ -277,7 +277,7 @@
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-divider class="mt-3"></v-divider>
+    <v-divider class="mt-3"></v-divider> -->
     <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="">
@@ -289,7 +289,7 @@
       </v-col>
       <v-col cols="12" md="7">
         <v-file-input
-          v-model="htxStore.htx.certification"
+          v-model="htxStore.certification"
           placeholder="Chọn ảnh"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
@@ -303,16 +303,16 @@
           dense
           flat
         />
-        <v-row v-if="isEditing">
+        <v-row>
           <v-col
             cols="12"
             md="4"
-            v-for="(image, index) in getCertificationImage"
+            v-for="(value, index) in getCertificationImage.quality"
             :key="index"
           >
             <v-img
               class="neutral20-border border-radius-16"
-              :src="image"
+              :src="value"
               max-height="192px"
               cover
             ></v-img>
@@ -341,18 +341,21 @@ export default {
       if (
         this.htxStore.htx &&
         this.htxStore.htx.thumbnail &&
-        !this.htxStore.file
+        !this.htxStore.thumbnail
       )
         return this.htxStore.htx.thumbnail;
-      if (!this.htxStore.file) return require("@/assets/no-image.png");
-      return URL.createObjectURL(this.htxStore.file);
+      if (!this.htxStore.thumbnail) return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.htxStore.thumbnail);
     },
     getCertificationImage() {
-      if (this.htxStore.htx && this.htxStore.htx.certification.quality)
-        return this.htxStore.htx.certification.quality;
-      if (!this.htxStore.certification.quality)
-        return require("@/assets/no-image.png");
-      return URL.createObjectURL(this.htxStore.file);
+      if (
+        this.htxStore.htx &&
+        this.htxStore.htx.certification &&
+        !this.htxStore.certification
+      )
+        return this.htxStore.htx.certification;
+      if (!this.htxStore.certification) return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.htxStore.certification);
     },
   },
   methods: {

@@ -17,7 +17,8 @@ export const artisanStore = defineStore("artisan", {
     artisanAccreditation: null,
     artisanForm: false,
     searchKey: "",
-    file: null,
+    thumbnail: null,
+    certification: null,
   }),
   getters: {
     slicedartisans() {
@@ -91,6 +92,14 @@ export const artisanStore = defineStore("artisan", {
     },
   },
   actions: {
+    changeArtisanDuration(date) {
+      if (!this.document.issueDate || !date) {
+        this.document.issueDate = date[0];
+      }
+      if (date.length < 2) {
+        this.document.issueDate = date[0];
+      }
+    },
     async fetchArtisans() {
       try {
         loading.show();
@@ -159,8 +168,8 @@ export const artisanStore = defineStore("artisan", {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.artisan.thumbnail),
-          await this.uploadFile(this.artisan.certification),
+          await this.uploadFile(this.thumbnail),
+          await this.uploadFile(this.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -169,16 +178,8 @@ export const artisanStore = defineStore("artisan", {
 
         let query = {
           ...this.artisan,
-          thumbnail: uploadedThumbnail
-            ? uploadedThumbnail[0]
-                .slice(0, uploadedThumbnail.length() - 5)
-                .concat("webp")
-            : "",
-          certification: uploadedCertification
-            ? uploadedCertification[0]
-                .slice(0, uploadedCertification.length() - 5)
-                .concat("webp")
-            : "",
+          thumbnail: uploadedThumbnail ? uploadedThumbnail[0] : "",
+          certification: uploadedCertification ? uploadedCertification[0] : "",
         };
 
         const res = await Artisan.create({
@@ -203,8 +204,8 @@ export const artisanStore = defineStore("artisan", {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.artisan.thumbnail),
-          await this.uploadFile(this.artisan.certification),
+          await this.uploadFile(this.thumbnail),
+          await this.uploadFile(this.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -229,7 +230,7 @@ export const artisanStore = defineStore("artisan", {
           return;
         }
         this.reset();
-        alert.success("Cập nhật Giống thành công!");
+        alert.success("Cập nhật  thành công!");
         router.push("/artisan");
       } catch (error) {
         alert.error("Create artisan fail! Please try again later!");
@@ -314,7 +315,7 @@ export const artisanStore = defineStore("artisan", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Xóa Giống thành công!");
+        alert.success("Xóa thành công!");
         await this.fetchArtisans();
       } catch (error) {
         alert.error("Error occurred!", error);
@@ -327,7 +328,8 @@ export const artisanStore = defineStore("artisan", {
       this.artisanAccreditation = null;
       this.artisanCertification = null;
       this.artisanThumbnail = null;
-      this.file = null;
+      this.thumbnail = null;
+      this.certification = null;
     },
   },
 });

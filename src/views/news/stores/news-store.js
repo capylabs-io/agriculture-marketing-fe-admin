@@ -16,6 +16,7 @@ export const postStore = defineStore("post", {
     searchKey: "",
     avatarUrl: [],
     file: null,
+    listPostImages: null,
     categories: [],
   }),
   getters: {

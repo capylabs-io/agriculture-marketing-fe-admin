@@ -64,9 +64,9 @@
             <!-- <v-btn icon dense @click="onEditClicked(item)"
               ><v-icon>mdi-pencil-outline</v-icon></v-btn
             > -->
-            <v-btn icon dense @click="onDeleteClicked(item.id)"
+            <!-- <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
-            >
+            > -->
           </div>
         </template>
       </v-data-table>
@@ -134,12 +134,12 @@ export default {
       ],
       itemsPerPage: [10, 50, 100],
       headers: [
-        {
-          text: "",
-          value: "id",
-          align: "center",
-          sortable: false,
-        },
+        // {
+        //   text: "",
+        //   value: "id",
+        //   align: "center",
+        //   sortable: false,
+        // },
         {
           text: "Người gửi",
           value: "name",

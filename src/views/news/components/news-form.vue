@@ -1,16 +1,56 @@
 <template>
   <v-form v-model="postStore.postForm">
-    <v-row>
-      <v-col cols="12" md="6">
-        <v-img
-          class="neutral20-border border-radius-16"
-          :src="getProductImage"
-          max-height="192px"
-          contain
-        ></v-img>
-        <div class="font-weight-semibold mt-4 mb-2">
-          Hình minh hoạ <span class="red--text" v-if="!isEditing">*</span>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Danh mục</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-select
+          v-model="postStore.post.postCategory"
+          class="border-radius-8"
+          :rules="[$rules.required]"
+          :items="postStore.categories"
+          item-text="name"
+          item-value="id"
+          flat
+          solo
+          outlined
+          dense
+        ></v-select>
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Tiêu đề</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-text-field
+          type="text"
+          v-model="postStore.post.title"
+          class="border-radius-8"
+          placeholder="Nhập tiêu đề bài viết"
+          :rules="[$rules.required]"
+          solo
+          outlined
+          dense
+          flat
+        />
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="">
+          <div class="font-weight-semibold">Ảnh minh hoạ</div>
+          <div class="mb-2 text-sm neutral80--text">
+            This will be displayed on your profile
+          </div>
         </div>
+      </v-col>
+      <v-col cols="12" md="7">
         <v-file-input
           placeholder="Chọn hình minh hoạ"
           prepend-inner-icon="mdi-paperclip"
@@ -27,48 +67,107 @@
           dense
           flat
         />
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-img
+              class="neutral20-border border-radius-16"
+              :src="getProductImage"
+              max-height="192px"
+              cover
+            ></v-img>
+          </v-col>
+        </v-row>
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row class="mt-n4">
-      <v-col cols="12" md="6">
-        <div class="font-weight-semibold mb-2">
-          Tiêu đề <span class="red--text">*</span>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3" v-if="postStore.post.videoContent">
+      <v-col cols="12" md="3">
+        <div class="">
+          <div class="font-weight-semibold">Video bài viết</div>
+          <div class="mb-2 text-sm neutral80--text">
+            This will be displayed on your profile
+          </div>
         </div>
-        <v-text-field
-          type="text"
-          v-model="postStore.post.title"
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-file-input
+          v-model="postStore.listPostImages"
+          placeholder="Chọn video bài viết"
+          disabled
+          prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
-          placeholder="Nhập tiêu đề bài viết"
-          :rules="[$rules.required]"
-          solo
+          prepend-icon=""
+          :show-size="1000"
+          clearable
           outlined
+          solo
           dense
           flat
         />
+
+        <v-row>
+          <v-col cols="12" md="12">
+            <video width="100%" :src="getListPostVideo" controls>
+              Your browser does not support the video tag.
+            </video>
+          </v-col>
+        </v-row>
       </v-col>
-      <v-col cols="12" md="6">
-        <div class="font-weight-semibold mb-2">
-          Danh mục <span class="red--text">*</span>
-        </div>
-        <v-select
-          v-model="postStore.post.postCategory"
-          class="border-radius-8"
-          :rules="[$rules.required]"
-          :items="postStore.categories"
-          item-text="name"
-          item-value="id"
-          flat
-          solo
-          outlined
-          dense
-        ></v-select>
-      </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row class="mt-n4">
-      <v-col cols="12" md="12">
-        <div class="font-weight-semibold mb-2">
-          Nội dung <span class="red--text">*</span>
+    <v-row class="mt-3" v-if="postStore.post.imageContent">
+      <v-col cols="12" md="3">
+        <div class="">
+          <div class="font-weight-semibold">Ảnh bài viết</div>
+          <div class="mb-2 text-sm neutral80--text">
+            This will be displayed on your profile
+          </div>
         </div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-file-input
+          v-model="postStore.listPostImages"
+          placeholder="Chọn Ảnh bài viết"
+          disabled
+          prepend-inner-icon="mdi-paperclip"
+          class="border-radius-8"
+          prepend-icon=""
+          :show-size="1000"
+          clearable
+          outlined
+          solo
+          dense
+          flat
+        />
+        <v-row>
+          <v-col
+            cols="12"
+            md="4"
+            v-for="(value, index) in getListPostImage"
+            :key="index"
+          >
+            <v-img
+              class="neutral20-border border-radius-16"
+              :src="value"
+              height="180px"
+              cover
+            ></v-img>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider
+      class="mt-3"
+      v-if="postStore.post.videoContent || postStore.post.imageContent"
+    ></v-divider>
+
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Nội dung</div>
+      </v-col>
+      <v-col cols="12" md="7">
         <v-textarea
           type="text"
           v-model="postStore.post.content"
@@ -81,6 +180,7 @@
           outlined
         />
       </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
   </v-form>
 </template>
@@ -106,6 +206,28 @@ export default {
         return this.postStore.post.images;
       if (!this.postStore.file) return require("@/assets/no-image.png");
       return URL.createObjectURL(this.postStore.file);
+    },
+    getListPostImage() {
+      if (
+        this.postStore.post &&
+        this.postStore.post.imageContent &&
+        !this.postStore.listPostImages
+      )
+        return this.postStore.post.imageContent;
+      if (!this.postStore.listPostImages)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.postStore.listPostImages);
+    },
+    getListPostVideo() {
+      if (
+        this.postStore.post &&
+        this.postStore.post.videoContent &&
+        !this.postStore.listPostImages
+      )
+        return this.postStore.post.videoContent;
+      if (!this.postStore.listPostImages)
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.postStore.listPostImages);
     },
   },
   methods: {

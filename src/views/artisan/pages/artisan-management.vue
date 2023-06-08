@@ -76,9 +76,9 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <!-- <v-btn icon dense @click="onOpenClicked(item.code)"
+            <v-btn icon dense @click="onOpenClicked(item.code)"
               ><v-icon>mdi-web</v-icon></v-btn
-            > -->
+            >
           </div>
         </template>
       </v-data-table>
@@ -193,7 +193,7 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "artisans/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "nghe-nhan/" + code;
       window.open(link);
     },
     onEditClicked(item) {
@@ -222,8 +222,8 @@ export default {
     // },
     onDeleteClicked(artisanId) {
       this.$dialog.confirm({
-        title: "Xác nhận xóa Giống",
-        topContent: "Bạn có chắc bạn muốn xóa Giống này không?",
+        title: "Xác nhận xóa nghệ nhân",
+        topContent: "Bạn có chắc bạn muốn xóa nghệ nhân này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {

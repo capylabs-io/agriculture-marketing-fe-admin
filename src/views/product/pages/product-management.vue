@@ -183,7 +183,7 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "products/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "cay-canh/" + code;
       window.open(link);
     },
     onEditClicked(item) {

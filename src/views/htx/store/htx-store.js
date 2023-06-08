@@ -18,6 +18,8 @@ export const htxStore = defineStore("htx", {
     htxForm: false,
     searchKey: "",
     file: null,
+    thumbnail: null,
+    certification: null,
   }),
   getters: {
     slicedhtxs() {
@@ -36,12 +38,7 @@ export const htxStore = defineStore("htx", {
             htx.name
               .toLowerCase()
               .includes(this.searchKey.trim().toLowerCase()) ||
-            htx.code
-              .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase()) ||
-            htx.origin
-              .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase())
+            htx.code.toLowerCase().includes(this.searchKey.trim().toLowerCase())
         );
       return filtered;
     },
@@ -156,8 +153,8 @@ export const htxStore = defineStore("htx", {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.htx.thumbnail),
-          await this.uploadFile(this.htx.certification),
+          await this.uploadFile(this.thumbnail),
+          await this.uploadFile(this.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -166,16 +163,10 @@ export const htxStore = defineStore("htx", {
 
         let query = {
           ...this.htx,
-          thumbnail: uploadedThumbnail
-            ? uploadedThumbnail[0]
-                .slice(0, uploadedThumbnail.length() - 5)
-                .concat("webp")
-            : "",
-          certification: uploadedCertification
-            ? uploadedCertification[0]
-                .slice(0, uploadedCertification.length() - 5)
-                .concat("webp")
-            : "",
+          thumbnail: uploadedThumbnail ? uploadedThumbnail[0] : "",
+          certification: {
+            quality: uploadedCertification ? uploadedCertification : [],
+          },
         };
 
         const res = await Cooperative.create({
@@ -186,7 +177,7 @@ export const htxStore = defineStore("htx", {
           return;
         }
         this.reset();
-        alert.success("Tạo nghệ nhân mới thành công!");
+        alert.success("Tạo  mới thành công!");
         router.push("/htx");
       } catch (error) {
         alert.error("Create htx fail! Please try again later!");
@@ -200,8 +191,8 @@ export const htxStore = defineStore("htx", {
         loading.show();
         //upload images
         let promises = [
-          await this.uploadFile(this.htx.thumbnail),
-          await this.uploadFile(this.htx.certification),
+          await this.uploadFile(this.thumbnail),
+          await this.uploadFile(this.certification),
         ];
 
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
@@ -213,9 +204,11 @@ export const htxStore = defineStore("htx", {
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
             : this.htx.thumbnail,
-          certification: uploadedCertification
-            ? uploadedCertification[0]
-            : this.htx.certification,
+          certification: {
+            quality: uploadedCertification
+              ? uploadedCertification
+              : this.htx.certification.quality,
+          },
         };
 
         const res = await Cooperative.update(this.htx.id, {
@@ -226,7 +219,7 @@ export const htxStore = defineStore("htx", {
           return;
         }
         this.reset();
-        alert.success("Cập nhật Giống thành công!");
+        alert.success("Cập nhật thành công!");
         router.push("/htx");
       } catch (error) {
         alert.error("Create htx fail! Please try again later!");
@@ -271,7 +264,7 @@ export const htxStore = defineStore("htx", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Xóa Giống thành công!");
+        alert.success("Xóa  thành công!");
         await this.fetchhtxs();
       } catch (error) {
         alert.error("Error occurred!", error);

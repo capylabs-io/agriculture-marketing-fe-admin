@@ -219,8 +219,8 @@ export default {
     // },
     onDeleteClicked(agencyId) {
       this.$dialog.confirm({
-        title: "Xác nhận xóa Giống",
-        topContent: "Bạn có chắc bạn muốn xóa Giống này không?",
+        title: "Xác nhận xóa Đại lý",
+        topContent: "Bạn có chắc bạn muốn xóa Đại lý này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {

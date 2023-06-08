@@ -48,7 +48,6 @@
         <RangeDatePicker
           @change="documentStore.changeDocumentDuration"
           :isEditing="isEditing"
-          :chosenDate="[documentStore.document.issueDate]"
         />
       </v-col>
       <v-col cols="12" md="2"> </v-col>
@@ -180,6 +179,21 @@
           dense
           flat
         />
+        <v-btn
+          v-if="documentStore.document.attachment"
+          text
+          dense
+          depressed
+          width="300"
+          class="text-none d-flex flex-column justify-center align-center"
+          color="blue70"
+          :href="documentStore.document.attachment"
+        >
+          <v-icon small class="mr-1">mdi-download</v-icon>
+          <span class="text-truncate">
+            {{ getAttachment(documentStore.document.attachment) }}</span
+          >
+        </v-btn>
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
@@ -218,6 +232,10 @@ export default {
       if (this.documentStore.file) {
         this.documentStore.uploadFile();
       }
+    },
+    getAttachment(string) {
+      if (!string) return "";
+      return string.substring(string.lastIndexOf("/") + 1);
     },
   },
 };

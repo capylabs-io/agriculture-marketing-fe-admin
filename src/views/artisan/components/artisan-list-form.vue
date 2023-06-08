@@ -12,7 +12,7 @@
       <v-col cols="12" md="7">
         <v-file-input
           placeholder="Chọn ảnh"
-          v-model="artisanStore.artisan.thumbnail"
+          v-model="artisanStore.thumbnail"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
           ref="myfile"
@@ -100,20 +100,19 @@
       <v-col cols="12" md="2"> </v-col>
     </v-row>
     <v-divider class="mt-3"></v-divider>
-    <v-row class="mt-3">
+    <!-- <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="font-weight-semibold mb-2">Ngày cấp</div>
       </v-col>
       <v-col cols="12" md="7">
         <RangeDatePicker
           :isEditing="isEditing"
-          @change="artisanStore.changeartisanDuration"
-          :chosenDate="[artisanStore.issueDate]"
+          @change="artisanStore.changeArtisanDuration"
         />
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-divider class="mt-3"></v-divider>
+    <v-divider class="mt-3"></v-divider> -->
     <!-- 
     <v-row class="mt-3">
       <v-col cols="12" md="3">
@@ -214,7 +213,7 @@
       <v-col cols="12" md="2"> </v-col>
     </v-row>
     <v-divider class="mt-3"></v-divider>
-    <v-row class="mt-3">
+    <!-- <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="">
           <div class="font-weight-semibold">Hình ảnh căn cước công dân</div>
@@ -251,7 +250,7 @@
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-divider class="mt-3"></v-divider>
+    <v-divider class="mt-3"></v-divider> -->
     <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="">
@@ -263,7 +262,7 @@
       </v-col>
       <v-col cols="12" md="7">
         <v-file-input
-          v-model="artisanStore.artisan.certification"
+          v-model="artisanStore.certification"
           placeholder="Chọn ảnh"
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
@@ -277,7 +276,7 @@
           dense
           flat
         />
-        <v-row>
+        <!-- <v-row v-if="artisanStore.artisan.certification">
           <v-col
             cols="12"
             md="4"
@@ -287,6 +286,16 @@
             <v-img
               class="neutral20-border border-radius-16"
               :src="image"
+              max-height="192px"
+              cover
+            ></v-img>
+          </v-col>
+        </v-row> -->
+        <v-row>
+          <v-col cols="12" md="4" :src="getCertificationImage">
+            <v-img
+              class="neutral20-border border-radius-16"
+              :src="getCertificationImage"
               max-height="192px"
               cover
             ></v-img>
@@ -301,6 +310,8 @@
 <script>
 import { artisanStore } from "../store/artisan-store";
 import { mapStores } from "pinia";
+import { rules } from "@/plugins/rules";
+
 export default {
   props: {
     isEditing: {
@@ -309,7 +320,12 @@ export default {
     },
   },
   components: {
-    RangeDatePicker: () => import("@/components/RangeDatePicker.vue"),
+    // RangeDatePicker: () => import("@/components/RangeDatePicker.vue"),
+  },
+  data() {
+    return {
+      rules: rules,
+    };
   },
   computed: {
     ...mapStores(artisanStore),
@@ -317,18 +333,22 @@ export default {
       if (
         this.artisanStore.artisan &&
         this.artisanStore.artisan.thumbnail &&
-        !this.artisanStore.file
+        !this.artisanStore.thumbnail
       )
         return this.artisanStore.artisan.thumbnail;
-      if (!this.artisanStore.file) return require("@/assets/no-image.png");
-      return URL.createObjectURL(this.artisanStore.file);
+      if (!this.artisanStore.thumbnail) return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.artisanStore.thumbnail);
     },
     getCertificationImage() {
-      if (this.artisanStore.artisan && this.artisanStore.artisan.certification)
+      if (
+        this.artisanStore.artisan &&
+        this.artisanStore.artisan.certification &&
+        !this.artisanStore.certification
+      )
         return this.artisanStore.artisan.certification;
       if (!this.artisanStore.certification)
-        return [require("@/assets/no-image.png")];
-      return URL.createObjectURL(this.artisanStore.file);
+        return require("@/assets/no-image.png");
+      return URL.createObjectURL(this.artisanStore.certification);
     },
   },
   methods: {
