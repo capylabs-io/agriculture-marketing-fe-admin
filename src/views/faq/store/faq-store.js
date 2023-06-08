@@ -21,10 +21,7 @@ export const faqStore = defineStore("faq", {
   getters: {
     slicedfaqs() {
       if (!this.faqs || this.faqs.length == 0) return [];
-      return this.filteredfaqs.slice(
-        (this.faqPage - 1) * this.faqsPerPage,
-        this.faqPage * this.faqsPerPage
-      );
+      return this.filteredfaqs.slice((this.faqPage - 1) * this.faqsPerPage, this.faqPage * this.faqsPerPage);
     },
     filteredfaqs() {
       if (!this.faqs || this.faqs.length == 0) return [];
@@ -32,12 +29,8 @@ export const faqStore = defineStore("faq", {
       if (this.searchKey)
         filtered = filtered.filter(
           (faq) =>
-            faq.anwser
-              .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase()) ||
-            faq.question
-              .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase())
+            faq.anwser.toLowerCase().includes(this.searchKey.trim().toLowerCase()) ||
+            faq.question.toLowerCase().includes(this.searchKey.trim().toLowerCase())
         );
       return filtered;
     },
@@ -141,10 +134,7 @@ export const faqStore = defineStore("faq", {
           populate: "*",
         });
         if (!res) {
-          alert.error(
-            "Error occurred when fetching faqs!",
-            "Please try again later!"
-          );
+          alert.error("Error occurred when fetching faqs!", "Please try again later!");
           return;
         }
         const faqs = get(res, "data.data", []);
@@ -191,7 +181,9 @@ export const faqStore = defineStore("faq", {
     async updatefaq() {
       try {
         let query = {
-          ...this.faq,
+          data: {
+            ...this.faq,
+          },
         };
 
         const res = await FAQ.update(this.faq.id, query);

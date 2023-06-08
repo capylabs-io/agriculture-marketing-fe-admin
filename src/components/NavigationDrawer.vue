@@ -1,40 +1,25 @@
 <template>
   <v-navigation-drawer
     class="pa-0"
-    width="284px"
-    permanent
     app
-    :mini-variant="mini"
-    mini-variant-width="80px"
+    fixed
+    :mini-variant.sync="mini"
+    width="286"
+    mini-variant-width="80"
+    mobile-breakpoint="0"
+    disable-resize-watcher
   >
     <div class="d-flex flex-column full-height overflow-hidden pa-4">
       <v-btn
-        icon
-        elevation="3"
-        @click.stop="mini = false"
-        v-if="mini"
-        class="mx-auto"
-      >
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
-      <v-list-item-avatar v-if="mini">
-        <v-img :src="require('@/assets/quochuy.png')"
-      /></v-list-item-avatar>
-
-      <div
-        class="d-flex justify-center align-center py-7 logo-img mx-auto"
+        @click.stop="mini = true"
         v-if="!mini"
+        class="btn-toggle-drawer"
+        icon
       >
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
+      <div class="mx-auto" :class="mini ? 'mini-logo-img' : 'logo-img'">
         <v-img :src="require('@/assets/quochuy.png')" />
-        <v-btn
-          icon
-          @click.stop="mini = true"
-          v-if="!mini"
-          elevation="3"
-          class="btn-toggle-drawer"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
       </div>
 
       <div
@@ -44,8 +29,8 @@
         cổng thông tin giới thiệu sản phẩm và truy xuất nguồn gốc hoa, cây cảnh
         tỉnh bến tre
       </div>
-      <v-divider class="mt-2"></v-divider>
-      <div class="py-6">
+      <v-divider class="mt-4"></v-divider>
+      <div class="py-4">
         <v-list class="py-0">
           <v-list-item
             class="border-radius-8 py-0 px-2"
@@ -62,7 +47,7 @@
             >
           </v-list-item>
           <v-list-item
-            class="border-radius-8 py-0 px-2"
+            class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             dense
             to="/region"
@@ -76,7 +61,7 @@
             >
           </v-list-item>
           <v-list-item
-            class="border-radius-8 py-0 px-2"
+            class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             to="/htx"
             dense
@@ -90,7 +75,7 @@
             >
           </v-list-item>
           <v-list-item
-            class="border-radius-8 py-0 px-2"
+            class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             to="/agency"
             dense
@@ -332,7 +317,7 @@ export default {
   methods: {
     onLogoutClicked() {
       this.userStore.logout();
-      this.$router.push("/");
+      this.$router.push("/login");
     },
   },
   data() {
@@ -353,13 +338,18 @@ export default {
   width: 56px;
   height: 56px;
 }
+.mini-logo-img {
+  width: 32px;
+  height: 32px;
+}
 
 .active-item {
-  background: var(--v-primary40-base) !important;
+  background: var(--v-primary60-base) !important;
+  color: white !important;
 }
 .btn-toggle-drawer {
-  position: fixed;
-  z-index: 99;
-  margin-left: 80%;
+  position: absolute;
+  right: 0;
+  top: 16;
 }
 </style>

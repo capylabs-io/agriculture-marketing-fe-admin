@@ -74,7 +74,7 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <v-btn icon dense @click="onOpenClicked(item.code)"
+            <v-btn icon dense @click="onOpenClicked()"
               ><v-icon>mdi-web</v-icon></v-btn
             >
           </div>
@@ -184,8 +184,8 @@ export default {
     this.faqStore.fetchfaqs();
   },
   methods: {
-    onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "faqs/" + code;
+    onOpenClicked() {
+      const link = process.env.VUE_APP_USER_PAGE + "hoi-dap/";
       window.open(link);
     },
     // onRowClicked(faq) {

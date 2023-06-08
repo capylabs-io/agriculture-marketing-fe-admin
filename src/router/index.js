@@ -8,7 +8,7 @@ import alert from "@/plugins/alert";
 Vue.use(VueRouter);
 const routes = [
   {
-    path: "/",
+    path: "/login",
     name: "Login",
     component: () => import("../views/login/pages/login.vue"),
   },
@@ -18,7 +18,7 @@ const routes = [
     component: () => import("../views/register/pages/register.vue"),
   },
   {
-    path: "/main",
+    path: "/",
     name: "Mainlayout",
     component: () => import("../views/Mainlayout.vue"),
     children: [
@@ -33,8 +33,7 @@ const routes = [
       {
         path: "/account-setting",
         name: "Admin Account",
-        component: () =>
-          import("../views/account-setting/pages/account-setting.vue"),
+        component: () => import("../views/account-setting/pages/account-setting.vue"),
 
         meta: {
           requiresAuth: true,
@@ -51,8 +50,7 @@ const routes = [
       {
         path: "/product",
         name: "Product Management",
-        component: () =>
-          import("../views/product/pages/product-management.vue"),
+        component: () => import("../views/product/pages/product-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -76,8 +74,7 @@ const routes = [
       {
         path: "/artisan",
         name: "Artisan Management",
-        component: () =>
-          import("../views/artisan/pages/artisan-management.vue"),
+        component: () => import("../views/artisan/pages/artisan-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -237,8 +234,7 @@ const routes = [
       {
         path: "/contact",
         name: "Contact Management",
-        component: () =>
-          import("../views/contact/pages/contact-management.vue"),
+        component: () => import("../views/contact/pages/contact-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -247,8 +243,7 @@ const routes = [
       {
         path: "/document",
         name: "Document Management",
-        component: () =>
-          import("../views/document/pages/document-management.vue"),
+        component: () => import("../views/document/pages/document-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -304,7 +299,7 @@ router.beforeEach((to, from, next) => {
   const user = userStore();
   if (to.meta && to.meta.requiresAuth && !user.isConnected) {
     alert.error("You need to login before accessing this site!");
-    next("/");
+    next("/login");
   }
   next();
 });
