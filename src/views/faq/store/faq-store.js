@@ -21,7 +21,10 @@ export const faqStore = defineStore("faq", {
   getters: {
     slicedfaqs() {
       if (!this.faqs || this.faqs.length == 0) return [];
-      return this.filteredfaqs.slice((this.faqPage - 1) * this.faqsPerPage, this.faqPage * this.faqsPerPage);
+      return this.filteredfaqs.slice(
+        (this.faqPage - 1) * this.faqsPerPage,
+        this.faqPage * this.faqsPerPage
+      );
     },
     filteredfaqs() {
       if (!this.faqs || this.faqs.length == 0) return [];
@@ -29,8 +32,12 @@ export const faqStore = defineStore("faq", {
       if (this.searchKey)
         filtered = filtered.filter(
           (faq) =>
-            faq.anwser.toLowerCase().includes(this.searchKey.trim().toLowerCase()) ||
-            faq.question.toLowerCase().includes(this.searchKey.trim().toLowerCase())
+            faq.anwser
+              .toLowerCase()
+              .includes(this.searchKey.trim().toLowerCase()) ||
+            faq.question
+              .toLowerCase()
+              .includes(this.searchKey.trim().toLowerCase())
         );
       return filtered;
     },
@@ -134,7 +141,10 @@ export const faqStore = defineStore("faq", {
           populate: "*",
         });
         if (!res) {
-          alert.error("Error occurred when fetching faqs!", "Please try again later!");
+          alert.error(
+            "Error occurred when fetching faqs!",
+            "Please try again later!"
+          );
           return;
         }
         const faqs = get(res, "data.data", []);
@@ -170,7 +180,7 @@ export const faqStore = defineStore("faq", {
           return;
         }
         this.reset();
-        alert.success("Tạo sản phẩm mới thành công!");
+        alert.success("Tạo câu hỏi mới thành công!");
         router.push("/faq");
       } catch (error) {
         alert.error("Create faq fail! Please try again later!");
@@ -192,7 +202,7 @@ export const faqStore = defineStore("faq", {
           return;
         }
         this.reset();
-        alert.success("Cập nhật sản phẩm mới thành công!");
+        alert.success("Cập nhật câu hỏi  thành công!");
         router.push("/faq");
       } catch (error) {
         alert.error("Update faq fail! Please try again later!");
@@ -236,7 +246,7 @@ export const faqStore = defineStore("faq", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Xóa sản phẩm thành công!");
+        alert.success("Xóa câu hỏi thành công!");
         await this.fetchfaqs();
       } catch (error) {
         alert.error("Error occurred!", error);

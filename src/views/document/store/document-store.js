@@ -201,7 +201,7 @@ export const documentStore = defineStore("document", {
           return;
         }
         this.reset();
-        alert.success("Tạo sản phẩm mới thành công!");
+        alert.success("Tạo văn bản mới thành công!");
         router.push("/document");
       } catch (error) {
         alert.error("Create document fail! Please try again later!");
@@ -231,7 +231,7 @@ export const documentStore = defineStore("document", {
           return;
         }
         this.reset();
-        alert.success("Cập nhật sản phẩm mới thành công!");
+        alert.success("Cập nhật  văn bản mới thành công!");
         router.push("/document");
       } catch (error) {
         alert.error("Update document fail! Please try again later!");
@@ -275,7 +275,7 @@ export const documentStore = defineStore("document", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Xóa sản phẩm thành công!");
+        alert.success("Xóa  văn bản thành công!");
         await this.fetchDocuments();
       } catch (error) {
         alert.error("Error occurred!", error);
