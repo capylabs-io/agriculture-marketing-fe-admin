@@ -1,8 +1,7 @@
 <template>
   <v-navigation-drawer
     class="pa-0"
-    app
-    fixed
+    :class="{ 'nav-drawer': !mini }"
     :mini-variant.sync="mini"
     width="286"
     mini-variant-width="80"
@@ -351,5 +350,8 @@ export default {
   position: absolute;
   right: 0;
   top: 16;
+}
+.nav-drawer {
+  min-width: 280px;
 }
 </style>

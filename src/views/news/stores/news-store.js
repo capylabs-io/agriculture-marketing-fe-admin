@@ -90,10 +90,7 @@ export const postStore = defineStore("post", {
           populate: "*",
         });
         if (!res) {
-          alert.error(
-            "Error occurred when fetching news!",
-            "Please try again later!"
-          );
+          alert.error("Error occurred when fetching news!", "Please try again later!");
           return;
         }
         const posts = get(res, "data.data", []);
@@ -112,13 +109,13 @@ export const postStore = defineStore("post", {
           };
         });
         this.posts = mappedPosts;
-        console.log("posts", this.posts);
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
         loading.hide();
       }
     },
+    //Marked: For Text Editor
     async uploadFile(file) {
       try {
         loading.show();

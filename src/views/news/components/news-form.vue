@@ -163,7 +163,7 @@
       v-if="postStore.post.videoContent || postStore.post.imageContent"
     ></v-divider>
 
-    <v-row class="mt-3">
+    <!-- <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="font-weight-semibold mb-2">Nội dung</div>
       </v-col>
@@ -181,6 +181,25 @@
         />
       </v-col>
       <v-col cols="12" md="2"> </v-col>
+    </v-row> -->
+
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="my-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Nội dung</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <!-- Marked: For Text Editor -->
+        <vue-editor
+          id="editor"
+          v-model="postStore.post.content"
+          :editorToolbar="customToolbar"
+          useCustomImageHandler
+          @image-added="handleImageAdded"
+        >
+        </vue-editor>
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
     </v-row>
   </v-form>
 </template>
@@ -188,7 +207,34 @@
 <script>
 import { postStore } from "../stores/news-store";
 import { mapStores } from "pinia";
+import { VueEditor } from "vue2-editor";
+
 export default {
+  components: {
+    VueEditor,
+  },
+  data() {
+    return {
+      //Marked: For Text Editor
+      htmlForEditor: "",
+      customToolbar: [
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        [
+          { align: "" },
+          { align: "center" },
+          { align: "right" },
+          { align: "justify" },
+        ],
+        ["blockquote", "code-block"],
+        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        ["link", "image"],
+        ["clean"], // remove formatting button
+      ],
+    };
+  },
   props: {
     isEditing: {
       type: Boolean,
@@ -235,6 +281,20 @@ export default {
       this.postStore.file = data;
       if (this.postStore.file) {
         this.postStore.uploadFile();
+      }
+    },
+    //Marked: For Text Editor
+    async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      try {
+        const uploadedUrls = await this.postStore.uploadFile(file);
+        if (!uploadedUrls || uploadedUrls.length == 0) {
+          this.$alert.error("Upload fail!");
+          return;
+        }
+        Editor.insertEmbed(cursorLocation, "image", uploadedUrls[0]);
+        resetUploader();
+      } catch (error) {
+        console.error("Error occurred! Error: " + error);
       }
     },
   },
