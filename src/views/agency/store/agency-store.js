@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Agency, AgencyCategory, Common } from "@/plugins/api.js";
+import { Agency, storeCategory, Common } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
@@ -110,7 +110,7 @@ export const agencyStore = defineStore("agency", {
           return {
             id: agency.id,
             ...agency.attributes,
-            agencyCategory: {
+            storeCategory: {
               id: get(agency, "attributes.storeCategory.data.id", -1),
               ...get(agency, "attributes.storeCategory.data.attributes", {}),
             },
@@ -127,7 +127,7 @@ export const agencyStore = defineStore("agency", {
     async fetchCategories() {
       try {
         loading.show();
-        const res = await AgencyCategory.fetch();
+        const res = await storeCategory.fetch();
         if (!res) {
           alert.error(
             "Error occurred when fetching agency categories!",
@@ -167,6 +167,7 @@ export const agencyStore = defineStore("agency", {
         );
         let query = {
           ...this.agency,
+          storeCategory: this.agency.storeCategory,
           thumbnail: uploadedThumbnail ? uploadedThumbnail[0] : "",
           certification: {
             quality: uploadedCertification ? uploadedCertification : [],
@@ -205,6 +206,7 @@ export const agencyStore = defineStore("agency", {
 
         let query = {
           ...this.agency,
+          storeCategory: this.agency.storeCategory,
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
             : this.agency.thumbnail,
@@ -277,9 +279,9 @@ export const agencyStore = defineStore("agency", {
         this.agency = {
           id: agencys[0],
           ...agencys[0].attributes,
-          agencyCategory: get(
+          storeCategory: get(
             agencys[0],
-            "attributes.agencyCategory.data.attributes.name",
+            "attributes.storeCategory.data.attributes.name",
             []
           ),
           products: get(agencys[0], "attributes.products.data", []),

@@ -11,7 +11,8 @@
           :rules="[$rules.required]"
           :items="postStore.categories"
           item-text="name"
-          item-value="id"
+          return-object
+          @change="changeCategory($event)"
           flat
           solo
           outlined
@@ -80,8 +81,16 @@
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-divider class="mt-3"></v-divider>
-    <v-row class="mt-3" v-if="postStore.post.videoContent">
+    <v-divider
+      class="mt-3"
+      v-if="
+        videoPost ||
+        imagePost ||
+        postStore.post.videoContent ||
+        postStore.post.imageContent
+      "
+    ></v-divider>
+    <v-row class="mt-3" v-if="videoPost || postStore.post.videoContent">
       <v-col cols="12" md="3">
         <div class="">
           <div class="font-weight-semibold">Video bài viết</div>
@@ -91,32 +100,56 @@
         </div>
       </v-col>
       <v-col cols="12" md="7">
-        <v-file-input
-          v-model="postStore.listPostImages"
-          placeholder="Chọn video bài viết"
-          disabled
-          prepend-inner-icon="mdi-paperclip"
-          class="border-radius-8"
-          prepend-icon=""
-          :show-size="1000"
-          clearable
-          outlined
-          solo
-          dense
-          flat
-        />
+        <v-radio-group v-model="radioGroup" column>
+          <v-radio label="bằng YouTube" value="1"> </v-radio>
+          <v-text-field
+            type="text"
+            v-model="postStore.youtubeUrl"
+            class="border-radius-8 mt-1"
+            placeholder="Nhập link video"
+            solo
+            :disabled="radioGroup == 1 ? false : true"
+            :background-color="radioGroup == 1 ? '' : 'neutral10'"
+            outlined
+            dense
+            flat
+          />
+          <v-radio
+            label="Tải liên từ máy tính"
+            value="2"
+            class="mt-2"
+          ></v-radio>
+          <v-file-input
+            v-model="postStore.postFile"
+            placeholder="Chọn video bài viết"
+            :disabled="radioGroup == 2 ? false : true"
+            :background-color="radioGroup == 2 ? '' : 'neutral10'"
+            prepend-inner-icon="mdi-paperclip"
+            class="border-radius-8 mt-1"
+            prepend-icon=""
+            :show-size="1000"
+            clearable
+            outlined
+            solo
+            dense
+            flat
+          />
+        </v-radio-group>
 
         <v-row>
           <v-col cols="12" md="12">
+            <div>Normal video:</div>
             <video width="100%" :src="getListPostVideo" controls>
               Your browser does not support the video tag.
             </video>
+            <div>Youtube video:</div>
+            <LazyYoutube maxWidth="100%" :src="getListPostVideo" />
           </v-col>
         </v-row>
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-row class="mt-3" v-if="postStore.post.imageContent">
+    <v-row class="mt-3" v-if="imagePost || postStore.post.imageContent">
       <v-col cols="12" md="3">
         <div class="">
           <div class="font-weight-semibold">Ảnh bài viết</div>
@@ -127,9 +160,8 @@
       </v-col>
       <v-col cols="12" md="7">
         <v-file-input
-          v-model="postStore.listPostImages"
+          v-model="postStore.postFile"
           placeholder="Chọn Ảnh bài viết"
-          disabled
           prepend-inner-icon="mdi-paperclip"
           class="border-radius-8"
           prepend-icon=""
@@ -140,7 +172,7 @@
           dense
           flat
         />
-        <v-row>
+        <v-row v-if="postStore.post.imageContent">
           <v-col
             cols="12"
             md="4"
@@ -158,10 +190,6 @@
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-divider
-      class="mt-3"
-      v-if="postStore.post.videoContent || postStore.post.imageContent"
-    ></v-divider>
 
     <!-- <v-row class="mt-3">
       <v-col cols="12" md="3">
@@ -208,10 +236,11 @@
 import { postStore } from "../stores/news-store";
 import { mapStores } from "pinia";
 import { VueEditor } from "vue2-editor";
-
+import { LazyYoutube } from "vue-lazytube";
 export default {
   components: {
     VueEditor,
+    LazyYoutube,
   },
   data() {
     return {
@@ -233,6 +262,9 @@ export default {
         ["link", "image"],
         ["clean"], // remove formatting button
       ],
+      imagePost: false,
+      videoPost: false,
+      radioGroup: null,
     };
   },
   props: {
@@ -257,30 +289,42 @@ export default {
       if (
         this.postStore.post &&
         this.postStore.post.imageContent &&
-        !this.postStore.listPostImages
+        !this.postStore.postFile
       )
         return this.postStore.post.imageContent;
-      if (!this.postStore.listPostImages)
-        return require("@/assets/no-image.png");
-      return URL.createObjectURL(this.postStore.listPostImages);
+      if (this.postStore.postFile) return require("@/assets/no-image.png");
+      return this.postStore.postFile;
     },
     getListPostVideo() {
       if (
         this.postStore.post &&
         this.postStore.post.videoContent &&
-        !this.postStore.listPostImages
+        !this.postStore.postFile
       )
         return this.postStore.post.videoContent;
-      if (!this.postStore.listPostImages)
-        return require("@/assets/no-image.png");
-      return URL.createObjectURL(this.postStore.listPostImages);
+      if (!this.postStore.postFile) return "";
+      return URL.createObjectURL(this.postStore.postFile);
     },
   },
+  watch: {},
   methods: {
     onFileChanged(data) {
       this.postStore.file = data;
       if (this.postStore.file) {
         this.postStore.uploadFile();
+      }
+    },
+    changeCategory(category) {
+      if (!category) return;
+      if (category.name == "Ảnh") {
+        this.imagePost = true;
+        this.videoPost = false;
+      } else if (category.name == "Video") {
+        this.videoPost = true;
+        this.imagePost = false;
+      } else {
+        this.videoPost = false;
+        this.imagePost = false;
       }
     },
     //Marked: For Text Editor

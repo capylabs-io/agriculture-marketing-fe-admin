@@ -135,7 +135,6 @@ export default {
           text: "ID",
           value: "id",
           align: "center",
-          sortable: false,
         },
         {
           text: "Tên bài viết",
@@ -175,7 +174,7 @@ export default {
     onEditClicked(item) {
       console.log("select post", item);
       this.postStore.post = item;
-      this.postStore.post.postCategory = item.postCategory.id;
+      this.postStore.post.postCategory = item.postCategory;
       router.push("/edit-post");
     },
     onDisableClicked(postId) {

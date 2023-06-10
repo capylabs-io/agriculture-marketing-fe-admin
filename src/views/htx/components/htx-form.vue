@@ -41,7 +41,7 @@
     <v-divider class="mt-3"></v-divider>
     <v-row class="mt-3">
       <v-col cols="12" md="3">
-        <div class="font-weight-semibold mb-2">Tên Đại lý</div>
+        <div class="font-weight-semibold mb-2">Tên hợp tác xã</div>
       </v-col>
       <v-col cols="12" md="7">
         <v-text-field
@@ -66,7 +66,7 @@
       <v-col cols="12" md="7">
         <v-select
           class="border-radius-8"
-          v-model="htxStore.htx.htxCategory"
+          v-model="htxStore.htx.cooperativeCategory"
           :rules="[$rules.required]"
           :items="htxStore.categories"
           item-text="name"
@@ -327,6 +327,7 @@
 <script>
 import { htxStore } from "../store/htx-store";
 import { mapStores } from "pinia";
+// import { VueEditor } from "vue2-editor";
 export default {
   props: {
     isEditing: {
@@ -334,7 +335,30 @@ export default {
       default: () => false,
     },
   },
-  components: {},
+  components: { 
+    // VueEditor
+   },
+  data() {
+    return {
+      htmlForEditor: "",
+      customToolbar: [
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        [
+          { align: "" },
+          { align: "center" },
+          { align: "right" },
+          { align: "justify" },
+        ],
+        ["blockquote", "code-block"],
+        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        ["link", "image"],
+        ["clean"], // remove formatting button
+      ],
+    };
+  },
   computed: {
     ...mapStores(htxStore),
     gethtxImage() {
@@ -363,6 +387,19 @@ export default {
       this.htxStore.file = data;
       if (this.htxStore.file) {
         this.htxStore.uploadFile();
+      }
+    }, //Marked: For Text Editor
+    async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      try {
+        const uploadedUrls = await this.postStore.uploadFile(file);
+        if (!uploadedUrls || uploadedUrls.length == 0) {
+          this.$alert.error("Upload fail!");
+          return;
+        }
+        Editor.insertEmbed(cursorLocation, "image", uploadedUrls[0]);
+        resetUploader();
+      } catch (error) {
+        console.error("Error occurred! Error: " + error);
       }
     },
   },

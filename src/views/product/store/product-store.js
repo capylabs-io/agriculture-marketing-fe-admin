@@ -37,10 +37,7 @@ export const productStore = defineStore("product", {
               .includes(this.searchKey.trim().toLowerCase()) ||
             product.code
               .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase()) ||
-            product.origin
-              .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase())
+              .includes(this.searchKey.trim().toLowerCase()) 
         );
       return filtered;
     },

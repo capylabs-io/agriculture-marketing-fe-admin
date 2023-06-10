@@ -45,9 +45,10 @@
         <div class="font-weight-semibold mb-2">Ngày ban hành</div>
       </v-col>
       <v-col cols="12" md="7">
-        <RangeDatePicker
+        <datePicker
           @change="documentStore.changeDocumentDuration"
           :isEditing="isEditing"
+          :chosenDate="documentStore.document.issueDate"
         />
       </v-col>
       <v-col cols="12" md="2"> </v-col>
@@ -211,7 +212,7 @@ export default {
     },
   },
   components: {
-    RangeDatePicker: () => import("@/components/RangeDatePicker.vue"),
+    datePicker: () => import("@/components/datePicker.vue"),
   },
   computed: {
     ...mapStores(documentStore),

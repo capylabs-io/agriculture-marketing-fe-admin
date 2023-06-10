@@ -53,6 +53,7 @@ export default {
   },
   methods: {
     onBackClicked() {
+      this.postStore.reset();
       this.$router.push("/news");
     },
     createPost() {

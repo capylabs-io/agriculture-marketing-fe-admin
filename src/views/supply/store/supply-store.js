@@ -4,6 +4,7 @@ import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
 import router from "@/router";
+import { userStore } from "@/stores/userStore";
 
 export const supplyStore = defineStore("supply", {
   state: () => ({
@@ -178,6 +179,7 @@ export const supplyStore = defineStore("supply", {
           accreditationImages: uploadedAccreditation
             ? uploadedAccreditation[0]
             : "",
+          user: userStore().userData.id,
         };
 
         const res = await Supply.create({

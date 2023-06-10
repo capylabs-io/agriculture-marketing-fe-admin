@@ -81,13 +81,40 @@
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Số/ký hiệu sản phẩm</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-text-field
+          v-model="productStore.product.code"
+          type="text"
+          class="border-radius-8"
+          placeholder="Nhập tên sản phẩm"
+          solo
+          outlined
+          dense
+          flat
+        />
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
     <v-divider class="mt-3"></v-divider>
     <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="font-weight-semibold mb-2">Mô tả sản phẩm</div>
       </v-col>
       <v-col cols="12" md="7">
-        <v-textarea
+        <vue-editor
+          id="editor"
+          v-model="productStore.product.description"
+          :editorToolbar="customToolbar"
+          useCustomImageHandler
+          @image-added="handleImageAdded"
+        >
+        </vue-editor>
+        <!-- <v-textarea
           type="text"
           class="border-radius-8"
           placeholder="Nhập mô tả sản phẩm"
@@ -97,7 +124,7 @@
           flat
           solo
           outlined
-        />
+        /> -->
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
@@ -107,7 +134,15 @@
         <div class="font-weight-semibold mb-2">Hướng dẫn sử dụng</div>
       </v-col>
       <v-col cols="12" md="7">
-        <v-textarea
+        <vue-editor
+          id="editor"
+          v-model="productStore.product.instruction"
+          :editorToolbar="customToolbar"
+          useCustomImageHandler
+          @image-added="handleImageAdded"
+        >
+        </vue-editor>
+        <!-- <v-textarea
           type="text"
           class="border-radius-8"
           placeholder="Nhập hướng dẫn sử dụng"
@@ -116,7 +151,7 @@
           flat
           solo
           outlined
-        />
+        /> -->
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
@@ -190,7 +225,7 @@
           item-text="name"
           item-value="id"
           :rules="[$rules.required]"
-          :items="agencyCategory"
+          :items="storeCategory"
           flat
           solo
           outlined
@@ -213,7 +248,7 @@
           item-text="name"
           item-value="id"
           :rules="[$rules.required]"
-          :items="regionCategory"
+          :items="areaCategory"
           flat
           solo
           outlined
@@ -236,7 +271,7 @@
           item-text="name"
           item-value="id"
           :rules="[$rules.required]"
-          :items="htxCategory"
+          :items="cooperativeCategory"
           flat
           solo
           outlined
@@ -274,14 +309,38 @@
 <script>
 import { mapStores } from "pinia";
 import { productStore } from "../store/product-store";
-
+import { VueEditor } from "vue2-editor";
 export default {
+  components: {
+    VueEditor,
+  },
+  data() {
+    return {
+      htmlForEditor: "",
+      customToolbar: [
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        [
+          { align: "" },
+          { align: "center" },
+          { align: "right" },
+          { align: "justify" },
+        ],
+        ["blockquote", "code-block"],
+        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        ["link", "image"],
+        ["clean"], // remove formatting button
+      ],
+    };
+  },
   props: {
     isEditing: {
       type: Boolean,
       default: () => false,
     },
-    agencyCategory: {
+    storeCategory: {
       type: Array,
       default: () => [],
     },
@@ -289,11 +348,11 @@ export default {
       type: Array,
       default: () => [],
     },
-    htxCategory: {
+    cooperativeCategory: {
       type: Array,
       default: () => [],
     },
-    regionCategory: {
+    areaCategory: {
       type: Array,
       default: () => [],
     },
@@ -335,6 +394,20 @@ export default {
       return URL.createObjectURL(this.productStore.productAccreditation);
     },
   },
-  methods: {},
+  methods: {
+    async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      try {
+        const uploadedUrls = await this.postStore.uploadFile(file);
+        if (!uploadedUrls || uploadedUrls.length == 0) {
+          this.$alert.error("Upload fail!");
+          return;
+        }
+        Editor.insertEmbed(cursorLocation, "image", uploadedUrls[0]);
+        resetUploader();
+      } catch (error) {
+        console.error("Error occurred! Error: " + error);
+      }
+    },
+  },
 };
 </script>

@@ -154,7 +154,7 @@ export const ArtisanCategory = {
 export const Agency = {
   ...APIHelper(AGENCY_API),
 };
-export const AgencyCategory = {
+export const storeCategory = {
   ...APIHelper(AGENCY_CATEGORY_API),
 };
 export const Area = {

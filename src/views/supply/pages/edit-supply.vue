@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-4 mt-6">
-      <CreateProductForm :isEditing="true" :agencyCategory="agencyCategory" />
+      <CreateProductForm :isEditing="true" :storeCategory="storeCategory" />
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      agencyCategory: [],
+      storeCategory: [],
     };
   },
   methods: {
@@ -67,14 +67,14 @@ export default {
     } else {
       await this.supplyStore.fetchCategories();
       await this.agencyStore.fetchagencys();
-      this.agencyCategory = this.agencyStore.agencys.map((agency) => {
+      this.storeCategory = this.agencyStore.agencys.map((agency) => {
         return {
           id: agency.id,
           name: agency.name,
         };
       });
       console.log("item", this.supplyStore.supply);
-      console.log("agencyCategory", this.agencyCategory);
+      console.log("storeCategory", this.storeCategory);
     }
   },
 };

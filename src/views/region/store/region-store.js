@@ -110,7 +110,7 @@ export const regionStore = defineStore("region", {
           return {
             id: region.id,
             ...region.attributes,
-            regionCategory: {
+            areaCategory: {
               id: get(region, "attributes.areaCategory.data.id", -1),
               ...get(region, "attributes.areaCategory.data.attributes", {}),
             },
@@ -279,9 +279,9 @@ export const regionStore = defineStore("region", {
         this.region = {
           id: regions[0],
           ...regions[0].attributes,
-          regionCategory: get(
+          areaCategory: get(
             regions[0],
-            "attributes.regionCategory.data.attributes.name",
+            "attributes.areaCategory.data.attributes.name",
             []
           ),
           products: get(regions[0], "attributes.products.data", []),

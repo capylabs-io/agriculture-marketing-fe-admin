@@ -105,7 +105,7 @@ export const htxStore = defineStore("htx", {
           return {
             id: htx.id,
             ...htx.attributes,
-            htxCategory: {
+            cooperativeCategory: {
               id: get(htx, "attributes.cooperativeCategory.data.id", -1),
               ...get(htx, "attributes.cooperativeCategory.data.attributes", {}),
             },
@@ -189,7 +189,6 @@ export const htxStore = defineStore("htx", {
       try {
         if (!this.htx) return;
         loading.show();
-        //upload images
         let promises = [
           await this.uploadFile(this.thumbnail),
           await this.uploadFile(this.certification),

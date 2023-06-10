@@ -19,7 +19,7 @@
         elevation="0"
         to="/create-seed"
         outlined
-      >
+        >
         <v-icon small>mdi-plus</v-icon>
         <div class="ml-1">Thêm giống</div>
       </v-btn>

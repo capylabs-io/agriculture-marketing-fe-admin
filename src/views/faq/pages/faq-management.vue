@@ -145,7 +145,6 @@ export default {
           text: "ID",
           value: "id",
           align: "center",
-          sortable: false,
         },
 
         {

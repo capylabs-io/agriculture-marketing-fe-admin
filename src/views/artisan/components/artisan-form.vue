@@ -69,7 +69,15 @@
         <div class="font-weight-semibold mb-2">
           Nội dung <span class="red--text">*</span>
         </div>
-        <v-textarea
+        <vue-editor
+          id="editor"
+          v-model="artisanStore.artisan.content"
+          :editorToolbar="customToolbar"
+          useCustomImageHandler
+          @image-added="handleImageAdded"
+        >
+        </vue-editor>
+        <!-- <v-textarea
           type="text"
           v-model="artisanStore.artisan.content"
           class="border-radius-8"
@@ -79,7 +87,7 @@
           flat
           solo
           outlined
-        />
+        /> -->
       </v-col>
     </v-row>
   </v-form>
@@ -88,6 +96,7 @@
 <script>
 import { artisanStore } from "../store/artisan-store";
 import { mapStores } from "pinia";
+import { VueEditor } from "vue2-editor";
 export default {
   props: {
     isEditing: {
@@ -95,6 +104,31 @@ export default {
       default: () => false,
     },
   },
+  components: {
+    VueEditor,
+  },
+  data() {
+    return {
+      htmlForEditor: "",
+      customToolbar: [
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        [
+          { align: "" },
+          { align: "center" },
+          { align: "right" },
+          { align: "justify" },
+        ],
+        ["blockquote", "code-block"],
+        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        ["link", "image"],
+        ["clean"], // remove formatting button
+      ],
+    };
+  },
+
   computed: {
     ...mapStores(artisanStore),
     // getImage() {
@@ -120,6 +154,20 @@ export default {
         this.artisanStore.uploadFile();
       }
     },
+  },
+  //Marked: For Text Editor
+  async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+    try {
+      const uploadedUrls = await this.postStore.uploadFile(file);
+      if (!uploadedUrls || uploadedUrls.length == 0) {
+        this.$alert.error("Upload fail!");
+        return;
+      }
+      Editor.insertEmbed(cursorLocation, "image", uploadedUrls[0]);
+      resetUploader();
+    } catch (error) {
+      console.error("Error occurred! Error: " + error);
+    }
   },
 };
 </script>

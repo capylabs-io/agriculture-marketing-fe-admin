@@ -34,10 +34,10 @@
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-4 mt-6">
       <CreateProductForm
         :isEditing="true"
-        :agencyCategory="agencyCategory"
+        :storeCategory="storeCategory"
         :artisanCategory="artisanCategory"
-        :htxCategory="htxCategory"
-        :regionCategory="regionCategory"
+        :cooperativeCategory="cooperativeCategory"
+        :areaCategory="areaCategory"
       />
     </div>
   </div>
@@ -63,10 +63,10 @@ export default {
   },
   data() {
     return {
-      agencyCategory: [],
+      storeCategory: [],
       artisanCategory: [],
-      htxCategory: [],
-      regionCategory: [],
+      cooperativeCategory: [],
+      areaCategory: [],
     };
   },
   methods: {
@@ -85,7 +85,7 @@ export default {
       await this.regionStore.fetchregions();
       await this.htxStore.fetchhtxs();
       await this.artisanStore.fetchArtisans();
-      this.agencyCategory = this.agencyStore.agencys.map((agency) => {
+      this.storeCategory = this.agencyStore.agencys.map((agency) => {
         return {
           id: agency.id,
           name: agency.name,
@@ -97,13 +97,13 @@ export default {
           name: artisan.name,
         };
       });
-      this.htxCategory = this.htxStore.htxs.map((htx) => {
+      this.cooperativeCategory = this.htxStore.htxs.map((htx) => {
         return {
           id: htx.id,
           name: htx.name,
         };
       });
-      this.regionCategory = this.regionStore.regions.map((region) => {
+      this.areaCategory = this.regionStore.regions.map((region) => {
         return {
           id: region.id,
           name: region.name,

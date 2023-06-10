@@ -37,6 +37,26 @@
             {{ item.documentCategory.name }}
           </div>
         </template>
+        <template v-slot:[`item.numberOf`]="{ item }">
+          <div class="text-center">
+            {{ item.numberOf }}
+          </div>
+        </template>
+        <template v-slot:[`item.issuer`]="{ item }">
+          <div class="text-start">
+            {{ item.issuer }}
+          </div>
+        </template>
+        <template v-slot:[`item.title`]="{ item }">
+          <div class="text-start">
+            {{ item.title }}
+          </div>
+        </template>
+        <template v-slot:[`item.issueDate`]="{ item }">
+          <div class="text-center">
+            {{ item.issueDate | ddmmyyyy }}
+          </div>
+        </template>
         <!-- <template v-slot:[`item.title`]="{ item }">
           <div class="text-left">
             {{ item.title }}
@@ -64,9 +84,9 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <!-- <v-btn icon dense @click="onOpenClicked(item.code)"
+            <v-btn icon dense @click="onOpenClicked(item.code)"
               ><v-icon>mdi-web</v-icon></v-btn
-            > -->
+            >
           </div>
         </template>
       </v-data-table>
@@ -141,19 +161,18 @@ export default {
         {
           text: "Người phát hành",
           value: "issuer",
-          align: "start",
+          align: "center",
         },
         {
           text: "Tiêu đề",
           value: "title",
-          align: "start",
+          align: "center",
           width: "300px",
         },
         {
           text: "Ngày phát hành",
           value: "issueDate",
           align: "center",
-          sortable: false,
         },
         {
           text: "Loại văn bản",
@@ -175,7 +194,7 @@ export default {
   },
   methods: {
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "documents/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "tai-lieu/" + code;
       window.open(link);
     },
     onEditClicked(item) {

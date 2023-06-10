@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     onBackClicked() {
+      this.agencyStore.reset() 
       this.$router.push("/agency");
     },
     createPost() {

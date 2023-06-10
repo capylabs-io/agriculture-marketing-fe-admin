@@ -40,7 +40,7 @@
         </template>
         <template v-slot:[`item.category`]="{ item }">
           <div>
-            {{ item.agencyCategory.name }}
+            {{ item.storeCategory.name }}
           </div>
         </template>
         <template v-slot:[`item.qrcode`]="{ item }">
@@ -71,9 +71,9 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <!-- <v-btn icon dense @click="onOpenClicked(item.code)"
+            <v-btn icon dense @click="onOpenClicked(item.code)"
               ><v-icon>mdi-web</v-icon></v-btn
-            > -->
+            >
           </div>
         </template>
       </v-data-table>
@@ -189,12 +189,12 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "agencys/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "dai-ly/" + code;
       window.open(link);
     },
     onEditClicked(item) {
       this.agencyStore.agency = item;
-      this.agencyStore.agency.agencyCategory = item.agencyCategory.id;
+      this.agencyStore.agency.storeCategory = item.storeCategory.id;
       console.log("agency", this.agencyStore.agency);
       router.push("/edit-agency");
     },

@@ -40,7 +40,7 @@
         </template>
         <template v-slot:[`item.category`]="{ item }">
           <div>
-            {{ item.htxCategory.name }}
+            {{ item.cooperativeCategory.name }}
           </div>
         </template>
         <template v-slot:[`item.qrcode`]="{ item }">
@@ -71,9 +71,9 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <!-- <v-btn icon dense @click="onOpenClicked(item.code)"
+            <v-btn icon dense @click="onOpenClicked(item.code)"
               ><v-icon>mdi-web</v-icon></v-btn
-            > -->
+            >
           </div>
         </template>
       </v-data-table>
@@ -189,12 +189,12 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "htxs/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "hop-tac-xa/" + code;
       window.open(link);
     },
     onEditClicked(item) {
       this.htxStore.htx = item;
-      this.htxStore.htx.htxCategory = item.htxCategory.id;
+      this.htxStore.htx.cooperativeCategory = item.cooperativeCategory.id;
       console.log("htx", this.htxStore.htx);
       router.push("/edit-htx");
     },

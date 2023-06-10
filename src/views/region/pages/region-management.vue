@@ -40,7 +40,7 @@
         </template>
         <template v-slot:[`item.category`]="{ item }">
           <div>
-            {{ item.regionCategory.name }}
+            {{ item.areaCategory.name }}
           </div>
         </template>
         <template v-slot:[`item.qrcode`]="{ item }">
@@ -71,9 +71,9 @@
             <v-btn icon dense @click="onDeleteClicked(item.id)"
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
-            <!-- <v-btn icon dense @click="onOpenClicked(item.code)"
+            <v-btn icon dense @click="onOpenClicked(item.code)"
               ><v-icon>mdi-web</v-icon></v-btn
-            > -->
+            >
           </div>
         </template>
       </v-data-table>
@@ -189,12 +189,12 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "regions/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "vung-san-xuat/" + code;
       window.open(link);
     },
     onEditClicked(item) {
       this.regionStore.region = item;
-      this.regionStore.region.regionCategory = item.regionCategory.id;
+      this.regionStore.region.areaCategory = item.areaCategory.id;
       console.log("region", this.regionStore.region);
       router.push("/edit-region");
     },

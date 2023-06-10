@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-4 mt-6">
-      <CreateProductForm :agencyCategory="agencyCategory" />
+      <CreateProductForm :storeCategory="storeCategory" />
     </div>
   </div>
 </template>
@@ -55,13 +55,13 @@ export default {
   },
   data() {
     return {
-      agencyCategory: [],
+      storeCategory: [],
     };
   },
   async created() {
     await this.supplyStore.fetchCategories();
     await this.agencyStore.fetchagencys();
-    this.agencyCategory = this.agencyStore.agencys.map((agency) => {
+    this.storeCategory = this.agencyStore.agencys.map((agency) => {
       return {
         id: agency.id,
         name: agency.name,
