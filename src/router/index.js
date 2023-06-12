@@ -8,7 +8,7 @@ import alert from "@/plugins/alert";
 Vue.use(VueRouter);
 const routes = [
   {
-    path: "/",
+    path: "/login",
     name: "Login",
     component: () => import("../views/login/pages/login.vue"),
   },
@@ -18,7 +18,7 @@ const routes = [
     component: () => import("../views/register/pages/register.vue"),
   },
   {
-    path: "/main",
+    path: "/",
     name: "Mainlayout",
     component: () => import("../views/Mainlayout.vue"),
     children: [
@@ -70,6 +70,102 @@ const routes = [
         meta: {
           requiresAuth: true,
         },
+      },
+      {
+        path: "/artisan",
+        name: "Artisan Management",
+        component: () => import("../views/artisan/pages/artisan-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-artisan",
+        name: "Create Artisan",
+        component: () => import("../views/artisan/pages/create-artisan.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-artisan",
+        name: "Update Artisan",
+        component: () => import("../views/artisan/pages/edit-artisan.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/agency",
+        name: "Agency Management",
+        component: () => import("../views/agency/pages/agency-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-agency",
+        name: "Create Agency",
+        component: () => import("../views/agency/pages/create-agency.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-agency",
+        name: "Update Agency",
+        component: () => import("../views/agency/pages/edit-agency.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/htx",
+        name: "HTX Management",
+        component: () => import("../views/htx/pages/htx-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-htx",
+        name: "Create HTX",
+        component: () => import("../views/htx/pages/create-htx.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-htx",
+        name: "Update HTX",
+        component: () => import("../views/htx/pages/edit-htx.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
+      },
+      {
+        path: "/region",
+        name: "Region Management",
+        component: () => import("../views/region/pages/region-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-region",
+        name: "Create Region",
+        component: () => import("../views/region/pages/create-region.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-region",
+        name: "Update Region",
+        component: () => import("../views/region/pages/edit-region.vue"),
+        // meta: {
+        //   requiresAuth: true,
+        // },
       },
       {
         path: "/create-supply",
@@ -135,6 +231,58 @@ const routes = [
         //   requiresAuth: true,
         // },
       },
+      {
+        path: "/contact",
+        name: "Contact Management",
+        component: () => import("../views/contact/pages/contact-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+
+      {
+        path: "/document",
+        name: "Document Management",
+        component: () => import("../views/document/pages/document-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-document",
+        name: "Create Document",
+        component: () => import("../views/document/pages/create-document.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-document",
+        name: "Edit Document",
+        component: () => import("../views/document/pages/edit-document.vue"),
+      },
+
+      {
+        path: "/faq",
+        name: "FAQ Management",
+        component: () => import("../views/faq/pages/faq-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/create-faq",
+        name: "Create FAQ",
+        component: () => import("../views/faq/pages/create-faq.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit-faq",
+        name: "Edit FAQ",
+        component: () => import("../views/faq/pages/edit-faq.vue"),
+      },
     ],
   },
 ];
@@ -151,7 +299,7 @@ router.beforeEach((to, from, next) => {
   const user = userStore();
   if (to.meta && to.meta.requiresAuth && !user.isConnected) {
     alert.error("You need to login before accessing this site!");
-    next("/");
+    next("/login");
   }
   next();
 });

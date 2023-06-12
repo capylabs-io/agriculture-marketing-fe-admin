@@ -9,17 +9,22 @@
           class="full-width d-flex flex-column align-center justify-center"
         >
           <div class="d-flex" @click="goToHome()">
-            <v-img
-              width="235px"
-              height="64px"
-              :src="require('@/assets/components/landing/web-logo-black.webp')"
-            />
+            <div class="mx-auto logo-img">
+              <v-img :src="require('@/assets/quochuy.png')" />
+            </div>
+
+            <div
+              class="font-weight-bold green100--text text-xl text-center text-uppercase mt-4 mb-2"
+            >
+              cổng thông tin giới thiệu sản phẩm và truy xuất nguồn gốc hoa, cây
+              cảnh tỉnh bến tre
+            </div>
           </div>
           <div class="d-flex flex-column full-width form-input">
             <div class="text-md d-flex">
               <v-icon color="black"> mdi-arrow-left-thin </v-icon>
               <router-link
-                to="/"
+                to="/login"
                 class="text-decoration-none font-weight-bold ml-2 black--text"
               >
                 <div class="text-none nav-link">Quay lại</div>
@@ -174,6 +179,10 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   height: 100vh;
+}
+.logo-img {
+  width: 64px;
+  height: 64px;
 }
 .form {
   width: 400px;

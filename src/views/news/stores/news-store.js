@@ -16,7 +16,11 @@ export const postStore = defineStore("post", {
     searchKey: "",
     avatarUrl: [],
     file: null,
+    postFile: null,
     categories: [],
+    imagePost: false,
+    videoPost: false,
+    youtubeUrl: "",
   }),
   getters: {
     slicedPosts() {
@@ -81,7 +85,9 @@ export const postStore = defineStore("post", {
     reset() {
       this.post = {};
       this.file = null;
+      this.postFile = null;
     },
+
     async fetchPosts() {
       try {
         loading.show();
@@ -111,13 +117,13 @@ export const postStore = defineStore("post", {
           };
         });
         this.posts = mappedPosts;
-        console.log("posts", this.posts);
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
         loading.hide();
       }
     },
+    //Marked: For Text Editor
     async uploadFile(file) {
       try {
         loading.show();
@@ -170,12 +176,46 @@ export const postStore = defineStore("post", {
         loading.show();
         //upload images
         const uploadedThumbnail = await this.uploadFile(this.file);
-        let query = {
-          ...this.post,
-          images: uploadedThumbnail ? uploadedThumbnail[0] : "",
-          status: "publish",
-          user: userStore().userData.id,
-        };
+        const uploadedFile = await this.uploadFile(this.postFile);
+        let query = null;
+        if (this.post.postCategory.name == "Ảnh") {
+          query = {
+            ...this.post,
+            postCategory: this.post.postCategory.id,
+            imageContent: uploadedFile ? uploadedFile : [],
+            images: uploadedThumbnail ? uploadedThumbnail[0] : "",
+            status: "publish",
+            user: userStore().userData.id,
+          };
+        } else if (this.post.postCategory.name == "Video") {
+          if (!this.postFile) {
+            query = {
+              ...this.post,
+              videoContent: this.youtubeUrl ? this.youtubeUrl : "",
+              postCategory: this.post.postCategory.id,
+              images: uploadedThumbnail ? uploadedThumbnail[0] : "",
+              status: "publish",
+              user: userStore().userData.id,
+            };
+          } else {
+            query = {
+              ...this.post,
+              postCategory: this.post.postCategory.id,
+              videoContent: uploadedFile ? uploadedFile[0] : "",
+              images: uploadedThumbnail ? uploadedThumbnail[0] : "",
+              status: "publish",
+              user: userStore().userData.id,
+            };
+          }
+        } else {
+          query = {
+            ...this.post,
+            postCategory: this.post.postCategory.id,
+            images: uploadedThumbnail ? uploadedThumbnail[0] : "",
+            status: "publish",
+            user: userStore().userData.id,
+          };
+        }
 
         const res = await Post.create({
           data: query,
@@ -199,14 +239,48 @@ export const postStore = defineStore("post", {
         loading.show();
         //upload images
         const uploadedThumbnail = await this.uploadFile(this.file);
-        let query = {
-          ...this.post,
-          images: uploadedThumbnail ? uploadedThumbnail[0] : this.post.images,
-          status: "publish",
-        };
-
-        console.log("query", query);
-
+        const uploadedFile = await this.uploadFile(this.postFile);
+        let query = null;
+        if (this.post.postCategory.name == "Ảnh") {
+          query = {
+            ...this.post,
+            postCategory: this.post.postCategory.id,
+            imageContent: uploadedFile ? uploadedFile : this.post.imageContent,
+            images: uploadedThumbnail ? uploadedThumbnail[0] : this.post.images,
+            status: "publish",
+          };
+        } else if (this.post.postCategory.name == "Video") {
+          if (!this.postFile) {
+            query = {
+              ...this.post,
+              postCategory: this.post.postCategory.id,
+              videoContent: this.youtubeUrl ? this.youtubeUrl : "",
+              images: uploadedThumbnail
+                ? uploadedThumbnail[0]
+                : this.post.images,
+              status: "publish",
+            };
+          } else {
+            query = {
+              ...this.post,
+              postCategory: this.post.postCategory.id,
+              videoContent: uploadedFile
+                ? uploadedFile[0]
+                : this.post.videoContent,
+              images: uploadedThumbnail
+                ? uploadedThumbnail[0]
+                : this.post.images,
+              status: "publish",
+            };
+          }
+        } else {
+          query = {
+            ...this.post,
+            postCategory: this.post.postCategory.id,
+            images: uploadedThumbnail ? uploadedThumbnail[0] : this.post.images,
+            status: "publish",
+          };
+        }
         const res = await Post.update(this.post.id, {
           data: query,
         });
@@ -253,7 +327,7 @@ export const postStore = defineStore("post", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        alert.success("Xóa sản phẩm thành công!");
+        alert.success("Xóa bài viết thành công!");
         await this.fetchPosts();
       } catch (error) {
         alert.error("Error occurred!", error);
@@ -262,32 +336,6 @@ export const postStore = defineStore("post", {
       }
     },
 
-    // async createNewPost() {
-    //   if (this.avatarUrl) {
-    //     try {
-    //       loading.show();
-    //       const res = await Post.createPost({
-    //         data: {
-    //           ...this.post,
-    //           images: this.avatarUrl[0],
-    //           content: `<p>${this.post.content}</p>`,
-    //         },
-    //       });
-    //       if (!res) {
-    //         alert.error(`Error occurred Update! Please try again later!`);
-    //         return;
-    //       }
-    //       alert.success("Tạo bài viết mới thành công!");
-    //       this.reset();
-    //       router.push("/news");
-    //     } catch (error) {
-    //       console.error(`Error: ${error}`);
-    //       alert.error(error);
-    //     } finally {
-    //       loading.hide();
-    //     }
-    //   }
-    // },
   },
 });
 /* eslint-enable */

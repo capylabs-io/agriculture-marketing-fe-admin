@@ -8,12 +8,17 @@
           lazy-validation
           class="full-width d-flex flex-column align-center justify-center"
         >
-          <div class="d-flex" @click="goToHome()">
-            <v-img
-              width="235px"
-              height="64px"
-              :src="require('@/assets/components/landing/web-logo-black.webp')"
-            ></v-img>
+          <div @click="goToHome()">
+            <div class="mx-auto logo-img">
+              <v-img :src="require('@/assets/quochuy.png')" />
+            </div>
+
+            <div
+              class="font-weight-bold green100--text text-xl text-center text-uppercase mt-4 mb-2"
+            >
+              cổng thông tin giới thiệu sản phẩm và truy xuất nguồn gốc hoa, cây
+              cảnh tỉnh bến tre
+            </div>
           </div>
           <div class="d-flex flex-column full-width form-input">
             <div>
@@ -184,5 +189,9 @@ export default {
 }
 .banner-img {
   max-height: 100vh !important;
+}
+.logo-img {
+  width: 64px;
+  height: 64px;
 }
 </style>

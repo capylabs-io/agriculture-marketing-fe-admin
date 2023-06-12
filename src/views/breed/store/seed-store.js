@@ -4,6 +4,7 @@ import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
 import router from "@/router";
+import { userStore } from "@/stores/userStore";
 
 export const seedStore = defineStore("seed", {
   state: () => ({
@@ -110,6 +111,22 @@ export const seedStore = defineStore("seed", {
               id: get(seed, "attributes.seedlingCategory.data.id", -1),
               ...get(seed, "attributes.seedlingCategory.data.attributes", {}),
             },
+            cooperative: {
+              id: get(seed, "attributes.cooperative.data.id", -1),
+              ...get(seed, "attributes.cooperative.data.attributes", {}),
+            },
+            artisan: {
+              id: get(seed, "attributes.artisan.data.id", -1),
+              ...get(seed, "attributes.artisan.data.attributes", {}),
+            },
+            store: {
+              id: get(seed, "attributes.store.data.id", -1),
+              ...get(seed, "attributes.store.data.attributes", {}),
+            },
+            area: {
+              id: get(seed, "attributes.area.data.id", -1),
+              ...get(seed, "attributes.area.data.attributes", {}),
+            },
             author: get(seed, "attributes.user.data.attributes", {}),
           };
         });
@@ -153,14 +170,11 @@ export const seedStore = defineStore("seed", {
         let promises = [
           await this.uploadFile(this.seedThumbnail),
           await this.uploadFile(this.seedCertification),
-          await this.uploadFile(this.seedAccreditation),
         ];
 
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
+        const [uploadedThumbnail, uploadedCertification] = await Promise.all(
+          promises
+        );
 
         let query = {
           ...this.seed,
@@ -168,9 +182,7 @@ export const seedStore = defineStore("seed", {
           certificationImages: uploadedCertification
             ? uploadedCertification[0]
             : "",
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : "",
+          user: userStore().userData.id,
         };
 
         const res = await Seed.create({
@@ -197,25 +209,19 @@ export const seedStore = defineStore("seed", {
         let promises = [
           await this.uploadFile(this.seedThumbnail),
           await this.uploadFile(this.seedCertification),
-          await this.uploadFile(this.seedAccreditation),
         ];
 
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
-
+        const [uploadedThumbnail, uploadedCertification] = await Promise.all(
+          promises
+        );
         let query = {
           ...this.seed,
           images: uploadedThumbnail ? uploadedThumbnail[0] : this.seed.images,
           certificationImages: uploadedCertification
             ? uploadedCertification[0]
             : this.seed.certificationImages,
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : this.seed.accreditationImages,
         };
+        console.log("uploadedThumbnail", uploadedThumbnail[0]);
 
         const res = await Seed.update(this.seed.id, {
           data: query,
@@ -228,7 +234,7 @@ export const seedStore = defineStore("seed", {
         alert.success("Cập nhật Giống thành công!");
         router.push("/seed");
       } catch (error) {
-        alert.error("Create seed fail! Please try again later!");
+        alert.error("Update seed fail! Please try again later!");
       } finally {
         loading.hide();
       }

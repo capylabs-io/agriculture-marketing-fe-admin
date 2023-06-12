@@ -13,7 +13,9 @@ import dialog from "@/plugins/dialog";
 import { rules } from "@/plugins/rules";
 import { vueFilterRegister } from "@/plugins/filter";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import LazyTube from "vue-lazytube";
 
+Vue.use(LazyTube);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 Vue.use(PiniaVuePlugin);

@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="wrapper full-height">
+  <div class="wrapper full-height d-flex">
     <NavigationDrawer />
     <div class="container mx-auto pa-8">
       <router-view></router-view>
@@ -23,7 +23,7 @@ export default {
 
 <style scoped>
 .wrapper {
-  background: var(--v-neutral10-base) !important;
+  background: white;
 }
 .container {
   max-width: 1400px;

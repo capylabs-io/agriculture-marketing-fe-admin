@@ -15,8 +15,10 @@
     "pinia": "^2.0.36",
     "pinia-plugin-persistedstate": "^3.1.0",
     "vue": "^2.6.14",
+    "vue-lazytube": "^1.1.1",
     "vue-picture-input": "^2.4.0",
     "vue-router": "^3.6.5",
+    "vue2-editor": "^2.10.3",
     "vuetify": "^2.6.0"
   },
   "devDependencies": {

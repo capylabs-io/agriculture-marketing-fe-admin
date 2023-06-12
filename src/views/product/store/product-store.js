@@ -37,10 +37,7 @@ export const productStore = defineStore("product", {
               .includes(this.searchKey.trim().toLowerCase()) ||
             product.code
               .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase()) ||
-            product.origin
-              .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase())
+              .includes(this.searchKey.trim().toLowerCase()) 
         );
       return filtered;
     },
@@ -112,6 +109,22 @@ export const productStore = defineStore("product", {
             productCategory: {
               id: get(product, "attributes.productCategory.data.id", -1),
               ...get(product, "attributes.productCategory.data.attributes", {}),
+            },
+            cooperative: {
+              id: get(product, "attributes.cooperative.data.id", -1),
+              ...get(product, "attributes.cooperative.data.attributes", {}),
+            },
+            artisan: {
+              id: get(product, "attributes.artisan.data.id", -1),
+              ...get(product, "attributes.artisan.data.attributes", {}),
+            },
+            store: {
+              id: get(product, "attributes.store.data.id", -1),
+              ...get(product, "attributes.store.data.attributes", {}),
+            },
+            area: {
+              id: get(product, "attributes.area.data.id", -1),
+              ...get(product, "attributes.area.data.attributes", {}),
             },
             author: get(product, "attributes.user.data.attributes", {}),
           };

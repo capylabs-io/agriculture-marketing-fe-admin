@@ -19,7 +19,7 @@
         elevation="0"
         to="/create-seed"
         outlined
-      >
+        >
         <v-icon small>mdi-plus</v-icon>
         <div class="ml-1">Thêm giống</div>
       </v-btn>
@@ -193,7 +193,7 @@ export default {
       return url;
     },
     onOpenClicked(code) {
-      const link = process.env.VUE_APP_USER_PAGE + "seedlings/" + code;
+      const link = process.env.VUE_APP_USER_PAGE + "giong/" + code;
       window.open(link);
     },
     onEditClicked(item) {
