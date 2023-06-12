@@ -23,7 +23,7 @@ export const userStore = defineStore("user", {
     createPartnerDialog: false,
     file: null,
     avatarUrl: [],
-    mini: true
+    mini: true,
   }),
   getters: {
     isConnected() {
@@ -93,8 +93,12 @@ export const userStore = defineStore("user", {
         alert.success("Đăng ký thành công!");
         this.router.push("/");
       } catch (error) {
-        console.error(`Error: ${error}`);
-        alert.error(error);
+        // console.error(`Error: ${error}`);
+        if (error.response.status == 400) {
+          alert.error("Tài khoản đã tồn tại! Vui lòng nhập lại");
+        } else {
+          alert.error(error);
+        }
       } finally {
         loading.hide();
       }

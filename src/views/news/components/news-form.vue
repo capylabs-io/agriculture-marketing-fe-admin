@@ -136,7 +136,7 @@
           />
         </v-radio-group>
 
-        <v-row>
+        <v-row v-if="postStore.post.videoContent">
           <v-col cols="12" md="12">
             <div>Normal video:</div>
             <video width="100%" :src="getListPostVideo" controls>
