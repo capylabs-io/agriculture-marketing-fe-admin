@@ -28,6 +28,7 @@
       <v-data-table
         :headers="headers"
         :items="postStore.slicedPosts"
+        :items-per-page="postStore.postsPerPage"
         hide-default-footer
       >
         <template v-slot:[`item.title`]="{ item }">
