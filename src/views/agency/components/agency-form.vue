@@ -266,7 +266,7 @@
       <v-col cols="12" md="7">
         <vue-editor
           id="editor"
-          v-model="agencyStore.agency.metadata.description"
+          v-model="agencyStore.agency.description"
           :editorToolbar="customToolbar"
           useCustomImageHandler
           @image-added="handleImageAdded"

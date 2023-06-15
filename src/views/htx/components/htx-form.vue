@@ -186,7 +186,7 @@
       <v-col cols="12" md="7">
         <vue-editor
           id="editor"
-          v-model="htxStore.htx.metadata.description"
+          v-model="htxStore.htx.description"
           :editorToolbar="customToolbar"
           useCustomImageHandler
           @image-added="handleImageAdded"
@@ -408,6 +408,16 @@ export default {
       if (!this.htxStore.certification) return require("@/assets/no-image.png");
       return URL.createObjectURL(this.htxStore.certification);
     },
+    // getDescription() {
+    //   if (
+    //     this.htxStore.htx &&
+    //     this.htxStore.htx.description &&
+    //     !this.htxStore.description
+    //   )
+    //     return this.htxStore.htx.description;
+    //   if (!this.htxStore.description) return "";
+    //   return this.htxStore.description;
+    // },
   },
   methods: {
     onFileChanged(data) {

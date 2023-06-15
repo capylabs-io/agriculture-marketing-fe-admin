@@ -106,6 +106,7 @@ export const htxStore = defineStore("htx", {
           return {
             id: htx.id,
             ...htx.attributes,
+            description: get(htx, "attributes.metadata.description", ""),
             cooperativeCategory: {
               id: get(htx, "attributes.cooperativeCategory.data.id", -1),
               ...get(htx, "attributes.cooperativeCategory.data.attributes", {}),
@@ -153,6 +154,8 @@ export const htxStore = defineStore("htx", {
       try {
         loading.show();
         //upload images
+        console.log("htx create", this.htx);
+        console.log("description create", this.htx.description);
         let promises = [
           await this.uploadFile(this.thumbnail),
           await this.uploadFile(this.certification),
@@ -161,11 +164,12 @@ export const htxStore = defineStore("htx", {
         const [uploadedThumbnail, uploadedCertification] = await Promise.all(
           promises
         );
-
         let query = {
           ...this.htx,
           thumbnail: uploadedThumbnail ? uploadedThumbnail[0] : "",
-          metadata: { description: this.htx.metadata.description },
+          metadata: {
+            description: this.htx.description,
+          },
           certification: {
             quality: uploadedCertification ? uploadedCertification : [],
           },
@@ -191,6 +195,8 @@ export const htxStore = defineStore("htx", {
       try {
         if (!this.htx) return;
         loading.show();
+        console.log("htx update", this.htx);
+        console.log("description update", this.htx.description);
         let promises = [
           await this.uploadFile(this.thumbnail),
           await this.uploadFile(this.certification),
@@ -202,6 +208,9 @@ export const htxStore = defineStore("htx", {
 
         let query = {
           ...this.htx,
+          metadata: {
+            description: this.htx.description,
+          },
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
             : this.htx.thumbnail,

@@ -20,6 +20,7 @@ export const regionStore = defineStore("region", {
     file: null,
     thumbnail: null,
     certification: null,
+    description: "",
   }),
   getters: {
     slicedregions() {

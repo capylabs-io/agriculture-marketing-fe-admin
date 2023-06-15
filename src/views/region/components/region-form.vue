@@ -82,6 +82,26 @@
     <v-divider class="mt-3"></v-divider>
     <v-row class="mt-3">
       <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Diện tích</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-text-field
+          type="text"
+          v-model="regionStore.region.acreage"
+          class="border-radius-8"
+          placeholder="Nhập tên"
+          :rules="[$rules.required]"
+          solo
+          outlined
+          dense
+          flat
+        />
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
         <div class="font-weight-semibold mb-2">Kinh độ</div>
       </v-col>
       <v-col cols="12" md="7">
@@ -240,6 +260,23 @@
       <v-col cols="12" md="2"> </v-col>
     </v-row>
     <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Giới thiệu tổng quan</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <vue-editor
+          id="editor"
+          v-model="regionStore.region.description"
+          :editorToolbar="customToolbar"
+          useCustomImageHandler
+          @image-added="handleImageAdded"
+        >
+        </vue-editor>
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
     <!-- <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="">
@@ -327,7 +364,7 @@
 <script>
 import { regionStore } from "../store/region-store";
 import { mapStores } from "pinia";
-// import { VueEditor } from "vue2-editor";
+import { VueEditor } from "vue2-editor";
 export default {
   props: {
     isEditing: {
@@ -336,7 +373,7 @@ export default {
     },
   },
   components: {
-    // VueEditor,
+    VueEditor,
   },
   data() {
     return {

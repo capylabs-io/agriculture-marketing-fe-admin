@@ -179,7 +179,6 @@ export const artisanStore = defineStore("artisan", {
         let query = {
           ...this.artisan,
           thumbnail: uploadedThumbnail ? uploadedThumbnail[0] : "",
-          metadata: { description: this.artisan.metadata.description },
           certification: uploadedCertification ? uploadedCertification[0] : "",
         };
 

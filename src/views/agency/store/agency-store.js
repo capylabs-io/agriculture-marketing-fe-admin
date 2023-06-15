@@ -111,6 +111,7 @@ export const agencyStore = defineStore("agency", {
           return {
             id: agency.id,
             ...agency.attributes,
+            description: get(agency, "attributes.metadata.description", ""),
             storeCategory: {
               id: get(agency, "attributes.storeCategory.data.id", -1),
               ...get(agency, "attributes.storeCategory.data.attributes", {}),
@@ -169,7 +170,9 @@ export const agencyStore = defineStore("agency", {
         let query = {
           ...this.agency,
           storeCategory: this.agency.storeCategory,
-          metadata: { description: this.agency.metadata.description },
+          metadata: {
+            description: this.agency.description,
+          },
           thumbnail: uploadedThumbnail ? uploadedThumbnail[0] : "",
           certification: {
             quality: uploadedCertification ? uploadedCertification : [],
@@ -208,6 +211,9 @@ export const agencyStore = defineStore("agency", {
 
         let query = {
           ...this.agency,
+          metadata: {
+            description: this.agency.description,
+          },
           storeCategory: this.agency.storeCategory,
           thumbnail: uploadedThumbnail
             ? uploadedThumbnail[0]
