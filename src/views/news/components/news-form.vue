@@ -137,12 +137,16 @@
         </v-radio-group>
 
         <v-row v-if="postStore.post.videoContent">
-          <v-col cols="12" md="12">
-            <div>Normal video:</div>
+          <v-col
+            cols="12"
+            md="12"
+            v-if="!postStore.post.videoContent.includes('youtube')"
+          >
             <video width="100%" :src="getListPostVideo" controls>
               Your browser does not support the video tag.
             </video>
-            <div>Youtube video:</div>
+          </v-col>
+          <v-col cols="12" md="12" v-else>
             <LazyYoutube maxWidth="100%" :src="getListPostVideo" />
           </v-col>
         </v-row>
