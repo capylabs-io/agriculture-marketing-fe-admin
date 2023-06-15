@@ -179,6 +179,33 @@
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Giới thiệu tổng quan</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <vue-editor
+          id="editor"
+          v-model="htxStore.htx.metadata.description"
+          :editorToolbar="customToolbar"
+          useCustomImageHandler
+          @image-added="handleImageAdded"
+        >
+        </vue-editor>
+        <!-- <v-textarea
+          type="text"
+          class="border-radius-8"
+          placeholder="Nhập mô tả sản phẩm"
+          v-model="productStore.product.description"
+          :rules="[$rules.required]"
+          auto-grow
+          flat
+          solo
+          outlined
+        /> -->
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
     <v-divider class="mt-3"></v-divider>
     <v-row class="mt-3">
       <v-col cols="12" md="3">
@@ -327,7 +354,7 @@
 <script>
 import { htxStore } from "../store/htx-store";
 import { mapStores } from "pinia";
-// import { VueEditor } from "vue2-editor";
+import { VueEditor } from "vue2-editor";
 export default {
   props: {
     isEditing: {
@@ -335,9 +362,9 @@ export default {
       default: () => false,
     },
   },
-  components: { 
-    // VueEditor
-   },
+  components: {
+    VueEditor,
+  },
   data() {
     return {
       htmlForEditor: "",

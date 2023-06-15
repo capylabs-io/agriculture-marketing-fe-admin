@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     onBackClicked() {
+      this.faqStore.reset()
       this.$router.push("/faq");
     },
     createFAQ() {

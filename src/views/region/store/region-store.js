@@ -324,6 +324,8 @@ export const regionStore = defineStore("region", {
       this.regionCertification = null;
       this.regionThumbnail = null;
       this.file = null;
+      this.thumbnail = null;
+      this.certification = null;
     },
   },
 });

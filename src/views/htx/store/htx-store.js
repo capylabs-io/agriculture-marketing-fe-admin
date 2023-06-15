@@ -20,6 +20,7 @@ export const htxStore = defineStore("htx", {
     file: null,
     thumbnail: null,
     certification: null,
+    description: "",
   }),
   getters: {
     slicedhtxs() {
@@ -164,6 +165,7 @@ export const htxStore = defineStore("htx", {
         let query = {
           ...this.htx,
           thumbnail: uploadedThumbnail ? uploadedThumbnail[0] : "",
+          metadata: { description: this.htx.metadata.description },
           certification: {
             quality: uploadedCertification ? uploadedCertification : [],
           },
@@ -277,6 +279,8 @@ export const htxStore = defineStore("htx", {
       this.htxCertification = null;
       this.htxThumbnail = null;
       this.file = null;
+      this.thumbnail = null;
+      this.certification = null;
     },
   },
 });

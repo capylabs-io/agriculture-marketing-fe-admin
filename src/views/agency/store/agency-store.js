@@ -20,6 +20,7 @@ export const agencyStore = defineStore("agency", {
     file: null,
     thumbnail: null,
     certification: null,
+    description: null,
   }),
   getters: {
     slicedagencys() {
@@ -168,6 +169,7 @@ export const agencyStore = defineStore("agency", {
         let query = {
           ...this.agency,
           storeCategory: this.agency.storeCategory,
+          metadata: { description: this.agency.metadata.description },
           thumbnail: uploadedThumbnail ? uploadedThumbnail[0] : "",
           certification: {
             quality: uploadedCertification ? uploadedCertification : [],
@@ -324,6 +326,8 @@ export const agencyStore = defineStore("agency", {
       this.agencyCertification = null;
       this.agencyThumbnail = null;
       this.file = null;
+      this.thumbnail = null;
+      this.certification = null;
     },
   },
 });

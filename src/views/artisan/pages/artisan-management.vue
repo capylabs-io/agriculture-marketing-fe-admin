@@ -168,6 +168,7 @@ export default {
           text: "Chức vụ",
           value: "author",
           align: "center",
+          sortable: false,
         },
         {
           text: "QR Code",

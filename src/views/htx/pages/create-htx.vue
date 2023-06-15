@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     onBackClicked() {
+      this.htxStore.reset();
       this.$router.push("/htx");
     },
     createPost() {

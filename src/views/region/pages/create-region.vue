@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     onBackClicked() {
+      this.regionStore.reset()
       this.$router.push("/region");
     },
     createPost() {

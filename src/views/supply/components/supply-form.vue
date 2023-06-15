@@ -82,7 +82,7 @@
     <v-divider class="mt-3"></v-divider>
     <v-row class="mt-3">
       <v-col cols="12" md="3">
-        <div class="font-weight-semibold mb-2">Số/ký hiệu vật tư</div>
+        <div class="font-weight-semibold mb-2">Mã truy xuất</div>
       </v-col>
       <v-col cols="12" md="7">
         <v-text-field
@@ -354,7 +354,7 @@ export default {
       if (
         this.supplyStore.supply &&
         this.supplyStore.supply.accreditationImages &&
-        !this.supplyStore.accreditationImages
+        !this.supplyStore.supplyAccreditation
       )
         return this.supplyStore.supply.accreditationImages;
       if (!this.supplyStore.supplyAccreditation)

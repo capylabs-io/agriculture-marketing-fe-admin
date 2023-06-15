@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     onBackClicked() {
+      this.artisanStore.reset();
       this.$router.push("/artisan");
     },
     createPost() {

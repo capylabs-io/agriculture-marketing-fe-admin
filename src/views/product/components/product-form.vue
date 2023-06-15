@@ -84,7 +84,7 @@
     <v-divider class="mt-3"></v-divider>
     <v-row class="mt-3">
       <v-col cols="12" md="3">
-        <div class="font-weight-semibold mb-2">Số/ký hiệu sản phẩm</div>
+        <div class="font-weight-semibold mb-2">Mã truy xuất</div>
       </v-col>
       <v-col cols="12" md="7">
         <v-text-field
@@ -101,6 +101,7 @@
       <v-col cols="12" md="2"> </v-col>
     </v-row>
     <v-divider class="mt-3"></v-divider>
+
     <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="font-weight-semibold mb-2">Mô tả sản phẩm</div>
@@ -125,6 +126,25 @@
           solo
           outlined
         /> -->
+      </v-col>
+      <v-col cols="12" md="2"> </v-col>
+    </v-row>
+    <v-divider class="mt-3"></v-divider>
+    <v-row class="mt-3">
+      <v-col cols="12" md="3">
+        <div class="font-weight-semibold mb-2">Giá</div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <v-text-field
+          v-model="productStore.product.price"
+          type="text"
+          class="border-radius-8"
+          placeholder="Nhập tên sản phẩm"
+          solo
+          outlined
+          dense
+          flat
+        />
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
@@ -375,7 +395,7 @@ export default {
       if (
         this.productStore.product &&
         this.productStore.product.certificationImages &&
-        !this.productStore.product.certificationImages
+        !this.productStore.productCertification
       )
         return this.productStore.product.certificationImages;
       if (!this.productStore.productCertification)
