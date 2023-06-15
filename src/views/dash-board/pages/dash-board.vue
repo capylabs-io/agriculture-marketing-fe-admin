@@ -168,6 +168,96 @@
           </router-link> -->
         </v-card>
       </v-col>
+      <v-col cols="12" xl="4" md="4">
+        <v-card
+          class="number-card border-radius-12 neutral30-border pa-6"
+          :style="{ background: '#FEFEF2' }"
+          outlined
+        >
+          <div class="d-flex align-center">
+            <div class="dashboard-icon neutral30-border mr-2"></div>
+            <div class="neutral70--text text-md">Tổng số vùng sản xuất</div>
+          </div>
+
+          <div
+            class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
+          >
+            {{ dashboardStore.regions ? dashboardStore.regions.length : 0 }}
+          </div>
+
+          <router-link to="/region">
+            <div class="mt-4 text-xs">Xem chi tiết</div>
+          </router-link>
+        </v-card>
+      </v-col>
+      <v-col cols="12" xl="4" md="4"> </v-col>
+    </v-row>
+    <v-row class="mt-4">
+      <v-col cols="12" xl="4" md="4">
+        <v-card
+          class="number-card border-radius-12 neutral30-border pa-6"
+          :style="{ background: '#F4FEF6' }"
+          outlined
+        >
+          <div class="d-flex align-center">
+            <div class="dashboard-icon neutral30-border mr-2"></div>
+            <div class="neutral70--text text-md">Tổng số hợp tác xã</div>
+          </div>
+
+          <div
+            class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
+          >
+            {{ dashboardStore.htxs ? dashboardStore.htxs.length : 0 }}
+          </div>
+
+          <router-link to="/htx">
+            <div class="mt-4 text-xs">Xem chi tiết</div>
+          </router-link>
+        </v-card>
+      </v-col>
+      <v-col cols="12" xl="4" md="4">
+        <v-card
+          class="number-card border-radius-12 neutral30-border pa-6"
+          :style="{ background: '#FEFAFF' }"
+          outlined
+        >
+          <div class="d-flex align-center">
+            <div class="dashboard-icon neutral30-border mr-2"></div>
+            <div class="neutral70--text text-md">Tổng số đại lý</div>
+          </div>
+
+          <div
+            class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
+          >
+            {{ dashboardStore.agencys ? dashboardStore.agencys.length : 0 }}
+          </div>
+          <router-link to="/agency">
+            <div class="mt-4 text-xs">Xem chi tiết</div>
+          </router-link>
+        </v-card>
+      </v-col>
+      <v-col cols="12" xl="4" md="4">
+        <v-card
+          class="number-card border-radius-12 neutral30-border pa-6"
+          :style="{ background: '#F5F8FF' }"
+          outlined
+        >
+          <div class="d-flex align-center">
+            <div class="dashboard-icon neutral30-border mr-2"></div>
+            <div class="neutral70--text text-md">Tổng số nghệ nhân</div>
+          </div>
+
+          <div
+            class="text-dp-md font-weight-bold neutral100--text text-left mt-4"
+          >
+            {{ dashboardStore.artisans ? dashboardStore.artisans.length : 0 }}
+          </div>
+
+          <router-link to="/artisan">
+            <div class="mt-4 text-xs">Xem chi tiết</div>
+          </router-link>
+        </v-card>
+      </v-col>
       <v-col cols="12" xl="4" md="4"> </v-col>
     </v-row>
   </div>
@@ -175,43 +265,30 @@
 
 <script>
 import { dashboardStore } from "../stores/dashboardStore";
+import { regionStore } from "@/views/region/store/region-store";
+import { htxStore } from "@/views/htx/store/htx-store";
+import { agencyStore } from "@/views/agency/store/agency-store";
+import { artisanStore } from "@/views/artisan/store/artisan-store";
 import { mapStores } from "pinia";
 export default {
   computed: {
     ...mapStores(dashboardStore),
+    ...mapStores(regionStore),
+    ...mapStores(htxStore),
+    ...mapStores(agencyStore),
+    ...mapStores(artisanStore),
   },
-  methods: {
-    tab(show) {
-      this.index = 1;
-      const tab1 = document.querySelector(".tab1");
-      const tab2 = document.querySelector(".tab2");
-      const tab3 = document.querySelector(".tab3");
-      const tab4 = document.querySelector(".tab4");
-      if (show == 1) {
-        tab1.classList.add("active");
-        tab2.classList.remove("active");
-        tab3.classList.remove("active");
-        tab4.classList.remove("active");
-      } else if (show == 2) {
-        tab1.classList.remove("active");
-        tab2.classList.add("active");
-        tab3.classList.remove("active");
-        tab4.classList.remove("active");
-      } else if (show == 3) {
-        tab1.classList.remove("active");
-        tab2.classList.remove("active");
-        tab3.classList.add("active");
-        tab4.classList.remove("active");
-      } else {
-        tab1.classList.remove("active");
-        tab2.classList.remove("active");
-        tab4.classList.add("active");
-        tab3.classList.remove("active");
-      }
-    },
-  },
-  mounted() {
-    this.dashboardStore.fetchStatistics();
+  methods: {},
+  async mounted() {
+    await this.dashboardStore.fetchStatistics();
+    await this.regionStore.fetchregions();
+    await this.htxStore.fetchhtxs();
+    await this.agencyStore.fetchagencys();
+    await this.artisanStore.fetchArtisans();
+    this.dashboardStore.regions = this.regionStore.regions;
+    this.dashboardStore.htxs = this.htxStore.htxs;
+    this.dashboardStore.agencys = this.agencyStore.agencys;
+    this.dashboardStore.artisans = this.artisanStore.artisans;
   },
 };
 </script>

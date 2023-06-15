@@ -7,6 +7,10 @@ import { get } from "lodash";
 export const dashboardStore = defineStore("dashboard", {
   state: () => ({
     dashboard: {},
+    regions: [],
+    agencys: [],
+    htxs: [],
+    artisans: [],
   }),
   getters: {},
   actions: {
