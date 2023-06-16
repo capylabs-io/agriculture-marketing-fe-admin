@@ -21,6 +21,9 @@ const routes = [
     path: "/",
     name: "Mainlayout",
     component: () => import("../views/Mainlayout.vue"),
+    meta: {
+      requiresAuth: true,
+    },
     children: [
       {
         path: "/dashboard",
@@ -33,7 +36,8 @@ const routes = [
       {
         path: "/account-setting",
         name: "Admin Account",
-        component: () => import("../views/account-setting/pages/account-setting.vue"),
+        component: () =>
+          import("../views/account-setting/pages/account-setting.vue"),
 
         meta: {
           requiresAuth: true,
@@ -50,7 +54,8 @@ const routes = [
       {
         path: "/product",
         name: "Product Management",
-        component: () => import("../views/product/pages/product-management.vue"),
+        component: () =>
+          import("../views/product/pages/product-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -74,7 +79,8 @@ const routes = [
       {
         path: "/artisan",
         name: "Artisan Management",
-        component: () => import("../views/artisan/pages/artisan-management.vue"),
+        component: () =>
+          import("../views/artisan/pages/artisan-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -91,9 +97,9 @@ const routes = [
         path: "/edit-artisan",
         name: "Update Artisan",
         component: () => import("../views/artisan/pages/edit-artisan.vue"),
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/agency",
@@ -115,9 +121,9 @@ const routes = [
         path: "/edit-agency",
         name: "Update Agency",
         component: () => import("../views/agency/pages/edit-agency.vue"),
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/htx",
@@ -139,9 +145,9 @@ const routes = [
         path: "/edit-htx",
         name: "Update HTX",
         component: () => import("../views/htx/pages/edit-htx.vue"),
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/region",
@@ -163,9 +169,9 @@ const routes = [
         path: "/edit-region",
         name: "Update Region",
         component: () => import("../views/region/pages/edit-region.vue"),
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/create-supply",
@@ -179,9 +185,9 @@ const routes = [
         path: "/edit-supply",
         name: "Update Supply",
         component: () => import("../views/supply/pages/edit-supply.vue"),
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/write-post",
@@ -195,9 +201,9 @@ const routes = [
         path: "/edit-post",
         name: "Update Post",
         component: () => import("../views/news/pages/edit-news.vue"),
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/create-product",
@@ -211,9 +217,9 @@ const routes = [
         path: "/edit-product",
         name: "Update Product",
         component: () => import("../views/product/pages/edit-product.vue"),
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/create-seed",
@@ -227,14 +233,15 @@ const routes = [
         path: "/edit-seed",
         name: "Update Seedling",
         component: () => import("../views/breed/pages/edit-breed.vue"),
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "/contact",
         name: "Contact Management",
-        component: () => import("../views/contact/pages/contact-management.vue"),
+        component: () =>
+          import("../views/contact/pages/contact-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -243,7 +250,8 @@ const routes = [
       {
         path: "/document",
         name: "Document Management",
-        component: () => import("../views/document/pages/document-management.vue"),
+        component: () =>
+          import("../views/document/pages/document-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -260,6 +268,9 @@ const routes = [
         path: "/edit-document",
         name: "Edit Document",
         component: () => import("../views/document/pages/edit-document.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
 
       {
@@ -282,6 +293,9 @@ const routes = [
         path: "/edit-faq",
         name: "Edit FAQ",
         component: () => import("../views/faq/pages/edit-faq.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
     ],
   },

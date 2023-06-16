@@ -38,10 +38,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-view-dashboard-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Báo cáo thống kê</v-list-item-title
             >
           </v-list-item>
@@ -52,10 +54,12 @@
             to="/region"
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-warehouse</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Vùng sản xuất</v-list-item-title
             >
           </v-list-item>
@@ -66,10 +70,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-home-account</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Hợp tác xã</v-list-item-title
             >
           </v-list-item>
@@ -80,10 +86,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-store-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Đại lý</v-list-item-title
             >
           </v-list-item>
@@ -94,10 +102,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-star-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Quản lý nghệ nhân</v-list-item-title
             >
           </v-list-item>
@@ -108,10 +118,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-tree-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Cây và Hoa</v-list-item-title
             >
           </v-list-item>
@@ -122,10 +134,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-shovel</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Quản lý vật tư</v-list-item-title
             >
           </v-list-item>
@@ -136,10 +150,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-seed-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Quản lý giống</v-list-item-title
             >
           </v-list-item>
@@ -150,10 +166,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-newspaper-variant-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Quản lý bài viết</v-list-item-title
             >
           </v-list-item>
@@ -165,10 +183,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-email-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Hòm thư, liên hệ</v-list-item-title
             >
           </v-list-item>
@@ -179,10 +199,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-file-document-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Quản lý văn bản</v-list-item-title
             >
           </v-list-item>
@@ -193,10 +215,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-help-circle-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Quản lý hỏi đáp</v-list-item-title
             >
           </v-list-item>
@@ -206,10 +230,10 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon >
               <v-icon>mdi-account </v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium"
+            <v-list-item-title class="text-md font-weight-medium ml-2"
               >Quản lý hội viên</v-list-item-title
             >
           </v-list-item> -->
@@ -219,10 +243,10 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon >
               <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title class="text-md font-weight-medium ml-2" v-if="!mini"
               >Cấu hình trang chủ
             </v-list-item-title>
           </v-list-item> -->
@@ -233,10 +257,12 @@
             dense
             link
           >
-            <v-list-item-icon :class="mini ? '' : 'mr-2'">
+            <v-list-item-icon>
               <v-icon>mdi-account-box-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium" v-if="!mini"
+            <v-list-item-title
+              class="text-md font-weight-medium ml-2"
+              v-if="!mini"
               >Thông tin tài khoản
             </v-list-item-title>
           </v-list-item>
@@ -296,7 +322,7 @@
           @click="onLogoutClicked"
           text
         >
-          <v-icon :class="mini ? '' : 'mr-2'" color="red60"> mdi-power </v-icon>
+          <v-icon  color="red60"> mdi-power </v-icon>
           <div>Log Out</div>
         </v-btn>
         <v-divider></v-divider>

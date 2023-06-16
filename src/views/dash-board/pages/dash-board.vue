@@ -39,7 +39,7 @@
         </div>
       </div>
     </div> -->
-    <v-row class="mt-5">
+    <v-row class="mt-4">
       <v-col cols="12" xl="4" md="4">
         <v-card
           class="number-card border-radius-12 neutral30-border pa-6"
@@ -190,7 +190,6 @@
           </router-link>
         </v-card>
       </v-col>
-      <v-col cols="12" xl="4" md="4"> </v-col>
     </v-row>
     <v-row class="mt-4">
       <v-col cols="12" xl="4" md="4">
