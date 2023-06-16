@@ -38,7 +38,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-view-dashboard-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -54,7 +54,7 @@
             to="/region"
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-warehouse</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -70,7 +70,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-home-account</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -86,7 +86,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-store-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -102,7 +102,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-star-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -118,7 +118,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-tree-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -134,7 +134,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-shovel</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -150,7 +150,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-seed-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -166,7 +166,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-newspaper-variant-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -183,7 +183,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-email-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -199,7 +199,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-file-document-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -215,7 +215,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-help-circle-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -230,7 +230,7 @@
             dense
             link
           >
-            <v-list-item-icon >
+            <v-list-item-icon class="mx-auto" >
               <v-icon>mdi-account </v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium ml-2"
@@ -243,7 +243,7 @@
             dense
             link
           >
-            <v-list-item-icon >
+            <v-list-item-icon class="mx-auto" >
               <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="text-md font-weight-medium ml-2" v-if="!mini"
@@ -257,7 +257,7 @@
             dense
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="mx-auto">
               <v-icon>mdi-account-box-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
