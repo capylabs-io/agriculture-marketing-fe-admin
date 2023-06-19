@@ -184,13 +184,28 @@
             link
           >
             <v-list-item-icon class="mx-auto">
-              <v-icon>mdi-email-outline</v-icon>
+              <v-badge
+                color="red"
+                :content="contactStore.contactNotification"
+                v-if="mini && contactStore.contactNotification > 0"
+              >
+                <v-icon>mdi-email-outline</v-icon>
+              </v-badge>
+              <v-icon v-else>mdi-email-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
               class="text-md font-weight-medium ml-2"
               v-if="!mini"
-              >Hòm thư, liên hệ</v-list-item-title
             >
+              Hòm thư, liên hệ
+              <v-badge
+                color="red"
+                :content="contactStore.contactNotification"
+                v-if="!mini && contactStore.contactNotification > 0"
+                class="ml-10"
+              >
+              </v-badge>
+            </v-list-item-title>
           </v-list-item>
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
@@ -336,9 +351,13 @@
 
 <script>
 import { userStore } from "@/stores/userStore";
+import { contactStore } from "@/views/contact/store/contact-store";
 import { mapStores } from "pinia";
 export default {
-  computed: { ...mapStores(userStore) },
+  computed: {
+    ...mapStores(userStore),
+    ...mapStores(contactStore),
+  },
   methods: {
     onLogoutClicked() {
       this.userStore.logout();
@@ -350,6 +369,9 @@ export default {
       mini: false,
     };
   },
+  // created() {
+  //   this.contactStore.fetchContacts();
+  // },
 };
 </script>
 

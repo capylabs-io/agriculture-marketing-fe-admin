@@ -3,8 +3,7 @@ import { Contact, Common } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
-import router from "@/router";
-
+// import router from "@/router";
 export const contactStore = defineStore("contact", {
   state: () => ({
     contactPage: 1,
@@ -18,6 +17,7 @@ export const contactStore = defineStore("contact", {
     contactForm: false,
     searchKey: "",
     drawerDetail: false,
+    contactNotification: 0,
   }),
   getters: {
     slicedcontacts() {
@@ -114,7 +114,17 @@ export const contactStore = defineStore("contact", {
             author: get(contact, "attributes.user.data.attributes", {}),
           };
         });
+        let count = mappedcontacts.filter(
+          (contact) => contact.data.status == "Checked"
+        ).length;
+        if (count <= 0) {
+          this.contactNotification = 0;
+        } else {
+          this.contactNotification = count;
+        }
         this.contacts = mappedcontacts;
+        console.log("contacts", this.contacts);
+        console.log("contactNotification", this.contactNotification);
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
@@ -154,78 +164,18 @@ export const contactStore = defineStore("contact", {
     //     loading.hide();
     //   }
     // },
-
-    async createcontact() {
-      try {
-        loading.show();
-        //upload images
-        let promises = [
-          await this.uploadFile(this.contactThumbnail),
-          await this.uploadFile(this.contactCertification),
-          await this.uploadFile(this.contactAccreditation),
-        ];
-
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
-        let query = {
-          ...this.contact,
-          images: uploadedThumbnail ? uploadedThumbnail[0] : "",
-          certificationImages: uploadedCertification
-            ? uploadedCertification[0]
-            : "",
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : "",
-        };
-
-        const res = await Contact.create({
-          data: query,
-        });
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        this.reset();
-        alert.success("Tạo sản phẩm mới thành công!");
-        router.push("/contact");
-      } catch (error) {
-        alert.error("Create contact fail! Please try again later!");
-      } finally {
-        loading.hide();
-      }
-    },
-    async updatecontact() {
+    async updateContactStatus() {
       try {
         if (!this.contact) return;
         loading.show();
         //upload images
-        let promises = [
-          await this.uploadFile(this.contactThumbnail),
-          await this.uploadFile(this.contactCertification),
-          await this.uploadFile(this.contactAccreditation),
-        ];
 
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
         let query = {
           ...this.contact,
-          images: uploadedThumbnail
-            ? uploadedThumbnail[0]
-            : this.contact.images,
-          certificationImages: uploadedCertification
-            ? uploadedCertification[0]
-            : this.contact.certificationImages,
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : this.contact.accreditationImages,
+          data: {
+            status: "done",
+          },
         };
-
         const res = await Contact.update(this.contact.id, {
           data: query,
         });
@@ -233,9 +183,8 @@ export const contactStore = defineStore("contact", {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        this.reset();
-        alert.success("Cập nhật sản phẩm mới thành công!");
-        router.push("/contact");
+        this.fetchContacts();
+        alert.success("Cập nhật liên hệ!");
       } catch (error) {
         alert.error("Update contact fail! Please try again later!");
       } finally {

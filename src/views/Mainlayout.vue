@@ -26,7 +26,7 @@ export default {
   background: white;
 }
 .container {
-  max-width: 1400px;
+  width: 1400px;
   animation: fadeleft 1s ease-in-out;
 }
 </style>

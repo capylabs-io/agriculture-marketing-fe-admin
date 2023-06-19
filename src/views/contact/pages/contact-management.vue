@@ -28,14 +28,30 @@
     </div>
 
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
+      <!-- @click:row="onRowClicked($event)" -->
       <v-data-table
         :headers="headers"
         :items="contactStore.slicedcontacts"
         :items-per-page="contactStore.contactsPerPage"
         hide-default-footer
-        @click:row="onRowClicked($event)"
       >
-        <template v-slot:[`item.id`]="{ item }">
+        <template v-slot:item="props">
+          <tr
+            :class="
+              props.item.data.status == 'Checked'
+                ? 'active font-weight-semibold'
+                : ''
+            "
+            @click="onRowClicked(props.item)"
+          >
+            <td class="text-center">{{ props.item.name }}</td>
+            <td class="text-center">{{ props.item.email }}</td>
+            <td class="text-center">{{ props.item.title }}</td>
+            <td class="text-center">{{ props.item.createdAt }}</td>
+            <td class="text-center"></td>
+          </tr>
+        </template>
+        <!-- <template v-slot:[`item.id`]="{ item }">
           <div class="d-flex flex-column align-center">
             <v-checkbox :key="item.id"></v-checkbox>
           </div>
@@ -44,31 +60,7 @@
           <div>
             {{ item.createdAt | ddmmyyyyhhmmss }}
           </div>
-        </template>
-        <template v-slot:[`item.action`]="{ item }">
-          <div class="d-flex align-center justify-center">
-            <v-btn
-              icon
-              dense
-              @click="onDisableClicked(item.id)"
-              v-if="item.status == 'publish'"
-              ><v-icon color="error">mdi-eye-off-outline</v-icon></v-btn
-            >
-            <v-btn
-              icon
-              dense
-              @click="onEnableClicked(item.id)"
-              v-if="item.status == 'disabled'"
-              ><v-icon color="success">mdi-eye-outline</v-icon></v-btn
-            >
-            <!-- <v-btn icon dense @click="onEditClicked(item)"
-              ><v-icon>mdi-pencil-outline</v-icon></v-btn
-            > -->
-            <!-- <v-btn icon dense @click="onDeleteClicked(item.id)"
-              ><v-icon>mdi-delete-outline</v-icon></v-btn
-            > -->
-          </div>
-        </template>
+        </template> -->
       </v-data-table>
     </div>
 
@@ -185,8 +177,9 @@ export default {
       window.open(link);
     },
     onRowClicked(item) {
-      this.contactStore.drawerDetail = true;
       this.contactStore.contact = item;
+      this.contactStore.updateContactStatus();
+      this.contactStore.drawerDetail = true;
       this.contactStore.contact.contactCategory = item.contactCategory.id;
     },
     onEditClicked(item) {
@@ -208,3 +201,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.active {
+  background: linear-gradient(var(--v-neutral10-base)),
+    linear-gradient(var(--v-neutral20-base));
+}
+</style>
