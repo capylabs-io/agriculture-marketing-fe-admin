@@ -115,7 +115,7 @@ export const contactStore = defineStore("contact", {
           };
         });
         let count = mappedcontacts.filter(
-          (contact) => contact.data.status == "Checked"
+          (contact) => contact.data.status == "unChecked"
         ).length;
         if (count <= 0) {
           this.contactNotification = 0;

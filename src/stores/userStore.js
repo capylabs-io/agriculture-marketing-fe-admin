@@ -160,11 +160,25 @@ export const userStore = defineStore("user", {
         loading.hide();
       }
     },
+    // sessionSet(key, value, expirationInMin = 10) {
+    //   let expirationDate = new Date(
+    //     new Date().getTime() + 60000 * expirationInMin
+    //   );
+    //   let newValue = {
+    //     value: value,
+    //     expirationDate: expirationDate.toISOString(),
+    //   };
+    //   window.sessionStorage.setItem(key, JSON.stringify(newValue));
+    // },
   },
   persist: [
     {
-      paths: ["password", "rememberMe", "username", "userData", "jwt"],
+      paths: ["userData", "password", "rememberMe", "username"],
       storage: localStorage,
+    },
+    {
+      paths: ["jwt"],
+      storage: sessionStorage,
     },
   ],
 });

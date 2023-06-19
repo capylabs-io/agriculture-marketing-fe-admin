@@ -239,32 +239,7 @@
               >Quản lý hỏi đáp</v-list-item-title
             >
           </v-list-item>
-          <!-- <v-list-item
-            class="border-radius-8 py-0 px-2 mt-2"
-            active-class="active-item"
-            dense
-            link
-          >
-            <v-list-item-icon class="mx-auto" >
-              <v-icon>mdi-account </v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium ml-2"
-              >Quản lý hội viên</v-list-item-title
-            >
-          </v-list-item> -->
-          <!-- <v-list-item
-            class="border-radius-8 py-0 px-2 mt-2"
-            active-class="active-item"
-            dense
-            link
-          >
-            <v-list-item-icon class="mx-auto" >
-              <v-icon>mdi-cog</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="text-md font-weight-medium ml-2" v-if="!mini"
-              >Cấu hình trang chủ
-            </v-list-item-title>
-          </v-list-item> -->
+
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
             to="/account-setting"
@@ -281,6 +256,32 @@
               >Thông tin tài khoản
             </v-list-item-title>
           </v-list-item>
+          <v-list-group
+            class="border-radius-8 mt-2 mx-n2"
+            :value="true"
+            prepend-icon="mdi-cog-outline"
+            no-action
+            active-class="active-item"
+          >
+            <template v-slot:activator>
+              <v-list-item-title class="mx-n3 text-md font-weight-medium"
+                >Cấu hình trang chủ</v-list-item-title
+              >
+            </template>
+
+            <v-list-item
+              v-for="([title, url], i) in admins"
+              :key="i"
+              link
+              class="border-radius-8 mx-4 px-4"
+              active-class="active-item"
+              :to="url"
+            >
+              <v-list-item-title class="text-md font-weight-medium">{{
+                title
+              }}</v-list-item-title>
+            </v-list-item>
+          </v-list-group>
         </v-list>
       </div>
 
@@ -367,11 +368,16 @@ export default {
   data() {
     return {
       mini: false,
+      admins: [
+        ["Banner", "/homepage-banner"],
+        ["Sản phẩm tiêu biểu", "/homepage-fav-product"],
+        ["Hợp tác xã", "/homepage-htx"],
+        ["Đại lý", "/homepage-agency"],
+        ["Nghệ nhân", "/homepage-artisan"],
+        ["Đối tác", "/homepage-partner"],
+      ],
     };
   },
-  // created() {
-  //   this.contactStore.fetchContacts();
-  // },
 };
 </script>
 
@@ -401,5 +407,13 @@ export default {
 }
 .nav-drawer {
   min-width: 280px;
+}
+
+.v-list__group__header {
+  border-radius: 8px !important;
+}
+.v-list-item--active {
+  background: var(--v-primary60-base) !important;
+  color: white !important;
 }
 </style>

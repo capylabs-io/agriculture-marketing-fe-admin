@@ -38,7 +38,7 @@
         <template v-slot:item="props">
           <tr
             :class="
-              props.item.data.status == 'Checked'
+              props.item.data.status == 'unChecked'
                 ? 'active font-weight-semibold'
                 : ''
             "
@@ -178,7 +178,9 @@ export default {
     },
     onRowClicked(item) {
       this.contactStore.contact = item;
-      this.contactStore.updateContactStatus();
+      if (item.data.status == "unChecked") {
+        this.contactStore.updateContactStatus();
+      }
       this.contactStore.drawerDetail = true;
       this.contactStore.contact.contactCategory = item.contactCategory.id;
     },

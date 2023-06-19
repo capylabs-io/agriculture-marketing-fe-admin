@@ -297,6 +297,15 @@ const routes = [
           requiresAuth: true,
         },
       },
+      {
+        path: "/homepage-banner",
+        name: "Banner",
+        component: () =>
+          import("../views/homepage-config/banner/pages/banner-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
 ];
