@@ -100,30 +100,30 @@
         </div>
       </v-col>
       <v-col cols="12" md="7">
-        <v-radio-group v-model="radioGroup" column>
-          <v-radio label="bằng YouTube" value="1"> </v-radio>
+        <v-radio-group v-model="postStore.radioGroup" column>
+          <v-radio label="bằng YouTube" :value="1"> </v-radio>
           <v-text-field
             type="text"
             v-model="postStore.youtubeUrl"
             class="border-radius-8 mt-1"
             placeholder="Nhập link video"
             solo
-            :disabled="radioGroup == 1 ? false : true"
-            :background-color="radioGroup == 1 ? '' : 'neutral10'"
+            :disabled="postStore.radioGroup == 1 ? false : true"
+            :background-color="postStore.radioGroup == 1 ? '' : 'neutral10'"
             outlined
             dense
             flat
           />
           <v-radio
             label="Tải liên từ máy tính"
-            value="2"
+            :value="2"
             class="mt-2"
           ></v-radio>
           <v-file-input
             v-model="postStore.postFile"
             placeholder="Chọn video bài viết"
-            :disabled="radioGroup == 2 ? false : true"
-            :background-color="radioGroup == 2 ? '' : 'neutral10'"
+            :disabled="postStore.radioGroup == 2 ? false : true"
+            :background-color="postStore.radioGroup == 2 ? '' : 'neutral10'"
             prepend-inner-icon="mdi-paperclip"
             class="border-radius-8 mt-1"
             prepend-icon=""
@@ -268,7 +268,6 @@ export default {
       ],
       imagePost: false,
       videoPost: false,
-      radioGroup: null,
     };
   },
   props: {
@@ -311,6 +310,10 @@ export default {
     },
   },
   watch: {},
+
+  created() {
+    console.log("radioGroup", this.postStore.radioGroup);
+  },
   methods: {
     onFileChanged(data) {
       this.postStore.file = data;

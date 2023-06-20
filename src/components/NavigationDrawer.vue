@@ -194,17 +194,20 @@
               <v-icon v-else>mdi-email-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
-              class="text-md font-weight-medium ml-2"
+              class="text-md font-weight-medium ml-2 d-flex align-center"
               v-if="!mini"
             >
-              Hòm thư, liên hệ
-              <v-badge
-                color="red"
-                :content="contactStore.contactNotification"
-                v-if="!mini && contactStore.contactNotification > 0"
-                class="ml-10"
-              >
-              </v-badge>
+              <div>Hòm thư, liên hệ</div>
+              <v-spacer></v-spacer>
+              <div>
+                <v-badge
+                  color="red"
+                  :content="contactStore.contactNotification"
+                  v-if="!mini && contactStore.contactNotification > 0"
+                  class="ml-n4"
+                >
+                </v-badge>
+              </div>
             </v-list-item-title>
           </v-list-item>
           <v-list-item
@@ -364,6 +367,9 @@ export default {
       this.userStore.logout();
       this.$router.push("/login");
     },
+  },
+  created() {
+    this.contactStore.fetchContacts();
   },
   data() {
     return {

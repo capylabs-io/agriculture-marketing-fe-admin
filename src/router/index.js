@@ -306,6 +306,26 @@ const routes = [
           requiresAuth: true,
         },
       },
+      {
+        path: "/homepage-banner",
+        name: "Banner",
+        component: () =>
+          import("../views/homepage-config/banner/pages/banner-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/homepage-fav-product",
+        name: "Banner",
+        component: () =>
+          import(
+            "../views/homepage-config/fav-product/pages/fav-product-management.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
 ];

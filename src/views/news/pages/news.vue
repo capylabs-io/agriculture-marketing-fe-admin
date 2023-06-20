@@ -173,9 +173,15 @@ export default {
       window.open(link);
     },
     onEditClicked(item) {
-      console.log("select post", item);
       this.postStore.post = item;
       this.postStore.post.postCategory = item.postCategory;
+      if (item.videoContent && item.videoContent.includes("youtube")) {
+        this.postStore.radioGroup = 1;
+      } else if (item.videoContent) {
+        this.postStore.radioGroup = 2;
+      } else {
+        this.postStore.radioGroup = 0;
+      }
       router.push("/edit-post");
     },
     onDisableClicked(postId) {

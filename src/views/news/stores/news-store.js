@@ -20,6 +20,7 @@ export const postStore = defineStore("post", {
     categories: [],
     imagePost: false,
     videoPost: false,
+    radioGroup: null,
     youtubeUrl: "",
   }),
   getters: {
@@ -335,7 +336,6 @@ export const postStore = defineStore("post", {
         loading.hide();
       }
     },
-
   },
 });
 /* eslint-enable */

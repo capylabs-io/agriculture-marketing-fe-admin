@@ -81,7 +81,7 @@
       </v-col>
       <v-col cols="12" md="2"> </v-col>
     </v-row>
-    <v-divider class="mt-3"></v-divider>
+    <!-- <v-divider class="mt-3"></v-divider>
     <v-row class="mt-3">
       <v-col cols="12" md="3">
         <div class="font-weight-semibold mb-2">Mã truy xuất</div>
@@ -99,7 +99,7 @@
         />
       </v-col>
       <v-col cols="12" md="2"> </v-col>
-    </v-row>
+    </v-row> -->
     <v-divider class="mt-3"></v-divider>
 
     <v-row class="mt-3">
