@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { get } from "lodash";
-import router from "@/router";
-import { Common, Product, ProductCategory } from "@/plugins/api";
+// import router from "@/router";
+import { Common, HomepageConfig, Product } from "@/plugins/api";
 
 export const favProductStore = defineStore("favProduct", {
   state: () => ({
@@ -13,6 +13,8 @@ export const favProductStore = defineStore("favProduct", {
     categories: [],
     favProduct: {},
     favProducts: [],
+    favSearchProducts: [],
+    favProductCodes: [],
     favProductThumbnail: null,
     favProductCertification: null,
     favProductAccreditation: null,
@@ -20,83 +22,112 @@ export const favProductStore = defineStore("favProduct", {
     searchKey: "",
   }),
   getters: {
+    // slicedfavProducts() {
+    //   if (!this.favProducts || this.favProducts.length == 0) return [];
+    //   return this.filteredfavProducts.slice(
+    //     (this.favProductPage - 1) * this.favProductsPerPage,
+    //     this.favProductPage * this.favProductsPerPage
+    //   );
+    // },
+    // filteredfavProducts() {
+    //   if (!this.favProducts || this.favProducts.length == 0) return [];
+    //   let filtered = this.favProducts;
+    //   if (this.searchKey)
+    //     filtered = filtered.filter(
+    //       (favProduct) =>
+    //         favProduct.name
+    //           .toLowerCase()
+    //           .includes(this.searchKey.trim().toLowerCase()) ||
+    //         favProduct.code
+    //           .toLowerCase()
+    //           .includes(this.searchKey.trim().toLowerCase())
+    //     );
+    //   return filtered;
+    // },
+
+    // totalfavProductPage() {
+    //   if (!this.favProducts || this.filteredfavProducts.length == 0) return 1;
+    //   if (this.filteredfavProducts.length % this.favProductsPerPage == 0)
+    //     return this.filteredfavProducts.length / this.favProductsPerPage;
+    //   else
+    //     return (
+    //       Math.floor(
+    //         this.filteredfavProducts.length / this.favProductsPerPage
+    //       ) + 1
+    //     );
+    // },
     slicedfavProducts() {
       if (!this.favProducts || this.favProducts.length == 0) return [];
-      return this.filteredfavProducts.slice(
-        (this.favProductPage - 1) * this.favProductsPerPage,
-        this.favProductPage * this.favProductsPerPage
+      return this.favProducts.slice(
+        (this.favProductsPage - 1) * this.favProductsPerPage,
+        this.favProductsPage * this.favProductsPerPage
       );
     },
-    filteredfavProducts() {
-      if (!this.favProducts || this.favProducts.length == 0) return [];
-      let filtered = this.favProducts;
-      if (this.searchKey)
-        filtered = filtered.filter(
-          (favProduct) =>
-            favProduct.name
-              .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase()) ||
-            favProduct.code
-              .toLowerCase()
-              .includes(this.searchKey.trim().toLowerCase()) 
-        );
-      return filtered;
-    },
-    // sortedCampaigns() {
-    //   if (!this.voucherData || this.voucherData.length == 0) return [];
-    //   let sortedCampaigns = this.voucherData;
-    //   if (!this.sortBy) return sortedCampaigns;
-    //   switch (this.sortBy) {
-    //     default:
-    //     case "asc":
-    //       sortedCampaigns.sort((a, b) => a.title.localeCompare(b.title));
-    //       break;
-    //     case "desc":
-    //       sortedCampaigns.sort((a, b) => b.title.localeCompare(a.title));
-    //       break;
-    //     case "newest":
-    //       sortedCampaigns.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    //       break;
-    //     case "oldest":
-    //       sortedCampaigns.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-    //       break;
-    //     case "priceUp":
-    //       sortedCampaigns
-    //         // .filter((voucher) => voucher.price)
-    //         .sort((a, b) => a.price - b.price);
-    //       break;
-    //     case "priceDown":
-    //       sortedCampaigns
-    //         // .filter((voucher) => voucher.price)
-    //         .sort((a, b) => b.price - a.price);
-    //       break;
-    //   }
-    //   return sortedCampaigns;
-    // },
-    totalfavProductPage() {
-      if (!this.favProducts || this.filteredfavProducts.length == 0) return 1;
-      if (this.filteredfavProducts.length % this.favProductsPerPage == 0)
-        return this.filteredfavProducts.length / this.favProductsPerPage;
+    totalfavProductsPage() {
+      if (!this.favProducts || this.favProducts.length == 0) return 1;
+      if (this.favProducts.length % this.favProductsPerPage == 0)
+        return this.favProducts.length / this.favProductsPerPage;
       else
         return (
-          Math.floor(this.filteredfavProducts.length / this.favProductsPerPage) + 1
+          Math.floor(this.favProducts.length / this.favProductsPerPage) + 1
         );
     },
+
     totalfavProduct() {
       if (!this.favProducts || this.filteredfavProducts.length == 0) return 1;
       return this.filteredfavProducts.length;
     },
   },
   actions: {
+    async fetchSearchCodes() {
+      try {
+        loading.show();
+        if (!this.searchKey) return;
+        const query = {
+          filters: {
+            status: "publish",
+            code: this.searchKey.trim(),
+          },
+          sort: "updatedAt:desc",
+          populate: "*",
+          pagination: {
+            page: 1,
+            pageSize: 1,
+          },
+        };
+        const productRes = await Product.fetch(query);
+        const favProducts = get(productRes, "data.data", []);
+        if (!favProducts && favProducts.length == 0) return;
+        const mappedfavProducts = favProducts.map((product) => {
+          return {
+            id: product.id,
+            code: product.attributes.code,
+            images: product.attributes.images,
+            name: product.attributes.name,
+            price: product.attributes.price,
+          };
+        });
+
+        this.favSearchProducts = mappedfavProducts;
+        console.log("favProducts", this.favProducts);
+      } catch (error) {
+        alert.error("Error occurred!", error.message);
+      } finally {
+        loading.hide();
+      }
+    },
     async fetchfavProducts() {
       try {
         loading.show();
         const res = await Product.fetch({
           populate: "*",
+          // filters: {
+          //   code: this.favProductCodes,
+          // },
         });
         if (!res) {
           alert.error(
-            "Error occurred when fetching favProducts!",
+            "Error occurred when fetching products!",
             "Please try again later!"
           );
           return;
@@ -107,9 +138,13 @@ export const favProductStore = defineStore("favProduct", {
           return {
             id: favProduct.id,
             ...favProduct.attributes,
-            favProductCategory: {
-              id: get(favProduct, "attributes.favProductCategory.data.id", -1),
-              ...get(favProduct, "attributes.favProductCategory.data.attributes", {}),
+            productCategory: {
+              id: get(favProduct, "attributes.productCategory.data.id", -1),
+              ...get(
+                favProduct,
+                "attributes.productCategory.data.attributes",
+                {}
+              ),
             },
             cooperative: {
               id: get(favProduct, "attributes.cooperative.data.id", -1),
@@ -130,126 +165,67 @@ export const favProductStore = defineStore("favProduct", {
             author: get(favProduct, "attributes.user.data.attributes", {}),
           };
         });
-        this.favProducts = mappedfavProducts;
+
+        // this.favProducts = mappedfavProducts;
+        this.favProducts = this.favProductCodes.map((code) =>
+          mappedfavProducts.find((product) => product.code === code)
+        );
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
         loading.hide();
       }
     },
-    async fetchCategories() {
+    async updateFavProducts() {
       try {
         loading.show();
-        const res = await ProductCategory.fetch();
+        const res = await HomepageConfig.updateConfig(1, {
+          data: {
+            products: {
+              config: this.favProductCodes,
+            },
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        alert.success(`cập nhật thành công!`);
+        this.reset();
+        await this.fetchfavProductCodes();
+        await this.fetchfavProducts();
+      } catch (error) {
+        alert.error("Error occurred!", error);
+      } finally {
+        loading.hide();
+      }
+    },
+    async fetchfavProductCodes() {
+      try {
+        loading.show();
+        const res = await HomepageConfig.fetchfavProductCodes();
         if (!res) {
           alert.error(
-            "Error occurred when fetching favProduct categories!",
+            "Error occurred when fetching favProducts!",
             "Please try again later!"
           );
           return;
         }
-        const categories = get(res, "data.data", []);
-        if (!categories && categories.length == 0) return;
-        const mappedCategories = categories.map((category) => {
-          return {
-            id: category.id,
-            name: get(category, "attributes.name", "Category Name"),
-          };
-        });
-        this.categories = mappedCategories;
+        const favProductCodes = get(
+          res,
+          "data.data.[0].attributes.products.config",
+          []
+        );
+        if (!favProductCodes && favProductCodes.length == 0) return;
+        this.favProductCodes = favProductCodes;
+        console.log("favProductCodes", this.favProductCodes);
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
         loading.hide();
       }
     },
-    async createfavProduct() {
-      try {
-        loading.show();
-        //upload images
-        let promises = [
-          await this.uploadFile(this.favProductThumbnail),
-          await this.uploadFile(this.favProductCertification),
-          await this.uploadFile(this.favProductAccreditation),
-        ];
-
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
-        let query = {
-          ...this.favProduct,
-          images: uploadedThumbnail ? uploadedThumbnail[0] : "",
-          certificationImages: uploadedCertification
-            ? uploadedCertification[0]
-            : "",
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : "",
-        };
-
-        const res = await Product.create({
-          data: query,
-        });
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        this.reset();
-        alert.success("Tạo sản phẩm mới thành công!");
-        router.push("/favProduct");
-      } catch (error) {
-        alert.error("Create favProduct fail! Please try again later!");
-      } finally {
-        loading.hide();
-      }
-    },
-    async updatefavProduct() {
-      try {
-        if (!this.favProduct) return;
-        loading.show();
-        //upload images
-        let promises = [
-          await this.uploadFile(this.favProductThumbnail),
-          await this.uploadFile(this.favProductCertification),
-          await this.uploadFile(this.favProductAccreditation),
-        ];
-
-        const [
-          uploadedThumbnail,
-          uploadedCertification,
-          uploadedAccreditation,
-        ] = await Promise.all(promises);
-        let query = {
-          ...this.favProduct,
-          images: uploadedThumbnail
-            ? uploadedThumbnail[0]
-            : this.favProduct.images,
-          certificationImages: uploadedCertification
-            ? uploadedCertification[0]
-            : this.favProduct.certificationImages,
-          accreditationImages: uploadedAccreditation
-            ? uploadedAccreditation[0]
-            : this.favProduct.accreditationImages,
-        };
-
-        const res = await Product.update(this.favProduct.id, {
-          data: query,
-        });
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        this.reset();
-        alert.success("Cập nhật sản phẩm mới thành công!");
-        router.push("/favProduct");
-      } catch (error) {
-        alert.error("Update favProduct fail! Please try again later!");
-      } finally {
-        loading.hide();
-      }
-    },
+    
     async uploadFile(file) {
       try {
         if (!file) return;
@@ -277,68 +253,17 @@ export const favProductStore = defineStore("favProduct", {
         loading.hide();
       }
     },
-    async togglefavProduct(favProductId, isActive) {
-      if (!favProductId) return;
-      try {
-        loading.show();
-        const res = await Product.update(favProductId, {
-          data: {
-            status: isActive ? "publish" : "disabled",
-          },
-        });
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        alert.success(`${isActive ? "Hiện" : "Ẩn"}  sản phẩm thành công!"`);
-        await this.fetchfavProducts();
-      } catch (error) {
-        alert.error("Error occurred!", error);
-      } finally {
-        loading.hide();
-      }
-    },
-    async deletefavProduct(favProductId) {
-      if (!favProductId) return;
-      try {
-        loading.show();
-        const res = await Product.remove(favProductId);
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        alert.success("Xóa sản phẩm thành công!");
-        await this.fetchfavProducts();
-      } catch (error) {
-        alert.error("Error occurred!", error);
-      } finally {
-        loading.hide();
-      }
-    },
+
     reset() {
       this.favProduct = {};
+      this.searchKey = null;
+      this.favProductCodes = null;
+      this.favProduct = null;
+      this.favProducts = null;
       this.favProductAccreditation = null;
       this.favProductCertification = null;
       this.favProductThumbnail = null;
     },
-    // async fetchVoucher() {
-    //   const user = userStore();
-    //   try {
-    //     loading.show();
-    //     const res = await Voucher.fetchVouchers();
-    //     if (!res) {
-    //       alert.error(`Error occurred! Please try again later!`);
-    //       return;
-    //     }
-    //     this.voucherData = res.data;
-    //     this.voucherDataId = this.voucherData.map((index) => index.id);
-    //   } catch (error) {
-    //     console.error(`Error: ${error}`);
-    //     alert.error(error);
-    //   } finally {
-    //     loading.hide();
-    //   }
-    // },
   },
 });
 /* eslint-enable */

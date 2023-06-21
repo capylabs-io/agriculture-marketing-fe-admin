@@ -215,7 +215,9 @@ body {
   -webkit-box-shadow: 0 0 8px #1e1e20;
   background-color: var(--v-primary-base);
 }
-
+.card-shadow {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
 //Vuetify component setting
 .theme--light.v-list-item--active::before {
   opacity: 0 !important;

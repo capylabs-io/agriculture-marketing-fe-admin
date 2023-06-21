@@ -14,13 +14,53 @@
         <div class="text-sm font-weight-semibold">Nhập mã truy xuất</div>
         <v-text-field
           class="border-radius-6 mt-2"
+          v-model="favProductStore.searchKey"
           placeholder="Ex: NSHL-132219"
-          append-icon="mdi-magnify"
           flat
           solo
           outlined
           dense
-        ></v-text-field>
+        >
+          <template v-slot:append>
+            <div
+              class="append-btn border-radius-6 pa-3 mr-n2 cursor-pointer"
+              @click="onClickSearchCode"
+            >
+              <v-icon color="black"> mdi-magnify </v-icon>
+            </div>
+          </template>
+        </v-text-field>
+      </div>
+      <div
+        class="d-flex align-center justify-center mx-auto search-panel"
+        v-if="
+          favProductStore.favSearchProducts &&
+          favProductStore.favSearchProducts.length > 0
+        "
+      >
+        <div class="d-flex align-center justify-center mx-auto search-panel">
+          <div
+            class="full-width"
+            v-for="(result, index) in favProductStore.favSearchProducts"
+            :key="index"
+          >
+            <Card :product="result" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8" v-else>
+        <div class="d-flex flex-column align-center justify-center mt-12">
+          <v-img
+            max-width="160"
+            height="162"
+            :src="require('@/assets/search-not-found.png')"
+            cover
+          ></v-img>
+          <div class="text-xl font-weight-semibold">
+            Không tìm thấy sản phẩm
+          </div>
+        </div>
       </div>
       <div class="d-flex justify-space-between align-center mt-6">
         <div></div>
@@ -65,9 +105,12 @@
 <script>
 import { mapStores } from "pinia";
 import { favProductStore } from "../store/favProduct-store";
+import alert from "@/plugins/alert";
 
 export default {
-  components: {},
+  components: {
+    Card: () => import("../components/product-card.vue"),
+  },
   computed: {
     ...mapStores(favProductStore),
   },
@@ -92,9 +135,39 @@ export default {
     onCancelClicked() {
       this.favProductStore.favProductCreateDialog = false;
     },
-    async onCreateClicked() {
-      await this.favProductStore.createNewCategory();
+    onClickSearchCode() {
+      if (!this.favProductStore.searchKey) return;
+      this.favProductStore.fetchSearchCodes();
+    },
+    onCreateClicked() {
+      if (
+        !this.favProductStore.favSearchProducts[0].code &&
+        !this.favProductStore.favProductCodes
+      )
+        return;
+      if (
+        this.favProductStore.favProductCodes.some((ai) =>
+          this.favProductStore.favSearchProducts[0].code.includes(ai)
+        )
+      ) {
+        alert.error("Sản phẩm đã được thêm, Xin vui lòng chọn sản phẩm khác!");
+        return;
+      } else if (this.favProductStore.favSearchProducts[0].code.length > 4) {
+        alert.error("Chỉ được thêm tối đa 4 sản phẩm tiêu biểu!");
+        return;
+      }
+
+      this.favProductStore.favProductCodes.push(
+        this.favProductStore.favSearchProducts[0].code
+      );
+      this.favProductStore.updateFavProducts();
+      this.favProductStore.favProductCreateDialog = false;
     },
   },
 };
 </script>
+<style lang="scss" scoped>
+.search-panel {
+  width: 200px !important;
+}
+</style>

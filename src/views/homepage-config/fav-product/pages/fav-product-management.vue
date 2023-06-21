@@ -8,20 +8,69 @@
         Sản phẩm tiêu biểu
         <v-icon class="ml-2" color="black">mdi-help-circle-outline </v-icon>
       </div>
-      <v-btn
-        class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
-        elevation="0"
-        outlined
-        @click="favProductStore.favProductCreateDialog = true"
-      >
-        <v-icon small>mdi-plus</v-icon>
-        <div class="ml-1">Thêm sản phẩm</div>
-      </v-btn>
+      <div class="d-flex">
+        <v-btn
+          class="white-bg neutral20-border text-none btn-text border-radius-8 py-5 mr-2"
+          elevation="0"
+          outlined
+          v-if="isOrderChange"
+          @click="updateOrderList"
+        >
+          <v-icon small>mdi-plus</v-icon>
+          <div class="ml-1">Cập nhật thứ tự</div>
+        </v-btn>
+        <v-btn
+          class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
+          elevation="0"
+          outlined
+          @click="favProductStore.favProductCreateDialog = true"
+        >
+          <v-icon small>mdi-plus</v-icon>
+          <div class="ml-1">Thêm sản phẩm</div>
+        </v-btn>
+      </div>
     </div>
 
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
-      <v-data-table :headers="headers" :items="items" hide-default-footer>
-        <template v-slot:[`item.thumbnail`]="{ item }">
+      <v-data-table
+        :headers="headers"
+        :items="favProductStore.favProducts"
+        hide-default-footer
+      >
+        <template v-slot:body="props">
+          <draggable
+            v-model="favProductStore.favProducts"
+            tag="tbody"
+            :move="onMoveCallback"
+            :clone="onCloneCallback"
+            @end="onDropCallback"
+          >
+            <dataTableRowHandler
+              v-for="(item, index) in props.items"
+              :key="index"
+              :item="item"
+              :headers="headers"
+            >
+              <template v-slot:[`item.id`]>
+                <div class="text-center">
+                  {{ index + 1 }}
+                </div>
+              </template>
+              <template v-slot:[`item.thumbnail`]="{ item }">
+                <v-img
+                  class="table-img neutral20-border border-radius-8 mx-auto"
+                  :src="getImageUrl(item.images)"
+                ></v-img>
+              </template>
+              <template v-slot:[`item.publishedAt`]="{ item }">
+                <div>
+                  {{ item.createdAt | ddmmyyyyhhmmss }}
+                </div>
+              </template>
+            </dataTableRowHandler>
+          </draggable>
+        </template>
+        <!-- <template v-slot:[`item.thumbnail`]="{ item }">
           <v-img
             class="table-img neutral20-border border-radius-8 mx-auto"
             :src="item.thumbnail"
@@ -42,12 +91,12 @@
             ></v-img>
             <div class="mt-4 text-md black--text">Chưa có dữ liệu</div>
           </div>
-        </template>
+        </template> -->
       </v-data-table>
     </div>
     <div class="d-flex justify-space-between align-center mt-6">
       <div class="d-flex align-center gap-8">
-        Hiện
+        Hiện~
         <v-select
           class="border-radius-8 items-per-page-field"
           :items="itemsPerPage"
@@ -81,49 +130,49 @@
 <script>
 import { mapStores } from "pinia";
 import { favProductStore } from "../store/favProduct-store";
+import draggable from "vuedraggable";
 export default {
   computed: {
     ...mapStores(favProductStore),
   },
   components: {
     CreateDialog: () => import("../dialogs/create-favProduct-dialog.vue"),
+    dataTableRowHandler: () =>
+      import("../components/data-table-row-handler.vue"),
+    draggable,
   },
   data() {
     return {
+      isOrderChange: false,
       itemsPerPage: [10, 20, 50],
       items: [
         {
-          id: "1",
           thumbnail: require("@/assets/no-image.png"),
-          name: "Bưởi sáu roi Tỉnh XYZ",
+          name: "test1",
           code: "NSHL-132219",
           publishedAt: "19/04/2023",
         },
         {
-          id: "2",
           thumbnail: require("@/assets/no-image.png"),
-          name: "Bưởi sáu roi Tỉnh XYZ",
+          name: "test2",
           code: "NSHL-132219",
           publishedAt: "19/04/2023",
         },
         {
-          id: "3",
           thumbnail: require("@/assets/no-image.png"),
-          name: "Bưởi sáu roi Tỉnh XYZ",
+          name: "test3",
           code: "NSHL-132219",
           publishedAt: "19/04/2023",
         },
         {
-          id: "4",
           thumbnail: require("@/assets/no-image.png"),
-          name: "Bưởi sáu roi Tỉnh XYZ",
+          name: "test4",
           code: "NSHL-132219",
           publishedAt: "19/04/2023",
         },
         {
-          id: "5",
           thumbnail: require("@/assets/no-image.png"),
-          name: "Bưởi sáu roi Tỉnh XYZ",
+          name: "test5",
           code: "NSHL-132219",
           publishedAt: "19/04/2023",
         },
@@ -172,11 +221,45 @@ export default {
       ],
     };
   },
-  created() {},
+  async created() {
+    await this.favProductStore.fetchfavProductCodes();
+    await this.favProductStore.fetchfavProducts();
+  },
   methods: {
     getImageUrl(url) {
       if (!url) return require("@/assets/no-image.png");
       return url;
+    },
+    onCloneCallback(item) {
+      // Create a fresh copy of item
+      const cloneMe = JSON.parse(JSON.stringify(item));
+      console.log("clone");
+      return cloneMe;
+    },
+    onMoveCallback(evt, originalEvent) {
+      this.isOrderChange = true;
+      const item = evt.draggedContext.element;
+      const itemIdx = evt.draggedContext.futureIndex;
+      console.log("onMoveCallback");
+      console.log("itemIdx", itemIdx);
+      console.log("originalEvent", originalEvent);
+
+      if (item.locked) {
+        return false;
+      }
+
+      return true;
+    },
+    updateOrderList() {
+      this.favProductStore.favProductCodes =
+        this.favProductStore.favProducts.map((p) => p.code);
+      this.favProductStore.updateFavProducts();
+      this.isOrderChange = false;
+    },
+    onDropCallback(evt, originalEvent) {
+      console.log("onDropCallback", evt);
+      console.log("favProducts", this.favProductStore.favProducts);
+      console.log("onDropCallback", originalEvent);
     },
   },
 };

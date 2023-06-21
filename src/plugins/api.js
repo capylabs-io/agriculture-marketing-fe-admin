@@ -26,6 +26,7 @@ const COOPERATIVE_API = "/cooperatives/";
 const AGENCY_CATEGORY_API = "/store-categories/";
 const AGENCY_API = "/stores/";
 const CONTACT_API = "/contacts/";
+const HOMEPAGE_API = "/homepage-configs/";
 
 const APIHelper = (api) => ({
   search: (params, option) =>
@@ -177,4 +178,25 @@ export const Document = {
 };
 export const DocumentCategory = {
   ...APIHelper(DOCUMENT_CATEGORY_API),
+};
+export const HomepageConfig = {
+  ...APIHelper(HOMEPAGE_API),
+  updateConfig: (id, params, options) => {
+    const user = userStore();
+    return axios.put(`homepage-configs/${id}`, utils.filterObject(params), {
+      ...options,
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+  fetchfavProductCodes: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("homepage-configs", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
 };
