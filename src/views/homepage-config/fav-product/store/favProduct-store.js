@@ -29,21 +29,19 @@ export const favProductStore = defineStore("favProduct", {
     //     this.favProductPage * this.favProductsPerPage
     //   );
     // },
-    // filteredfavProducts() {
-    //   if (!this.favProducts || this.favProducts.length == 0) return [];
-    //   let filtered = this.favProducts;
-    //   if (this.searchKey)
-    //     filtered = filtered.filter(
-    //       (favProduct) =>
-    //         favProduct.name
-    //           .toLowerCase()
-    //           .includes(this.searchKey.trim().toLowerCase()) ||
-    //         favProduct.code
-    //           .toLowerCase()
-    //           .includes(this.searchKey.trim().toLowerCase())
-    //     );
-    //   return filtered;
-    // },
+    filteredfavProducts() {
+      if (!this.favSearchProducts || this.favSearchProducts.length == 0)
+        return [];
+      let filtered = this.favSearchProducts;
+      if (this.searchKey)
+        filtered = filtered.filter(
+          (favProduct) =>
+            favProduct.code.toLowerCase() ===
+            this.searchKey.trim().toLowerCase()
+          // .equals()
+        );
+      return filtered;
+    },
 
     // totalfavProductPage() {
     //   if (!this.favProducts || this.filteredfavProducts.length == 0) return 1;
@@ -82,18 +80,18 @@ export const favProductStore = defineStore("favProduct", {
     async fetchSearchCodes() {
       try {
         loading.show();
-        if (!this.searchKey) return;
+        // if (!this.searchKey) return;
         const query = {
-          filters: {
-            status: "publish",
-            code: this.searchKey.trim(),
-          },
+          // filters: {
+          //   status: "publish",
+          //   code: this.searchKey.trim(),
+          // },
           sort: "updatedAt:desc",
           populate: "*",
-          pagination: {
-            page: 1,
-            pageSize: 1,
-          },
+          // pagination: {
+          //   page: 1,
+          //   pageSize: 1,
+          // },
         };
         const productRes = await Product.fetch(query);
         const favProducts = get(productRes, "data.data", []);
@@ -109,7 +107,7 @@ export const favProductStore = defineStore("favProduct", {
         });
 
         this.favSearchProducts = mappedfavProducts;
-        console.log("favProducts", this.favProducts);
+        console.log("searchProducts", this.favSearchProducts);
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {
@@ -203,7 +201,7 @@ export const favProductStore = defineStore("favProduct", {
     async fetchfavProductCodes() {
       try {
         loading.show();
-        const res = await HomepageConfig.fetchfavProductCodes();
+        const res = await HomepageConfig.fetchHomeConfig();
         if (!res) {
           alert.error(
             "Error occurred when fetching favProducts!",
@@ -225,7 +223,7 @@ export const favProductStore = defineStore("favProduct", {
         loading.hide();
       }
     },
-    
+
     async uploadFile(file) {
       try {
         if (!file) return;
@@ -260,6 +258,7 @@ export const favProductStore = defineStore("favProduct", {
       this.favProductCodes = null;
       this.favProduct = null;
       this.favProducts = null;
+      this.favSearchProducts = null;
       this.favProductAccreditation = null;
       this.favProductCertification = null;
       this.favProductThumbnail = null;

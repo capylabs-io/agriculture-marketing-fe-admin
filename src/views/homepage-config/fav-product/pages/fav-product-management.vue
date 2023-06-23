@@ -34,15 +34,23 @@
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
       <v-data-table
         :headers="headers"
-        :items="favProductStore.favProducts"
+        :items="
+          favProductStore.favProducts ? favProductStore.favProducts : items
+        "
+        :items-per-page="4"
         hide-default-footer
       >
         <template v-slot:body="props">
           <draggable
             v-model="favProductStore.favProducts"
-            tag="tbody"
+            animation="150"
             :move="onMoveCallback"
             :clone="onCloneCallback"
+            tag="tbody"
+            class="list-group"
+            ghost-class="ghost"
+            chosen-class="chosen"
+            drag-class="drag"
             @end="onDropCallback"
           >
             <dataTableRowHandler
@@ -50,7 +58,15 @@
               :key="index"
               :item="item"
               :headers="headers"
+              handle=".handle"
             >
+              <template v-slot:[`item.handle`]>
+                <div class="text-center handle">
+                  <v-btn icon>
+                    <v-icon class="handle">mdi-menu</v-icon>
+                  </v-btn>
+                </div>
+              </template>
               <template v-slot:[`item.id`]>
                 <div class="text-center">
                   {{ index + 1 }}
@@ -65,6 +81,13 @@
               <template v-slot:[`item.publishedAt`]="{ item }">
                 <div>
                   {{ item.createdAt | ddmmyyyyhhmmss }}
+                </div>
+              </template>
+              <template v-slot:[`item.action`]="{ item }">
+                <div class="d-flex align-center justify-center">
+                  <v-btn icon dense @click="onDeleteClicked(item.code)"
+                    ><v-icon>mdi-delete-outline</v-icon></v-btn
+                  >
                 </div>
               </template>
             </dataTableRowHandler>
@@ -94,7 +117,7 @@
         </template> -->
       </v-data-table>
     </div>
-    <div class="d-flex justify-space-between align-center mt-6">
+    <!-- <div class="d-flex justify-space-between align-center mt-6">
       <div class="d-flex align-center gap-8">
         Hiện~
         <v-select
@@ -123,7 +146,7 @@
         color="primary"
         :length="10"
       ></v-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -148,36 +171,40 @@ export default {
       items: [
         {
           thumbnail: require("@/assets/no-image.png"),
-          name: "test1",
-          code: "NSHL-132219",
-          publishedAt: "19/04/2023",
+          name: "loading...",
+          code: "loading...",
+          publishedAt: "loading...",
         },
+
         {
           thumbnail: require("@/assets/no-image.png"),
-          name: "test2",
-          code: "NSHL-132219",
-          publishedAt: "19/04/2023",
+          name: "loading...",
+          code: "loading...",
+          publishedAt: "loading...",
         },
+
         {
           thumbnail: require("@/assets/no-image.png"),
-          name: "test3",
-          code: "NSHL-132219",
-          publishedAt: "19/04/2023",
+          name: "loading...",
+          code: "loading...",
+          publishedAt: "loading...",
         },
+
         {
           thumbnail: require("@/assets/no-image.png"),
-          name: "test4",
-          code: "NSHL-132219",
-          publishedAt: "19/04/2023",
-        },
-        {
-          thumbnail: require("@/assets/no-image.png"),
-          name: "test5",
-          code: "NSHL-132219",
-          publishedAt: "19/04/2023",
+          name: "loading...",
+          code: "loading...",
+          publishedAt: "loading...",
         },
       ],
       headers: [
+        {
+          text: "kéo/thả thay đổi thứ tự",
+          value: "handle",
+          align: "center",
+          sortable: false,
+          width: "170",
+        },
         {
           text: "Thứ tự hiển thị",
           value: "id",
@@ -196,7 +223,7 @@ export default {
           text: "Tên sản phẩm",
           value: "name",
           align: "start",
-          width: "250",
+          width: "230",
         },
         {
           text: "Mã truy xuất",
@@ -224,6 +251,7 @@ export default {
   async created() {
     await this.favProductStore.fetchfavProductCodes();
     await this.favProductStore.fetchfavProducts();
+    await this.favProductStore.fetchSearchCodes();
   },
   methods: {
     getImageUrl(url) {
@@ -250,6 +278,19 @@ export default {
 
       return true;
     },
+    onDeleteClicked(productCode) {
+      this.favProductStore.favProductCodes =
+        this.favProductStore.favProductCodes.filter((p) => p !== productCode);
+      this.$dialog.confirm({
+        title: "Xác nhận xóa sản phẩm",
+        topContent: "Bạn có chắc bạn muốn xóa Sản phẩm này không?",
+        midContent:
+          "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
+        done: async () => {
+          await this.favProductStore.updateFavProducts();
+        },
+      });
+    },
     updateOrderList() {
       this.favProductStore.favProductCodes =
         this.favProductStore.favProducts.map((p) => p.code);
@@ -265,8 +306,25 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.theme--light.v-data-table
+  tbody
+  tr:hover:not(.v-data-table__expanded__content) {
+  background: #fff !important;
+}
 .no-data-img {
   height: 184.0830078125px;
   width: 143px;
+}
+.ghost {
+  opacity: 1;
+  background: var(--v-neutral10-base);
+}
+.chosen {
+  opacity: 2;
+  background: var(--v-neutral10-base);
+}
+.drag {
+  opacity: 3;
+  background: var(--v-neutral10-base);
 }
 </style>

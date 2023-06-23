@@ -7,36 +7,67 @@
         Banner
         <v-icon class="ml-2" color="black">mdi-help-circle-outline </v-icon>
       </div>
+
+      <div class="d-flex gap-8" v-if="bannerStore.isEditing">
+        <v-btn
+          class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
+          elevation="0"
+          @click="bannerStore.isEditing = false"
+        >
+          Huỷ
+        </v-btn>
+        <v-btn
+          class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
+          elevation="0"
+          color="primary"
+          @click="onUpdateClicked()"
+          depressed
+        >
+          <div class="">Lưu</div>
+        </v-btn>
+      </div>
       <v-btn
+        v-else
         class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
         elevation="0"
-        to="/create-contact"
         outlined
+        @click="bannerStore.isEditing = true"
       >
         <v-icon small>mdi-square-edit-outline</v-icon>
         <div class="ml-1 text-sm font-weight-medium">Chỉnh sửa</div>
       </v-btn>
     </div>
-    <div
-      class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-6 mt-6"
-      v-for="(banner, index) in banners"
-      :key="index"
+    <draggable
+      animation="150"
+      ghost-class="ghost"
+      chosen-class="chosen"
+      drag-class="drag"
+      :list="bannerStore.banners"
+      :move="onMoveCallback"
     >
-      <BannerForm :banner="banner" :index="(index + 1).toString()" />
-    </div>
+      <div
+        class="border-radius-16 white-bg neutral20-border px-6 pt-6 pb-6 mt-6"
+        v-for="(banner, index) in bannerStore.banners"
+        :key="index"
+      >
+        <BannerForm :index="index" />
+      </div>
+    </draggable>
   </div>
 </template>
 ontact
 
 <script>
-//   import { mapStores } from "pinia";
-//   import { contactStore } from "../store/contact-store";
+import { mapStores } from "pinia";
+import { bannerstore } from "../store/banner-store";
+import draggable from "vuedraggable";
 export default {
   components: {
+    draggable,
     BannerForm: () => import("../components/banner-form.vue"),
   },
   computed: {
-    //   ...mapStores(contactStore),
+    ...mapStores(bannerstore),
   },
   data() {
     return {
@@ -104,8 +135,42 @@ export default {
       ],
     };
   },
-  created() {},
-  methods: {},
+  created() {
+    this.bannerStore.fetchbanners();
+  },
+  methods: {
+    onUpdateClicked() {
+      this.bannerStore.updatebanners();
+      this.bannerStore.isEditing = false;
+    },
+    onMoveCallback(evt, originalEvent) {
+      this.bannerStore.isEditing = true;
+      const item = evt.draggedContext.element;
+      const itemIdx = evt.draggedContext.futureIndex;
+      console.log("onMoveCallback");
+      console.log("itemIdx", itemIdx);
+      console.log("originalEvent", originalEvent);
+
+      if (item.locked) {
+        return false;
+      }
+
+      return true;
+    },
+  },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ghost {
+  opacity: 1;
+  background: var(--v-neutral10-base);
+}
+.chosen {
+  opacity: 1;
+  background: var(--v-neutral10-base);
+}
+.drag {
+  opacity: 1;
+  background: var(--v-neutral10-base);
+}
+</style>

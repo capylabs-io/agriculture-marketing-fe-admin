@@ -190,7 +190,7 @@ export const HomepageConfig = {
       },
     });
   },
-  fetchfavProductCodes: () => {
+  fetchHomeConfig: () => {
     const user = userStore();
     if (!user.isConnected) return;
     return axios.get("homepage-configs", {

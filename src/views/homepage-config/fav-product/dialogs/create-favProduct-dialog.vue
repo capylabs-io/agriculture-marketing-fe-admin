@@ -34,14 +34,17 @@
       <div
         class="d-flex align-center justify-center mx-auto search-panel"
         v-if="
-          favProductStore.favSearchProducts &&
-          favProductStore.favSearchProducts.length > 0
+          favProductStore.filteredfavProducts &&
+          favProductStore.filteredfavProducts.length > 0 &&
+          favProductStore.searchKey
         "
       >
-        <div class="d-flex align-center justify-center mx-auto search-panel">
+        <div
+          class="d-flex flex-column align-center justify-center mx-auto search-panel overflow-scroll"
+        >
           <div
             class="full-width"
-            v-for="(result, index) in favProductStore.favSearchProducts"
+            v-for="(result, index) in favProductStore.filteredfavProducts"
             :key="index"
           >
             <Card :product="result" />
@@ -134,6 +137,8 @@ export default {
     // },
     onCancelClicked() {
       this.favProductStore.favProductCreateDialog = false;
+      this.favProductStore.searchKey = null;
+      this.favProductStore.filteredfavProducts = null;
     },
     onClickSearchCode() {
       if (!this.favProductStore.searchKey) return;
@@ -141,24 +146,26 @@ export default {
     },
     onCreateClicked() {
       if (
-        !this.favProductStore.favSearchProducts[0].code &&
+        !this.favProductStore.filteredfavProducts[0].code &&
         !this.favProductStore.favProductCodes
-      )
+      ) {
+        alert.error("Không có sản phẩm nào để thêm!");
         return;
+      }
       if (
         this.favProductStore.favProductCodes.some((ai) =>
-          this.favProductStore.favSearchProducts[0].code.includes(ai)
+          this.favProductStore.filteredfavProducts[0].code.includes(ai)
         )
       ) {
         alert.error("Sản phẩm đã được thêm, Xin vui lòng chọn sản phẩm khác!");
         return;
-      } else if (this.favProductStore.favSearchProducts[0].code.length > 4) {
+      } else if (this.favProductStore.favProductCodes.length >= 4) {
         alert.error("Chỉ được thêm tối đa 4 sản phẩm tiêu biểu!");
         return;
       }
 
       this.favProductStore.favProductCodes.push(
-        this.favProductStore.favSearchProducts[0].code
+        this.favProductStore.filteredfavProducts[0].code
       );
       this.favProductStore.updateFavProducts();
       this.favProductStore.favProductCreateDialog = false;
