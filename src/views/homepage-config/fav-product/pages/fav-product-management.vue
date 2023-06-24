@@ -4,9 +4,18 @@
     <CreateDialog />
     <div class="text-dp-md font-weight-semibold">Cấu hình trang chủ</div>
     <div class="d-flex align-center justify-space-between mt-6">
-      <div class="d-flex text-xl font-weight-medium">
+      <div
+        class="d-flex text-xl font-weight-medium justify-center align-center"
+      >
         Sản phẩm tiêu biểu
         <v-icon class="ml-2" color="black">mdi-help-circle-outline </v-icon>
+        <v-switch class="ml-10" v-model="isDraggable" inset>
+          <template v-slot:label>
+            <span class="text-lg font-weight-medium black--text">
+              kéo/thả thay đổi vị trí
+            </span>
+          </template></v-switch
+        >
       </div>
       <div class="d-flex">
         <v-btn
@@ -34,9 +43,7 @@
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
       <v-data-table
         :headers="headers"
-        :items="
-          favProductStore.favProducts ? favProductStore.favProducts : ''
-        "
+        :items="favProductStore.favProducts ? favProductStore.favProducts : ''"
         hide-default-footer
       >
         <template v-slot:body="props">
@@ -45,6 +52,7 @@
             animation="150"
             :move="onMoveCallback"
             :clone="onCloneCallback"
+            :disabled="isDraggable ? false : true"
             tag="tbody"
             class="list-group"
             ghost-class="ghost"
@@ -60,9 +68,9 @@
               handle=".handle"
             >
               <template v-slot:[`item.handle`]>
-                <div class="text-center handle">
+                <div class="text-center">
                   <v-btn icon>
-                    <v-icon class="handle">mdi-menu</v-icon>
+                    <v-icon class="">mdi-menu</v-icon>
                   </v-btn>
                 </div>
               </template>
@@ -104,28 +112,6 @@
             </tr>
           </draggable>
         </template>
-        <!-- <template v-slot:[`item.thumbnail`]="{ item }">
-          <v-img
-            class="table-img neutral20-border border-radius-8 mx-auto"
-            :src="item.thumbnail"
-          ></v-img>
-        </template>
-        <template v-slot:[`item.action`]="{ item }">
-          <div class="d-flex align-center justify-center">
-            <v-btn icon dense @click="onDeleteClicked(item.id)"
-              ><v-icon>mdi-delete-outline</v-icon></v-btn
-            >
-          </div>
-        </template>
-        <template v-slot:[`no-data`]>
-          <div class="py-12">
-            <v-img
-              class="mx-auto no-data-img"
-              :src="require('@/assets/no-data-config.png')"
-            ></v-img>
-            <div class="mt-4 text-md black--text">Chưa có dữ liệu</div>
-          </div>
-        </template> -->
       </v-data-table>
     </div>
     <!-- <div class="d-flex justify-space-between align-center mt-6">
@@ -178,6 +164,7 @@ export default {
   data() {
     return {
       isOrderChange: false,
+      isDraggable: false,
       itemsPerPage: [10, 20, 50],
       items: [
         {
