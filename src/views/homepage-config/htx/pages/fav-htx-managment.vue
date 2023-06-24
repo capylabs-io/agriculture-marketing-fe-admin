@@ -5,7 +5,7 @@
     <div class="text-dp-md font-weight-semibold">Cấu hình trang chủ</div>
     <div class="d-flex align-center justify-space-between mt-6">
       <div class="d-flex text-xl font-weight-medium">
-        Sản phẩm tiêu biểu
+        Hợp tác xã
         <v-icon class="ml-2" color="black">mdi-help-circle-outline </v-icon>
       </div>
       <div class="d-flex">
@@ -23,10 +23,10 @@
           class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
           elevation="0"
           outlined
-          @click="favProductStore.favProductCreateDialog = true"
+          @click="favhtxStore.favhtxCreateDialog = true"
         >
           <v-icon small>mdi-plus</v-icon>
-          <div class="ml-1">Thêm sản phẩm</div>
+          <div class="ml-1">Thêm mới</div>
         </v-btn>
       </div>
     </div>
@@ -34,14 +34,12 @@
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
       <v-data-table
         :headers="headers"
-        :items="
-          favProductStore.favProducts ? favProductStore.favProducts : ''
-        "
+        :items="favhtxStore.favhtxs ? favhtxStore.favhtxs : ''"
         hide-default-footer
       >
         <template v-slot:body="props">
           <draggable
-            v-model="favProductStore.favProducts"
+            v-model="favhtxStore.favhtxs"
             animation="150"
             :move="onMoveCallback"
             :clone="onCloneCallback"
@@ -74,7 +72,7 @@
               <template v-slot:[`item.thumbnail`]="{ item }">
                 <v-img
                   class="table-img neutral20-border border-radius-8 mx-auto"
-                  :src="getImageUrl(item.images)"
+                  :src="getImageUrl(item.thumbnail)"
                 ></v-img>
               </template>
               <template v-slot:[`item.publishedAt`]="{ item }">
@@ -90,10 +88,7 @@
                 </div>
               </template>
             </dataTableRowHandler>
-            <tr
-              v-if="!favProductStore.favProductCodes.length > 0"
-              class="text-center"
-            >
+            <tr v-if="!favhtxStore.favhtxs.length > 0" class="text-center">
               <td colspan="12" :style="{ height: '400px' }">
                 <v-img
                   class="mx-auto no-data-img"
@@ -116,16 +111,7 @@
               ><v-icon>mdi-delete-outline</v-icon></v-btn
             >
           </div>
-        </template>
-        <template v-slot:[`no-data`]>
-          <div class="py-12">
-            <v-img
-              class="mx-auto no-data-img"
-              :src="require('@/assets/no-data-config.png')"
-            ></v-img>
-            <div class="mt-4 text-md black--text">Chưa có dữ liệu</div>
-          </div>
-        </template> -->
+        </template>-->
       </v-data-table>
     </div>
     <!-- <div class="d-flex justify-space-between align-center mt-6">
@@ -163,14 +149,14 @@
 
 <script>
 import { mapStores } from "pinia";
-import { favProductStore } from "../store/favProduct-store";
+import { favhtxStore } from "../store/favhtx-store";
 import draggable from "vuedraggable";
 export default {
   computed: {
-    ...mapStores(favProductStore),
+    ...mapStores(favhtxStore),
   },
   components: {
-    CreateDialog: () => import("../dialogs/create-favProduct-dialog.vue"),
+    CreateDialog: () => import("../dialogs/create-favhtx-dialog.vue"),
     dataTableRowHandler: () =>
       import("../components/data-table-row-handler.vue"),
     draggable,
@@ -179,35 +165,35 @@ export default {
     return {
       isOrderChange: false,
       itemsPerPage: [10, 20, 50],
-      items: [
-        {
-          thumbnail: require("@/assets/no-image.png"),
-          name: "loading...",
-          code: "loading...",
-          publishedAt: "loading...",
-        },
+      // items: [
+      //   {
+      //     thumbnail: require("@/assets/no-image.png"),
+      //     name: "loading...",
+      //     code: "loading...",
+      //     publishedAt: "loading...",
+      //   },
 
-        {
-          thumbnail: require("@/assets/no-image.png"),
-          name: "loading...",
-          code: "loading...",
-          publishedAt: "loading...",
-        },
+      //   {
+      //     thumbnail: require("@/assets/no-image.png"),
+      //     name: "loading...",
+      //     code: "loading...",
+      //     publishedAt: "loading...",
+      //   },
 
-        {
-          thumbnail: require("@/assets/no-image.png"),
-          name: "loading...",
-          code: "loading...",
-          publishedAt: "loading...",
-        },
+      //   {
+      //     thumbnail: require("@/assets/no-image.png"),
+      //     name: "loading...",
+      //     code: "loading...",
+      //     publishedAt: "loading...",
+      //   },
 
-        {
-          thumbnail: require("@/assets/no-image.png"),
-          name: "loading...",
-          code: "loading...",
-          publishedAt: "loading...",
-        },
-      ],
+      //   {
+      //     thumbnail: require("@/assets/no-image.png"),
+      //     name: "loading...",
+      //     code: "loading...",
+      //     publishedAt: "loading...",
+      //   },
+      // ],
       headers: [
         {
           text: "kéo/thả thay đổi thứ tự",
@@ -224,14 +210,14 @@ export default {
           width: "160",
         },
         {
-          text: "Ảnh sản phẩm",
+          text: "Ảnh đại diện",
           value: "thumbnail",
           align: "center",
           sortable: false,
           width: "170",
         },
         {
-          text: "Tên sản phẩm",
+          text: "Tên",
           value: "name",
           align: "start",
           width: "230",
@@ -260,9 +246,8 @@ export default {
     };
   },
   async created() {
-    await this.favProductStore.fetchfavProductCodes();
-    await this.favProductStore.fetchfavProducts();
-    await this.favProductStore.fetchSearchCodes();
+    await this.favhtxStore.fetchfavhtxCodes();
+    await this.favhtxStore.fetchfavhtxs();
   },
   methods: {
     getImageUrl(url) {
@@ -290,27 +275,29 @@ export default {
       return true;
     },
     onDeleteClicked(productCode) {
-      this.favProductStore.favProductCodes =
-        this.favProductStore.favProductCodes.filter((p) => p !== productCode);
+      this.favhtxStore.favhtxCodes = this.favhtxStore.favhtxCodes.filter(
+        (p) => p !== productCode
+      );
       this.$dialog.confirm({
         title: "Xác nhận xóa sản phẩm",
         topContent: "Bạn có chắc bạn muốn xóa Sản phẩm này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {
-          await this.favProductStore.updateFavProducts();
+          await this.favhtxStore.updatefavhtxs();
         },
       });
     },
-    updateOrderList() {
-      this.favProductStore.favProductCodes =
-        this.favProductStore.favProducts.map((p) => p.code);
-      this.favProductStore.updateFavProducts();
+    async updateOrderList() {
+      this.favhtxStore.favhtxCodes = this.favhtxStore.favhtxs.map(
+        (p) => p.code
+      );
+      await this.favhtxStore.updatefavhtxs();
       this.isOrderChange = false;
     },
     onDropCallback(evt, originalEvent) {
       console.log("onDropCallback", evt);
-      console.log("favProducts", this.favProductStore.favProducts);
+      console.log("favhtxs", this.favhtxStore.favhtxs);
       console.log("onDropCallback", originalEvent);
     },
   },

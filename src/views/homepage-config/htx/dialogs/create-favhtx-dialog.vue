@@ -1,20 +1,20 @@
 <template>
   <v-dialog
-    v-model="favProductStore.favProductCreateDialog"
+    v-model="favhtxStore.favhtxCreateDialog"
     max-width="432px"
     persistent
     absolute
   >
     <v-card class="border-radius-16 pa-4">
       <div class="font-weight-semibold text-lg text-center">
-        Thêm sản phẩm tiêu biểu
+        Thêm Hợp tác xã tiêu biểu
       </div>
 
       <div class="mt-6">
         <div class="text-sm font-weight-semibold">Nhập mã truy xuất</div>
         <v-text-field
           class="border-radius-6 mt-2"
-          v-model="favProductStore.searchKey"
+          v-model="favhtxStore.searchKey"
           placeholder="Ex: NSHL-132219"
           flat
           solo
@@ -34,9 +34,9 @@
       <div
         class="d-flex align-center justify-center mx-auto search-panel"
         v-if="
-          favProductStore.filteredfavProducts &&
-          favProductStore.filteredfavProducts.length > 0 &&
-          favProductStore.searchKey
+          favhtxStore.filteredfavhtxs &&
+          favhtxStore.filteredfavhtxs.length > 0 &&
+          favhtxStore.searchKey
         "
       >
         <div
@@ -44,10 +44,10 @@
         >
           <div
             class="full-width"
-            v-for="(result, index) in favProductStore.filteredfavProducts"
+            v-for="(result, index) in favhtxStore.filteredfavhtxs"
             :key="index"
           >
-            <Card :product="result" />
+            <Card :htx="result" />
           </div>
         </div>
       </div>
@@ -60,9 +60,7 @@
             :src="require('@/assets/search-not-found.png')"
             cover
           ></v-img>
-          <div class="text-xl font-weight-semibold">
-            Không tìm thấy sản phẩm
-          </div>
+          <div class="text-xl font-weight-semibold">Không tìm thấy</div>
         </div>
       </div>
       <div class="d-flex justify-space-between align-center mt-6">
@@ -107,15 +105,15 @@
 
 <script>
 import { mapStores } from "pinia";
-import { favProductStore } from "../store/favProduct-store";
+import { favhtxStore } from "../store/favhtx-store";
 import alert from "@/plugins/alert";
 
 export default {
   components: {
-    Card: () => import("../components/product-card.vue"),
+    Card: () => import("../components/htx-card.vue"),
   },
   computed: {
-    ...mapStores(favProductStore),
+    ...mapStores(favhtxStore),
   },
   data() {
     return {
@@ -128,7 +126,7 @@ export default {
     // onIconSelect(image) {
     //   if (image) {
     //     const imageFile = this.$refs.pictureInput.file;
-    //     this.favProductStore.changeCategoryIcon(imageFile);
+    //     this.favhtxStore.changeCategoryIcon(imageFile);
     //     this.isIconSelected = true;
     //   } else {
     //     this.isIconSelected = false;
@@ -136,41 +134,43 @@ export default {
     //   }
     // },
     onCancelClicked() {
-      this.favProductStore.favProductCreateDialog = false;
-      this.favProductStore.searchKey = "";
-      this.favProductStore.filteredfavProducts = [];
+      this.favhtxStore.favhtxCreateDialog = false;
+      this.favhtxStore.searchKey = "";
+      this.favhtxStore.filteredfavhtxs = [];
     },
     onClickSearchCode() {
-      if (!this.favProductStore.searchKey) return;
-      this.favProductStore.fetchSearchCodes();
+      if (!this.favhtxStore.searchKey) return;
+      this.favhtxStore.fetchfavhtxs();
     },
     async onCreateClicked() {
       if (
-        !this.favProductStore.filteredfavProducts[0].code &&
-        !this.favProductStore.favProductCodes
+        !this.favhtxStore.filteredfavhtxs[0].code &&
+        !this.favhtxStore.favhtxCodes
       ) {
-        alert.error("Không có sản phẩm nào để thêm!");
+        alert.error("Không có hợp tác xã nào để thêm!");
         return;
       }
       if (
-        this.favProductStore.favProductCodes.some((ai) =>
-          this.favProductStore.filteredfavProducts[0].code.includes(ai)
+        this.favhtxStore.favhtxCodes.some((ai) =>
+          this.favhtxStore.filteredfavhtxs[0].code.includes(ai)
         )
       ) {
-        alert.error("Sản phẩm đã được thêm, Xin vui lòng chọn sản phẩm khác!");
+        alert.error(
+          "Hợp tác xã đã được thêm, Xin vui lòng chọn hợp tác xã khác!"
+        );
         return;
-      } else if (this.favProductStore.favProductCodes.length >= 4) {
-        alert.error("Chỉ được thêm tối đa 4 sản phẩm tiêu biểu!");
+      } else if (this.favhtxStore.favhtxCodes.length >= 4) {
+        alert.error("Chỉ được thêm tối đa 4 hợp tác xã tiêu biểu!");
         return;
       }
 
-      this.favProductStore.favProductCodes.push(
-        this.favProductStore.filteredfavProducts[0].code
+      this.favhtxStore.favhtxCodes.push(
+        this.favhtxStore.filteredfavhtxs[0].code
       );
-      await this.favProductStore.updateFavProducts();
-      this.favProductStore.searchKey = "";
-      this.favProductStore.filteredfavProducts = [];
-      this.favProductStore.favProductCreateDialog = false;
+      await this.favhtxStore.updatefavhtxs();
+      this.favhtxStore.searchKey = "";
+      this.favhtxStore.filteredfavhtxs = [];
+      this.favhtxStore.favhtxCreateDialog = false;
     },
   },
 };

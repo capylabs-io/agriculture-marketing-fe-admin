@@ -189,7 +189,6 @@ export const favProductStore = defineStore("favProduct", {
           return;
         }
         alert.success(`cập nhật thành công!`);
-        this.reset();
         await this.fetchfavProductCodes();
         await this.fetchfavProducts();
       } catch (error) {

@@ -377,10 +377,10 @@ export default {
       admins: [
         ["Banner", "/homepage-banner"],
         ["Sản phẩm tiêu biểu", "/homepage-fav-product"],
-        ["Hợp tác xã", "/homepage-htx"],
-        ["Đại lý", "/homepage-agency"],
-        ["Nghệ nhân", "/homepage-artisan"],
-        ["Đối tác", "/homepage-partner"],
+        ["Hợp tác xã", "/homepage-fav-htx"],
+        ["Đại lý", "/homepage-fav-agency"],
+        ["Nghệ nhân", "/homepage-fav-artisan"],
+        ["Đối tác", "/homepage-fav-partner"],
       ],
     };
   },

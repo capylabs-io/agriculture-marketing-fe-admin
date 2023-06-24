@@ -317,10 +317,21 @@ const routes = [
       },
       {
         path: "/homepage-fav-product",
-        name: "Banner",
+        name: "favProduct",
         component: () =>
           import(
             "../views/homepage-config/fav-product/pages/fav-product-management.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/homepage-fav-htx",
+        name: "favHtx",
+        component: () =>
+          import(
+            "../views/homepage-config/htx/pages/fav-htx-managment.vue"
           ),
         meta: {
           requiresAuth: true,
