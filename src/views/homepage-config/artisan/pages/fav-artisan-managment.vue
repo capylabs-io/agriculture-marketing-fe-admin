@@ -7,7 +7,7 @@
       <div
         class="d-flex text-xl font-weight-medium justify-center align-center"
       >
-        Hợp tác xã
+        Nghệ nhân
         <v-icon class="ml-2" color="black">mdi-help-circle-outline </v-icon>
         <v-switch class="ml-10" v-model="isDraggable" inset>
           <template v-slot:label>

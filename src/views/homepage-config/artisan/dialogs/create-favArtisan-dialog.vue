@@ -7,7 +7,7 @@
   >
     <v-card class="border-radius-16 pa-4">
       <div class="font-weight-semibold text-lg text-center">
-        Thêm Hợp tác xã tiêu biểu
+        Thêm Nghệ nhân tiêu biểu
       </div>
 
       <div class="mt-6">
