@@ -2,22 +2,20 @@
   <div
     class="card-shadow border-radius-16 overflow-hidden white-bg cursor-pointer full-height d-flex flex-column"
   >
-    <v-img :src="htxImage" :aspect-ratio="4 / 3" cover></v-img>
-    <div class="full-height d-flex flex-column py-3">
+    <v-img :src="agencyImage" :aspect-ratio="4 / 3" cover></v-img>
+    <div class="full-height d-flex flex-column pt-3 pb-2">
       <div
         class="d-flex align-center justify-center product-id text-center text-sm text-uppercase"
       >
         <v-icon small class="mr-1" color="primary">mdi-qrcode</v-icon>
-        {{ htx.code }}
+        {{ agency.code }}
       </div>
       <div class="text-center text-xl font-weight-medium px-4 pt-1 flex-grow-1">
-        {{ htx.name }}
+        {{ agency.name }}
       </div>
-      <div v-if="htx.htxCategory && htx.htxCategory.id != -1">
-        <v-divider class="mt-3"></v-divider>
-        <div class="text-sm text-center mt-2 primary--text">
-          {{ htx.htxCategory.name }}
-        </div>
+      <v-divider class="mt-3"></v-divider>
+      <div class="text-sm text-center mt-2 primary--text">
+        {{ agency.agencyCategory.name }}
       </div>
     </div>
   </div>
@@ -26,23 +24,19 @@
 <script>
 export default {
   computed: {
-    htxImage() {
-      if (!this.htx || !this.htx.thumbnail)
+    agencyImage() {
+      if (!this.agency || !this.agency.thumbnail)
         return require("@/assets/no-image.png");
-      return this.htx.thumbnail;
+      return this.agency.thumbnail;
     },
   },
   props: {
-    htx: {
+    agency: {
       type: Object,
       default: () => {},
     },
   },
   methods: {
-    goToHtxDetail() {
-      if (!this.htx) return;
-      this.$router.push(`/hop-tac-xa/${this.htx.code}`);
-    },
     numberWithCommas(x) {
       x = x.toString();
       var pattern = /(-?\d+)(\d{3})/;
@@ -54,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-.htx-id {
+.agency-id {
   background-color: var(--v-primary10-base) !important;
   border-bottom: 1px solid var(--v-neutral30-base);
 }

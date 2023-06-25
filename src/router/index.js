@@ -337,6 +337,28 @@ const routes = [
           requiresAuth: true,
         },
       },
+      {
+        path: "/homepage-fav-artisan",
+        name: "favArtisan",
+        component: () =>
+          import(
+            "../views/homepage-config/artisan/pages/fav-artisan-managment.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/homepage-fav-agency",
+        name: "favAgency",
+        component: () =>
+          import(
+            "../views/homepage-config/agency/pages/fav-agency-managment.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
 ];
