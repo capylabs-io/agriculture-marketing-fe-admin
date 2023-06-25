@@ -7,7 +7,7 @@
   >
     <v-card class="border-radius-16 pa-4">
       <div class="font-weight-semibold text-lg text-center">
-        Thêm Nghệ nhân tiêu biểu
+        Thêm nghệ nhân tiêu biểu
       </div>
 
       <div class="mt-6">
@@ -137,7 +137,7 @@ export default {
         !this.favArtisanStore.filteredfavArtisans[0].code &&
         !this.favArtisanStore.favArtisanCodes
       ) {
-        alert.error("Không có hợp tác xã nào để thêm!");
+        alert.error("Không có nghệ nhân nào để thêm!");
         return;
       }
       if (
@@ -146,11 +146,11 @@ export default {
         )
       ) {
         alert.error(
-          "Hợp tác xã đã được thêm, Xin vui lòng chọn hợp tác xã khác!"
+          "nghệ nhân đã được thêm, Xin vui lòng chọn nghệ nhân khác!"
         );
         return;
       } else if (this.favArtisanStore.favArtisanCodes.length >= 4) {
-        alert.error("Chỉ được thêm tối đa 4 hợp tác xã tiêu biểu!");
+        alert.error("Chỉ được thêm tối đa 4 nghệ nhân tiêu biểu!");
         return;
       }
 

@@ -277,14 +277,16 @@ export default {
       return true;
     },
     onDeleteClicked(productCode) {
-      this.favProductStore.favProductCodes =
-        this.favProductStore.favProductCodes.filter((p) => p !== productCode);
       this.$dialog.confirm({
         title: "Xác nhận xóa sản phẩm",
         topContent: "Bạn có chắc bạn muốn xóa Sản phẩm này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {
+          this.favProductStore.favProductCodes =
+            this.favProductStore.favProductCodes.filter(
+              (p) => p !== productCode
+            );
           await this.favProductStore.updateFavProducts();
         },
       });

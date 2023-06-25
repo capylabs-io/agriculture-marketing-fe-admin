@@ -330,9 +330,7 @@ const routes = [
         path: "/homepage-fav-htx",
         name: "favHtx",
         component: () =>
-          import(
-            "../views/homepage-config/htx/pages/fav-htx-managment.vue"
-          ),
+          import("../views/homepage-config/htx/pages/fav-htx-managment.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -354,6 +352,17 @@ const routes = [
         component: () =>
           import(
             "../views/homepage-config/agency/pages/fav-agency-managment.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/homepage-fav-partner",
+        name: "favPartner",
+        component: () =>
+          import(
+            "../views/homepage-config/partner/pages/fav-partner-managment.vue"
           ),
         meta: {
           requiresAuth: true,

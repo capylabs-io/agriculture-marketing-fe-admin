@@ -7,7 +7,7 @@
       <div
         class="d-flex text-xl font-weight-medium justify-center align-center"
       >
-        Đại lý
+        Đối tác
         <v-icon class="ml-2" color="black">mdi-help-circle-outline </v-icon>
         <v-switch class="ml-10" v-model="isDraggable" inset>
           <template v-slot:label>
@@ -32,7 +32,7 @@
           class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
           elevation="0"
           outlined
-          @click="favAgencyStore.favAgencyCreateDialog = true"
+          @click="favPartnerStore.favPartnerCreateDialog = true"
         >
           <v-icon small>mdi-plus</v-icon>
           <div class="ml-1">Thêm mới</div>
@@ -43,12 +43,12 @@
     <div class="border-radius-12 neutral20-border overflow-hidden mt-3">
       <v-data-table
         :headers="headers"
-        :items="favAgencyStore.favAgencys ? favAgencyStore.favAgencys : ''"
+        :items="favPartnerStore.favPartners ? favPartnerStore.favPartners : ''"
         hide-default-footer
       >
         <template v-slot:body="props">
           <draggable
-            v-model="favAgencyStore.favAgencys"
+            v-model="favPartnerStore.favPartners"
             animation="150"
             :move="onMoveCallback"
             :clone="onCloneCallback"
@@ -79,10 +79,10 @@
                   {{ index + 1 }}
                 </div>
               </template>
-              <template v-slot:[`item.thumbnail`]="{ item }">
+              <template v-slot:[`item.logo`]="{ item }">
                 <v-img
                   class="table-img neutral20-border border-radius-8 mx-auto"
-                  :src="getImageUrl(item.thumbnail)"
+                  :src="getImageUrl(item.partnerUrl)"
                 ></v-img>
               </template>
               <template v-slot:[`item.publishedAt`]="{ item }">
@@ -92,14 +92,14 @@
               </template>
               <template v-slot:[`item.action`]="{ item }">
                 <div class="d-flex align-center justify-center">
-                  <v-btn icon dense @click="onDeleteClicked(item.code)"
+                  <v-btn icon dense @click="onDeleteClicked(item.name)"
                     ><v-icon>mdi-delete-outline</v-icon></v-btn
                   >
                 </div>
               </template>
             </dataTableRowHandler>
             <tr
-              v-if="!favAgencyStore.favAgencys.length > 0"
+              v-if="!favPartnerStore.favPartners.length > 0"
               class="text-center"
             >
               <td colspan="12" :style="{ height: '400px' }">
@@ -149,14 +149,14 @@
 
 <script>
 import { mapStores } from "pinia";
-import { favAgencyStore } from "../store/favAgency-store";
+import { favPartnerStore } from "../store/favPartner-store";
 import draggable from "vuedraggable";
 export default {
   computed: {
-    ...mapStores(favAgencyStore),
+    ...mapStores(favPartnerStore),
   },
   components: {
-    CreateDialog: () => import("../dialogs/create-favAgency-dialog.vue"),
+    CreateDialog: () => import("../dialogs/create-favPartner-dialog.vue"),
     dataTableRowHandler: () =>
       import("../components/data-table-row-handler.vue"),
     draggable,
@@ -201,7 +201,7 @@ export default {
           value: "handle",
           align: "center",
           sortable: false,
-          width: "170",
+          width: "200",
         },
         {
           text: "Thứ tự hiển thị",
@@ -211,44 +211,43 @@ export default {
           width: "160",
         },
         {
-          text: "Ảnh đại diện",
-          value: "thumbnail",
+          text: "Logo",
+          value: "logo",
           align: "center",
           sortable: false,
-          width: "170",
+          width: "150",
         },
         {
           text: "Tên",
           value: "name",
           align: "start",
-          width: "230",
+          width: "150",
         },
         {
-          text: "Mã truy xuất",
-          value: "code",
+          text: "Đường dẫn",
+          value: "webUrl",
           align: "start",
-          width: "150",
+          width: "170",
         },
         {
           text: "Ngày tạo",
           value: "publishedAt",
           align: "center",
           sortable: false,
-          width: "150",
+          width: "170",
         },
         {
           text: "",
           value: "action",
           align: "center",
           sortable: false,
-          width: "100",
+          width: "80",
         },
       ],
     };
   },
   async created() {
-    await this.favAgencyStore.fetchfavAgencyCodes();
-    await this.favAgencyStore.fetchfavAgencys();
+    await this.favPartnerStore.fetchfavPartnerCodes();
   },
   methods: {
     getImageUrl(url) {
@@ -277,27 +276,26 @@ export default {
     },
     onDeleteClicked(productCode) {
       this.$dialog.confirm({
-        title: "Xác nhận xóa sản phẩm",
-        topContent: "Bạn có chắc bạn muốn xóa Sản phẩm này không?",
+        title: "Xác nhận xóa Đối tác",
+        topContent: "Bạn có chắc bạn muốn xóa Đối tác này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {
-          this.favAgencyStore.favAgencyCodes =
-            this.favAgencyStore.favAgencyCodes.filter((p) => p !== productCode);
-          await this.favAgencyStore.updatefavAgencys();
+          this.favPartnerStore.favPartners =
+            this.favPartnerStore.favPartners.filter(
+              (p) => p.name !== productCode
+            );
+          await this.favPartnerStore.updatefavPartners();
         },
       });
     },
     async updateOrderList() {
-      this.favAgencyStore.favAgencyCodes = this.favAgencyStore.favAgencys.map(
-        (p) => p.code
-      );
-      await this.favAgencyStore.updatefavAgencys();
+      await this.favPartnerStore.updatefavPartners();
       this.isOrderChange = false;
     },
     onDropCallback(evt, originalEvent) {
       console.log("onDropCallback", evt);
-      console.log("favAgencys", this.favAgencyStore.favAgencys);
+      console.log("favPartners", this.favPartnerStore.favPartners);
       console.log("onDropCallback", originalEvent);
     },
   },
@@ -310,7 +308,7 @@ export default {
   background: #fff !important;
 }
 .no-data-img {
-  height: 184.0830078125px;
+  height: 200px;
   width: 143px;
 }
 .ghost {

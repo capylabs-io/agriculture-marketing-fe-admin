@@ -147,7 +147,7 @@ export default {
         !this.favAgencyStore.filteredfavAgencys[0].code &&
         !this.favAgencyStore.favAgencyCodes
       ) {
-        alert.error("Không có hợp tác xã nào để thêm!");
+        alert.error("Không có đại lý nào để thêm!");
         return;
       }
       if (
@@ -156,11 +156,11 @@ export default {
         )
       ) {
         alert.error(
-          "Hợp tác xã đã được thêm, Xin vui lòng chọn hợp tác xã khác!"
+          "đại lý đã được thêm, Xin vui lòng chọn đại lý khác!"
         );
         return;
       } else if (this.favAgencyStore.favAgencyCodes.length >= 4) {
-        alert.error("Chỉ được thêm tối đa 4 hợp tác xã tiêu biểu!");
+        alert.error("Chỉ được thêm tối đa 4 đại lý tiêu biểu!");
         return;
       }
 

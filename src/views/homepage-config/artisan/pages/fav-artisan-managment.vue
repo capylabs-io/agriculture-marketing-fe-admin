@@ -98,7 +98,10 @@
                 </div>
               </template>
             </dataTableRowHandler>
-            <tr v-if="!favArtisanStore.favArtisans.length > 0" class="text-center">
+            <tr
+              v-if="!favArtisanStore.favArtisans.length > 0"
+              class="text-center"
+            >
               <td colspan="12" :style="{ height: '400px' }">
                 <v-img
                   class="mx-auto no-data-img"
@@ -273,23 +276,23 @@ export default {
       return true;
     },
     onDeleteClicked(productCode) {
-      this.favArtisanStore.favArtisanCodes = this.favArtisanStore.favArtisanCodes.filter(
-        (p) => p !== productCode
-      );
       this.$dialog.confirm({
         title: "Xác nhận xóa sản phẩm",
         topContent: "Bạn có chắc bạn muốn xóa Sản phẩm này không?",
         midContent:
           "<span class='error--text'>Sau khi xóa, bạn không thể quay ngược lại hành động này!</span>",
         done: async () => {
+          this.favArtisanStore.favArtisanCodes =
+            this.favArtisanStore.favArtisanCodes.filter(
+              (p) => p !== productCode
+            );
           await this.favArtisanStore.updatefavArtisans();
         },
       });
     },
     async updateOrderList() {
-      this.favArtisanStore.favArtisanCodes = this.favArtisanStore.favArtisans.map(
-        (p) => p.code
-      );
+      this.favArtisanStore.favArtisanCodes =
+        this.favArtisanStore.favArtisans.map((p) => p.code);
       await this.favArtisanStore.updatefavArtisans();
       this.isOrderChange = false;
     },
