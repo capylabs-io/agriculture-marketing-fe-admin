@@ -147,7 +147,6 @@ export default {
       this.favPartnerStore.favPartner = {};
       this.favPartnerStore.partnerLogo = null;
       this.$refs.pictureInput.file = null;
-      this.isIconSelected = false;
     },
     async onCreateClicked() {
       if (
@@ -156,6 +155,10 @@ export default {
         )
       ) {
         alert.error("Tên đối  tác đã tồn tại, Xin vui lòng nhập đúng!");
+        return;
+      }
+      if (this.favPartnerStore.favPartners.length >= 9) {
+        alert.error("Chỉ được thêm tối đa 9 Đối tác!");
         return;
       }
       await this.favPartnerStore.createfavPartners();

@@ -379,6 +379,7 @@ export default {
         ["Sản phẩm tiêu biểu", "/homepage-fav-product"],
         ["Hợp tác xã", "/homepage-fav-htx"],
         ["Đại lý", "/homepage-fav-agency"],
+        ["Vùng sản xuất", "/homepage-fav-region"],
         ["Nghệ nhân", "/homepage-fav-artisan"],
         ["Đối tác", "/homepage-fav-partner"],
       ],

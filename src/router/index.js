@@ -368,6 +368,17 @@ const routes = [
           requiresAuth: true,
         },
       },
+      {
+        path: "/homepage-fav-region",
+        name: "favRegion",
+        component: () =>
+          import(
+            "../views/homepage-config/region/pages/fav-region-managment.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
 ];
