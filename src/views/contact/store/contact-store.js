@@ -92,6 +92,7 @@ export const contactStore = defineStore("contact", {
       try {
         loading.show();
         const res = await Contact.fetch({
+          sort: "updatedAt:desc",
           populate: "*",
         });
         if (!res) {

@@ -456,10 +456,6 @@ export default {
   background: var(--v-primary60-base) !important;
   color: white !important;
 }
-.v-list-item__icon {
-  margin: 0 auto !important;
-}
-.v-list-group__header__prepend-icon {
-  margin: 0 auto !important;
-}
+
+
 </style>
