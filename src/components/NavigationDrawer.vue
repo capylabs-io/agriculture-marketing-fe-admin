@@ -293,7 +293,11 @@
           </v-list-item>
           <v-list-group
             v-if="userStore.isAuthenticated"
-            :class="!mini ? 'border-radius-8 mt-2 mx-n2' : 'mx-auto'"
+            :class="
+              !mini
+                ? 'border-radius-8 mt-2 mx-n2'
+                : 'mx-auto d-flex align-center justify-center'
+            "
             :value="true"
             prepend-icon="mdi-cog-outline"
             no-action
@@ -456,6 +460,4 @@ export default {
   background: var(--v-primary60-base) !important;
   color: white !important;
 }
-
-
 </style>
