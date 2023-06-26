@@ -294,6 +294,7 @@
           <v-list-group
             v-if="userStore.isAuthenticated"
             class="border-radius-8 mt-2 mx-n2"
+            :class="!mini ? 'border-radius-8 mt-2 mx-n2' : 'mx-auto'"
             :value="true"
             prepend-icon="mdi-cog-outline"
             no-action
