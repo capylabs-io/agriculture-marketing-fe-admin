@@ -293,7 +293,6 @@
           </v-list-item>
           <v-list-group
             v-if="userStore.isAuthenticated"
-            class="border-radius-8 mt-2 mx-n2"
             :class="!mini ? 'border-radius-8 mt-2 mx-n2' : 'mx-auto'"
             :value="true"
             prepend-icon="mdi-cog-outline"
@@ -456,5 +455,11 @@ export default {
 .v-list-item--active {
   background: var(--v-primary60-base) !important;
   color: white !important;
+}
+.v-list-item__icon {
+  margin: 0 auto !important;
+}
+.v-list-group__header__prepend-icon {
+  margin: 0 auto !important;
 }
 </style>
