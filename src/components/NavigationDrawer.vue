@@ -32,6 +32,7 @@
       <div class="py-4">
         <v-list class="py-0">
           <v-list-item
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 py-0 px-2"
             to="/dashboard"
             active-class="active-item"
@@ -48,6 +49,7 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             dense
@@ -64,6 +66,7 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             to="/htx"
@@ -80,6 +83,7 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="userStore.isAuthenticated || userStore.isCooperative"
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             to="/agency"
@@ -96,6 +100,7 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 py-0 px-2 mt-2"
             to="/artisan"
             active-class="active-item"
@@ -112,6 +117,12 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="
+              userStore.isAuthenticated ||
+              userStore.isArtisan ||
+              userStore.isCooperative ||
+              userStore.isStore
+            "
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             to="/product"
@@ -128,6 +139,11 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="
+              userStore.isAuthenticated ||
+              userStore.isCooperative ||
+              userStore.isStore
+            "
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             to="/supply"
@@ -144,6 +160,12 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="
+              userStore.isAuthenticated ||
+              userStore.isArtisan ||
+              userStore.isCooperative ||
+              userStore.isStore
+            "
             class="border-radius-8 py-0 px-2 mt-2"
             active-class="active-item"
             to="/seed"
@@ -160,6 +182,7 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 py-0 px-2 mt-2"
             to="/news"
             active-class="active-item"
@@ -177,6 +200,7 @@
           </v-list-item>
 
           <v-list-item
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 py-0 px-2 mt-2"
             to="/contact"
             active-class="active-item"
@@ -211,6 +235,7 @@
             </v-list-item-title>
           </v-list-item>
           <v-list-item
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 py-0 px-2 mt-2"
             to="/document"
             active-class="active-item"
@@ -227,6 +252,7 @@
             >
           </v-list-item>
           <v-list-item
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 py-0 px-2 mt-2"
             to="/faq"
             active-class="active-item"
@@ -244,6 +270,12 @@
           </v-list-item>
 
           <v-list-item
+            v-if="
+              userStore.isAuthenticated ||
+              userStore.isArtisan ||
+              userStore.isCooperative ||
+              userStore.isStore
+            "
             class="border-radius-8 py-0 px-2 mt-2"
             to="/account-setting"
             active-class="active-item"
@@ -260,6 +292,7 @@
             </v-list-item-title>
           </v-list-item>
           <v-list-group
+            v-if="userStore.isAuthenticated"
             class="border-radius-8 mt-2 mx-n2"
             :value="true"
             prepend-icon="mdi-cog-outline"

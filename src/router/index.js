@@ -31,6 +31,7 @@ const routes = [
         component: () => import("../views/dash-board/pages/dash-board.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -49,144 +50,7 @@ const routes = [
         component: () => import("../views/news/pages/news.vue"),
         meta: {
           requiresAuth: true,
-        },
-      },
-      {
-        path: "/product",
-        name: "Product Management",
-        component: () =>
-          import("../views/product/pages/product-management.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/supply",
-        name: "Supply Management",
-        component: () => import("../views/supply/pages/supply-management.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/seed",
-        name: "Breed Management",
-        component: () => import("../views/breed/pages/breed-management.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/artisan",
-        name: "Artisan Management",
-        component: () =>
-          import("../views/artisan/pages/artisan-management.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/create-artisan",
-        name: "Create Artisan",
-        component: () => import("../views/artisan/pages/create-artisan.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/edit-artisan",
-        name: "Update Artisan",
-        component: () => import("../views/artisan/pages/edit-artisan.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/agency",
-        name: "Agency Management",
-        component: () => import("../views/agency/pages/agency-management.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/create-agency",
-        name: "Create Agency",
-        component: () => import("../views/agency/pages/create-agency.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/edit-agency",
-        name: "Update Agency",
-        component: () => import("../views/agency/pages/edit-agency.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/htx",
-        name: "HTX Management",
-        component: () => import("../views/htx/pages/htx-management.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/create-htx",
-        name: "Create HTX",
-        component: () => import("../views/htx/pages/create-htx.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/edit-htx",
-        name: "Update HTX",
-        component: () => import("../views/htx/pages/edit-htx.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/region",
-        name: "Region Management",
-        component: () => import("../views/region/pages/region-management.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/create-region",
-        name: "Create Region",
-        component: () => import("../views/region/pages/create-region.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/edit-region",
-        name: "Update Region",
-        component: () => import("../views/region/pages/edit-region.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/create-supply",
-        name: "Create Supply",
-        component: () => import("../views/supply/pages/create-supply.vue"),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: "/edit-supply",
-        name: "Update Supply",
-        component: () => import("../views/supply/pages/edit-supply.vue"),
-        meta: {
-          requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -195,12 +59,23 @@ const routes = [
         component: () => import("../views/news/pages/create-news.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
         path: "/edit-post",
         name: "Update Post",
         component: () => import("../views/news/pages/edit-news.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/product",
+        name: "Product Management",
+        component: () =>
+          import("../views/product/pages/product-management.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -222,6 +97,42 @@ const routes = [
         },
       },
       {
+        path: "/supply",
+        name: "Supply Management",
+        component: () => import("../views/supply/pages/supply-management.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresArtisanAuth: false,
+        },
+      },
+      {
+        path: "/create-supply",
+        name: "Create Supply",
+        component: () => import("../views/supply/pages/create-supply.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresArtisanAuth: false,
+        },
+      },
+      {
+        path: "/edit-supply",
+        name: "Update Supply",
+        component: () => import("../views/supply/pages/edit-supply.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresArtisanAuth: false,
+        },
+      },
+
+      {
+        path: "/seed",
+        name: "Breed Management",
+        component: () => import("../views/breed/pages/breed-management.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: "/create-seed",
         name: "Create Seedling",
         component: () => import("../views/breed/pages/create-breed.vue"),
@@ -238,12 +149,126 @@ const routes = [
         },
       },
       {
+        path: "/artisan",
+        name: "Artisan Management",
+        component: () =>
+          import("../views/artisan/pages/artisan-management.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/create-artisan",
+        name: "Create Artisan",
+        component: () => import("../views/artisan/pages/create-artisan.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/edit-artisan",
+        name: "Update Artisan",
+        component: () => import("../views/artisan/pages/edit-artisan.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/agency",
+        name: "Agency Management",
+        component: () => import("../views/agency/pages/agency-management.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresArtisanAuth: false,
+          requiresStoreAuth: false,
+        },
+      },
+      {
+        path: "/create-agency",
+        name: "Create Agency",
+        component: () => import("../views/agency/pages/create-agency.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresArtisanAuth: false,
+          requiresStoreAuth: false,
+        },
+      },
+      {
+        path: "/edit-agency",
+        name: "Update Agency",
+        component: () => import("../views/agency/pages/edit-agency.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresArtisanAuth: false,
+          requiresStoreAuth: false,
+        },
+      },
+      {
+        path: "/htx",
+        name: "HTX Management",
+        component: () => import("../views/htx/pages/htx-management.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/create-htx",
+        name: "Create HTX",
+        component: () => import("../views/htx/pages/create-htx.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/edit-htx",
+        name: "Update HTX",
+        component: () => import("../views/htx/pages/edit-htx.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/region",
+        name: "Region Management",
+        component: () => import("../views/region/pages/region-management.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/create-region",
+        name: "Create Region",
+        component: () => import("../views/region/pages/create-region.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+      {
+        path: "/edit-region",
+        name: "Update Region",
+        component: () => import("../views/region/pages/edit-region.vue"),
+        meta: {
+          requiresAuth: true,
+          requiresAdminAuth: true,
+        },
+      },
+
+      {
         path: "/contact",
         name: "Contact Management",
         component: () =>
           import("../views/contact/pages/contact-management.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
 
@@ -254,6 +279,7 @@ const routes = [
           import("../views/document/pages/document-management.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -262,6 +288,7 @@ const routes = [
         component: () => import("../views/document/pages/create-document.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -270,6 +297,7 @@ const routes = [
         component: () => import("../views/document/pages/edit-document.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
 
@@ -279,6 +307,7 @@ const routes = [
         component: () => import("../views/faq/pages/faq-management.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -287,6 +316,7 @@ const routes = [
         component: () => import("../views/faq/pages/create-faq.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -295,6 +325,7 @@ const routes = [
         component: () => import("../views/faq/pages/edit-faq.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -304,6 +335,7 @@ const routes = [
           import("../views/homepage-config/banner/pages/banner-management.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -313,6 +345,7 @@ const routes = [
           import("../views/homepage-config/banner/pages/banner-management.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -324,6 +357,7 @@ const routes = [
           ),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -333,6 +367,7 @@ const routes = [
           import("../views/homepage-config/htx/pages/fav-htx-managment.vue"),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -344,6 +379,7 @@ const routes = [
           ),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -355,6 +391,7 @@ const routes = [
           ),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -366,6 +403,7 @@ const routes = [
           ),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
       {
@@ -377,6 +415,7 @@ const routes = [
           ),
         meta: {
           requiresAuth: true,
+          requiresAdminAuth: true,
         },
       },
     ],
@@ -396,6 +435,22 @@ router.beforeEach((to, from, next) => {
   if (to.meta && to.meta.requiresAuth && !user.isConnected) {
     alert.error("You need to login before accessing this site!");
     next("/login");
+  }
+  if (to.meta && to.meta.requiresAdminAuth && !user.isAuthenticated) {
+    alert.error("Not allowed!");
+    next("/product");
+  }
+  if (to.meta && to.meta.requiresArtisanAuth && !user.isArtisan) {
+    alert.error("Not allowed!");
+    next("/product");
+  }
+  if (to.meta && to.meta.requiresCooperativeAuth && !user.isCooperative) {
+    alert.error("Not allowed!");
+    next("/agency");
+  }
+  if (to.meta && to.meta.requiresStoreAuth && !user.isStore) {
+    alert.error("Not allowed!");
+    next("/product");
   }
   next();
 });

@@ -4,6 +4,7 @@ import { Auth } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { User } from "@/plugins/api";
+import { get } from "lodash";
 
 export const userStore = defineStore("user", {
   state: () => ({
@@ -22,6 +23,7 @@ export const userStore = defineStore("user", {
     brandInfoForm: false,
     createPartnerDialog: false,
     file: null,
+    role: "",
     avatarUrl: [],
     mini: true,
   }),
@@ -29,11 +31,17 @@ export const userStore = defineStore("user", {
     isConnected() {
       return !!this.userData && !!this.jwt;
     },
-    isMaintainer() {
-      return this.role && this.role.type == "maintainer";
+    isAuthenticated() {
+      return this.role && this.role === "Authenticated";
     },
-    isPartner() {
-      return this.role && this.role.type == "partner";
+    isArtisan() {
+      return this.role && this.role === "Artisan";
+    },
+    isCooperative() {
+      return this.role && this.role === "Cooperative";
+    },
+    isStore() {
+      return this.role && this.role === "Store";
     },
   },
   actions: {
@@ -54,6 +62,7 @@ export const userStore = defineStore("user", {
         }
         const userInfo = res.data.user;
         const jwt = res.data.jwt;
+
         if (!jwt) {
           alert.error(`Đăng nhập thất bại!`);
           return;
@@ -62,11 +71,20 @@ export const userStore = defineStore("user", {
         this.jwt = jwt;
         this.userData = userInfo;
         this.userSignUpData = userInfo;
-        this.role = this.userData.role;
         if (!this.rememberMe) {
           this.password = "";
         }
-        this.router.push("/dashboard");
+        const resRole = await User.fetchUserRole({
+          populate: "role",
+        });
+        const data = get(resRole, "data.role", {});
+        this.role = data.name;
+        if (this.role == undefined) {
+          this.role = "Authenticated";
+          this.router.push("/dashboard");
+        } else {
+          this.router.push("/product");
+        }
       } catch (error) {
         console.error(`Error: ${error}`);
         alert.error(error);
@@ -106,7 +124,7 @@ export const userStore = defineStore("user", {
     logout() {
       this.jwt = "";
       this.userData = {};
-      this.role = {};
+      this.role = "";
     },
     async updateAccountSetting() {
       if (this.file) {
@@ -173,7 +191,7 @@ export const userStore = defineStore("user", {
   },
   persist: [
     {
-      paths: ["userData", "password", "rememberMe", "username"],
+      paths: ["userData", "password", "rememberMe", "username", "role"],
       storage: localStorage,
     },
     {

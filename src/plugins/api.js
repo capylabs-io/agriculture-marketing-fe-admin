@@ -73,6 +73,16 @@ export const User = {
       }
     );
   },
+  fetchUserRole: (params) => {
+    const user = userStore();
+    console.log("jwt", user.jwt);
+    return axios.get("users/me", {
+      params: utils.filterObject(params),
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
   updateUserInfo: (model, id) => axios.put(`users/${id}`, model),
   updateUserEmail: (email, password) =>
     axios.post("users/edit-email", {
