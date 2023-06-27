@@ -291,8 +291,13 @@
               >Thông tin tài khoản
             </v-list-item-title>
           </v-list-item>
+          <v-list-item v-if="mini" active-class="active-item">
+            <v-list-item-icon class="mx-auto">
+              <v-icon>mdi-cog-outline</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
           <v-list-group
-            v-if="userStore.isAuthenticated"
+            v-if="userStore.isAuthenticated && !mini"
             :class="
               !mini
                 ? 'border-radius-8 mt-2 mx-n2'
@@ -405,8 +410,7 @@ export default {
       this.$router.push("/login");
     },
   },
-  created() {
-  },
+  created() {},
   data() {
     return {
       mini: false,
