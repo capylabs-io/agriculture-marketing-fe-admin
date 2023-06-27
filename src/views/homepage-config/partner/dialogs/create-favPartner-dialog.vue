@@ -51,8 +51,12 @@
           :custom-strings="{
             upload: '<h1>Bummer!</h1>',
             drag: '',
+            remove: 'Xóa logo',
           }"
+          :removable="true"
+          removeButtonClass="text-none border-radius-8 px-3 mr-2 white-bg neutral20-border"
           @change="onIconSelect($event)"
+          @remove="onRemoveClicked($event)"
           hideChangeButton
           :crop="false"
         >
@@ -143,10 +147,18 @@ export default {
       }
     },
     onCancelClicked() {
+      this.image = "";
+      this.$refs.pictureInput.image = null;
+      this.$refs.pictureInput.file = null;
       this.favPartnerStore.favPartnerCreateDialog = false;
       this.favPartnerStore.favPartner = {};
       this.favPartnerStore.partnerLogo = null;
-      this.$refs.pictureInput.file = null;
+    },
+    onRemoveClicked(event) {
+      console.log(event);
+      this.favPartnerStore.partnerLogo = null;
+      this.isIconSelected = false;
+      this.image = "";
     },
     async onCreateClicked() {
       if (
@@ -165,7 +177,6 @@ export default {
       this.favPartnerStore.favPartnerCreateDialog = false;
       this.favPartnerStore.favPartner = {};
       this.favPartnerStore.partnerLogo = null;
-      this.$refs.pictureInput.file = null;
     },
   },
 };
