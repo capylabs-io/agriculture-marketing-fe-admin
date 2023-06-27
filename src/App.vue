@@ -10,9 +10,13 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { contactStore } from "@/views/contact/store/contact-store";
 export default {
   name: "App",
-
+  computed: {
+    ...mapStores(contactStore),
+  },
   components: {
     PluginLoading: () => import("@/components/plugin/PluginLoading.vue"),
     PluginSnackbar: () => import("@/components/plugin/PluginAlert.vue"),
@@ -20,9 +24,19 @@ export default {
       import("@/components/plugin/PluginConfirmDialog.vue"),
   },
 
-  created() {},
+  mounted() {
+    this.interval = setInterval(() => {
+      this.contactStore.fetchAppContacts();
+    }, 7000);
+  },
+  beforeMount() {
+    clearInterval(this.interval);
+  },
+  // destroyed() {
+  //   clearInterval(this.interval);
+  // },
   data() {
-    return {};
+    return { interval: null };
   },
 };
 </script>

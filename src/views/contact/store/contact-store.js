@@ -132,39 +132,49 @@ export const contactStore = defineStore("contact", {
         loading.hide();
       }
     },
-    // async fetchContact(code) {
-    //   try {
-    //     loading.show();
-    //     const res = await Contact.fetch({
-    //       populate: "*",
-    //     });
-    //     if (!res) {
-    //       alert.error(
-    //         "Error occurred when fetching contacts!",
-    //         "Please try again later!"
-    //       );
-    //       return;
-    //     }
-    //     const contacts = get(res, "data.data", []);
-    //     if (!contacts && contacts.length == 0) return;
-    //     const mappedcontacts = contacts.map((contact) => {
-    //       return {
-    //         id: contact.id,
-    //         ...contact.attributes,
-    //         contactCategory: {
-    //           id: get(contact, "attributes.contactCategory.data.id", -1),
-    //           ...get(contact, "attributes.contactCategory.data.attributes", {}),
-    //         },
-    //         author: get(contact, "attributes.user.data.attributes", {}),
-    //       };
-    //     });
-    //     this.contacts = mappedcontacts;
-    //   } catch (error) {
-    //     alert.error("Error occurred!", error.message);
-    //   } finally {
-    //     loading.hide();
-    //   }
-    // },
+
+    async fetchAppContacts() {
+      try {
+        const res = await Contact.fetch({
+          sort: "updatedAt:desc",
+          populate: "*",
+        });
+        if (!res) {
+          alert.error(
+            "Error occurred when fetching contacts!",
+            "Please try again later!"
+          );
+          return;
+        }
+        const contacts = get(res, "data.data", []);
+        if (!contacts && contacts.length == 0) return;
+        const mappedcontacts = contacts.map((contact) => {
+          return {
+            id: contact.id,
+            ...contact.attributes,
+            contactCategory: {
+              id: get(contact, "attributes.contactCategory.data.id", -1),
+              ...get(contact, "attributes.contactCategory.data.attributes", {}),
+            },
+            author: get(contact, "attributes.user.data.attributes", {}),
+          };
+        });
+        let count = mappedcontacts.filter(
+          (contact) => contact.data.status == "unChecked"
+        ).length;
+        if (count <= 0) {
+          this.contactNotification = 0;
+        } else {
+          this.contactNotification = count;
+        }
+        this.contacts = mappedcontacts;
+        console.log("contacts", this.contacts);
+        console.log("contactNotification", this.contactNotification);
+      } catch (error) {
+        console.error("Error occurred!", error.message);
+      } 
+    },
+ 
     async updateContactStatus() {
       try {
         if (!this.contact) return;

@@ -8,7 +8,16 @@
         class="d-flex text-xl font-weight-medium justify-center align-center"
       >
         Vùng sản xuất
-        <v-icon class="ml-2" color="black">mdi-help-circle-outline </v-icon>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon v-bind="attrs" v-on="on" class="ml-2" color="black"
+              >mdi-help-circle-outline
+            </v-icon>
+          </template>
+          <div>
+            Số lượng Vùng sản xuất {{ favRegionStore.favRegionCodes.length }}/4
+          </div>
+        </v-tooltip>
         <v-switch class="ml-10" v-model="isDraggable" inset>
           <template v-slot:label>
             <span class="text-lg font-weight-medium black--text">
@@ -29,6 +38,7 @@
           <div class="ml-1">Cập nhật thứ tự</div>
         </v-btn>
         <v-btn
+          v-if="favRegionStore.favRegionCodes.length < 4"
           class="white-bg neutral20-border text-none btn-text border-radius-8 py-5"
           elevation="0"
           outlined

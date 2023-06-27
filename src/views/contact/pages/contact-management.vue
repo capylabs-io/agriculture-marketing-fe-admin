@@ -48,7 +48,31 @@
             <td class="text-center">{{ props.item.email }}</td>
             <td class="text-center">{{ props.item.title }}</td>
             <td class="text-center">{{ props.item.createdAt }}</td>
-            <td class="text-center"></td>
+
+            <td class="text-center">
+              <v-btn
+                class="text-none text-btn"
+                color="error"
+                v-if="
+                  props.item.data.status &&
+                  props.item.data.status == 'unChecked'
+                "
+                @click.stop="onActiveClicked(props.item)"
+                depressed
+                small
+              >
+                Chưa phản hồi
+              </v-btn>
+              <v-btn
+                class="text-none text-btn"
+                color="success"
+                depressed
+                small
+                v-else
+              >
+                Đã hoàn thành
+              </v-btn>
+            </td>
           </tr>
         </template>
         <!-- <template v-slot:[`item.id`]="{ item }">
@@ -178,12 +202,23 @@ export default {
     },
     onRowClicked(item) {
       this.contactStore.contact = item;
-      if (item.data.status == "unChecked") {
-        this.contactStore.updateContactStatus();
-      }
+
       this.contactStore.drawerDetail = true;
       this.contactStore.contact.contactCategory = item.contactCategory.id;
     },
+    onActiveClicked() {
+      this.contactStore.drawerDetail = false;
+      this.$dialog.confirm({
+        title: "Xác nhận phản hồi liên hệ",
+        topContent: "Bạn có chắc bạn muốn phản hồi liên hệ này không?",
+        midContent:
+          "<span class='error--text'>Sau khi hoàn thành, bạn không thể quay ngược lại hành động này!</span>",
+        done: async () => {
+          this.contactStore.updateContactStatus();
+        },
+      });
+    },
+
     onEditClicked(item) {
       this.contactStore.contact = item;
       this.contactStore.contact.contactCategory = item.contactCategory.id;

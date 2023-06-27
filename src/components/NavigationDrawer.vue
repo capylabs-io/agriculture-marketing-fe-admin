@@ -406,7 +406,6 @@ export default {
     },
   },
   created() {
-    this.contactStore.fetchContacts();
   },
   data() {
     return {
