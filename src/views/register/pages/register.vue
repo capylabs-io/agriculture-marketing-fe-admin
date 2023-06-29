@@ -8,7 +8,7 @@
           lazy-validation
           class="full-width d-flex flex-column align-center justify-center"
         >
-          <div class="d-flex" @click="goToHome()">
+          <div @click="goToHome()">
             <div class="mx-auto logo-img">
               <v-img :src="require('@/assets/quochuy.png')" />
             </div>
@@ -20,7 +20,10 @@
               cảnh tỉnh bến tre
             </div>
           </div>
-          <div class="d-flex flex-column full-width form-input">
+          <div
+            class="d-flex flex-column full-width form-input"
+            v-if="!authenSelected"
+          >
             <div class="text-md d-flex">
               <v-icon color="black"> mdi-arrow-left-thin </v-icon>
               <router-link
@@ -37,7 +40,25 @@
               </div>
             </div>
             <div class="text-sm neutral70--text font-weight-bold mt-6">
-              Tài Khoản
+              Chọn loại tài khoản
+            </div>
+            <v-select
+              class="pa-0 mt-2"
+              placeholder="Chọn loại tài khoản"
+              v-model="userStore.userSignUpData.role"
+              item-text="text"
+              item-value="value"
+              :rules="[$rules.required]"
+              :items="role"
+              flat
+              solo
+              outlined
+              return-object
+              @change="changeAccountCategory($event)"
+              dense
+            ></v-select>
+            <div class="text-sm neutral70--text font-weight-bold mt-2">
+              Email
             </div>
             <v-text-field
               height="36px"
@@ -46,19 +67,6 @@
               :rules="rules.checkIdentifier"
               class="pa-0 mt-2"
               placeholder="Nhập tên tài khoản"
-              outlined
-              dense
-            />
-            <div class="text-sm neutral70--text font-weight-bold mt-2">
-              Số điện thoại
-            </div>
-            <v-text-field
-              height="36px"
-              type="text"
-              v-model="userStore.userSignUpData.phoneNumber"
-              :rules="rules.checkIdentifier"
-              class="pa-0 mt-2"
-              placeholder="Nhập số điện thoại"
               outlined
               dense
             />
@@ -93,8 +101,137 @@
               dense
             />
           </div>
+          <div v-else class="d-flex flex-column full-width form-input">
+            <div class="text-md d-flex">
+              <v-icon color="black"> mdi-arrow-left-thin </v-icon>
+              <div
+                @click="authenSelected = false"
+                class="text-decoration-none font-weight-bold ml-2 black--text"
+              >
+                <div class="text-none nav-link">Quay lại</div>
+              </div>
+            </div>
+            <div class="mt-2">
+              <div class="text-dp-md font-weight-bold">Đăng ký</div>
+              <div class="text-md mt-2">
+                Xin chào! Hãy nhập thông tin của đồng chí.
+              </div>
+            </div>
 
+            <div class="text-sm neutral70--text font-weight-bold mt-6">
+              Tên
+              {{
+                userStore.userSignUpData.role
+                  ? userStore.userSignUpData.role.text
+                  : ""
+              }}
+            </div>
+            <v-text-field
+              height="36px"
+              type="text"
+              v-model="userStore.metadata.name"
+              class="pa-0 mt-2"
+              placeholder="Nhập tên tài khoản"
+              outlined
+              dense
+            />
+
+            <div class="text-sm neutral70--text font-weight-bold mt-2">
+              {{ !isArtisan ? " Danh mục" : "Danh xưng" }}
+            </div>
+            <v-select
+              class="pa-0 mt-2"
+              placeholder="Chọn danh mục"
+              v-model="userStore.metadata.category"
+              item-text="name"
+              item-value="id"
+              :items="htxStore.categories"
+              flat
+              solo
+              outlined
+              dense
+            ></v-select>
+
+            <div class="text-sm neutral70--text font-weight-bold mt-2">
+              {{ !isArtisan ? "Mã số đăng ký kinh doanh" : "Số CMT / CCCD" }}
+            </div>
+            <v-text-field
+              v-if="!isArtisan"
+              height="36px"
+              type="text"
+              v-model="userStore.metadata.businessCode"
+              class="pa-0 mt-2"
+              placeholder="Nhập Mã số đăng ký kinh doanh"
+              outlined
+              dense
+            />
+            <v-text-field
+              v-else
+              height="36px"
+              type="text"
+              v-model="userStore.metadata.idNumber"
+              class="pa-0 mt-2"
+              placeholder="Nhập Số CMT / CCCD"
+              outlined
+              dense
+            />
+            <div class="text-sm neutral70--text font-weight-bold mt-2">
+              {{ !isArtisan ? "Mã số thuế" : "Ngày cấp" }}
+            </div>
+            <v-text-field
+              v-if="!isArtisan"
+              height="36px"
+              type="text"
+              v-model="userStore.metadata.taxCode"
+              class="pa-0 mt-2"
+              placeholder="Nhập Ngày cấp"
+              outlined
+              dense
+            />
+            <v-text-field
+              v-else
+              height="36px"
+              type="text"
+              v-model="userStore.metadata.issuer"
+              class="pa-0 mt-2"
+              placeholder="Nhập Ngày cấp"
+              outlined
+              dense
+            />
+            <div class="text-sm neutral70--text font-weight-bold mt-2">
+              {{ !isArtisan ? "Địa chỉ" : "Nơi cấp" }}
+            </div>
+            <v-text-field
+              v-if="!isArtisan"
+              height="36px"
+              type="text"
+              v-model="userStore.metadata.address"
+              placeholder="Nhập Địa chỉ"
+              outlined
+              dense
+            />
+            <v-text-field
+              v-else
+              height="36px"
+              type="text"
+              v-model="userStore.metadata.issuer"
+              placeholder="Nhập Nơi cấp"
+              outlined
+              dense
+            />
+          </div>
           <v-btn
+            v-if="!authenSelected"
+            :disabled="userStore.userSignUpData.role ? false : true"
+            class="mt-7 full-width border-radius-12"
+            color="primary"
+            height="56px"
+            @click="authenSelected = true"
+            depressed
+            ><span class="black--text text-none text-btn">Tiếp tục</span></v-btn
+          >
+          <v-btn
+            v-else
             class="mt-7 full-width border-radius-12"
             color="primary"
             height="56px"
@@ -131,10 +268,12 @@
 <script>
 import { rules } from "@/plugins/rules";
 import { userStore } from "@/stores/userStore";
+import { htxStore } from "@/views/htx/store/htx-store";
 import { mapStores } from "pinia";
 export default {
   computed: {
     ...mapStores(userStore),
+    ...mapStores(htxStore),
     passwordConfirmationRule() {
       return () =>
         this.userStore.userSignUpData.password === this.userStore.cfpassword ||
@@ -146,6 +285,13 @@ export default {
       rules: rules,
       isShow: true,
       isShowPass: false,
+      isArtisan: false,
+      authenSelected: false,
+      role: [
+        { value: "Artisan", text: "Nghệ nhân" },
+        { value: "Store", text: "Đại lý" },
+        { value: "Cooperative", text: "Hợp Tác Xã" },
+      ],
       imageUrls: [
         require("@/assets/components/landing/section1-right3.jpeg"),
         require("@/assets/components/landing/section1-right1.png"),
@@ -153,6 +299,9 @@ export default {
         require("@/assets/components/landing/section1-right4.jpeg"),
       ],
     };
+  },
+  created() {
+    this.htxStore.fetchCategories();
   },
   methods: {
     gotoRouter(url) {
@@ -171,6 +320,15 @@ export default {
     },
     goToHome() {
       window.open("https://trungtamcaycanh.capylabs.io/");
+    },
+    changeAccountCategory(category) {
+      if (!category) return;
+      console.log("category", category);
+      if (category.value == "Artisan") {
+        this.isArtisan = true;
+      } else {
+        this.isArtisan = false;
+      }
     },
   },
 };

@@ -22,6 +22,7 @@ export const userStore = defineStore("user", {
     inputAvatar: null,
     brandInfoForm: false,
     createPartnerDialog: false,
+    metadata: {},
     file: null,
     role: "",
     avatarUrl: [],
@@ -100,6 +101,8 @@ export const userStore = defineStore("user", {
           username: this.userSignUpData.email,
           address: "",
           name: "",
+          role: this.userSignUpData.role.value,
+          metadata: { ...this.metadata, role: this.userSignUpData.role.value },
         });
         if (!res) {
           alert.error(`Đăng ký thất bại!`);
@@ -109,7 +112,7 @@ export const userStore = defineStore("user", {
           this.password = "";
         }
         alert.success("Đăng ký thành công!");
-        this.router.push("/");
+        this.router.push("/login");
       } catch (error) {
         // console.error(`Error: ${error}`);
         if (error.response.status == 400) {
