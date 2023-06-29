@@ -145,7 +145,7 @@
               v-model="userStore.metadata.category"
               item-text="name"
               item-value="id"
-              :items="htxStore.categories"
+              :items="items"
               flat
               solo
               outlined
@@ -269,11 +269,15 @@
 import { rules } from "@/plugins/rules";
 import { userStore } from "@/stores/userStore";
 import { htxStore } from "@/views/htx/store/htx-store";
+import { artisanStore } from "@/views/artisan/store/artisan-store";
+import { agencyStore } from "@/views/agency/store/agency-store";
 import { mapStores } from "pinia";
 export default {
   computed: {
     ...mapStores(userStore),
     ...mapStores(htxStore),
+    ...mapStores(artisanStore),
+    ...mapStores(agencyStore),
     passwordConfirmationRule() {
       return () =>
         this.userStore.userSignUpData.password === this.userStore.cfpassword ||
@@ -287,6 +291,7 @@ export default {
       isShowPass: false,
       isArtisan: false,
       authenSelected: false,
+      items: null,
       role: [
         { value: "Artisan", text: "Nghệ nhân" },
         { value: "Store", text: "Đại lý" },
@@ -302,6 +307,8 @@ export default {
   },
   created() {
     this.htxStore.fetchCategories();
+    this.agencyStore.fetchCategories();
+    this.artisanStore.fetchCategories();
   },
   methods: {
     gotoRouter(url) {
@@ -326,8 +333,13 @@ export default {
       console.log("category", category);
       if (category.value == "Artisan") {
         this.isArtisan = true;
+        this.items = this.artisanStore.categories;
+      } else if (category.value == "Cooperative") {
+        this.isArtisan = false;
+        this.items = this.htxStore.categories;
       } else {
         this.isArtisan = false;
+        this.items = this.agencyStore.categories;
       }
     },
   },
