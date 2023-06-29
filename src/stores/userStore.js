@@ -100,7 +100,7 @@ export const userStore = defineStore("user", {
           ...this.userSignUpData,
           username: this.userSignUpData.email,
           address: "",
-          name: "",
+          name: this.metadata.name,
           role: this.userSignUpData.role.value,
           metadata: { ...this.metadata, role: this.userSignUpData.role.value },
         });
