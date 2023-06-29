@@ -309,7 +309,7 @@
             active-class="active-item"
           >
             <template v-slot:activator>
-              <v-list-item-title class="mx-n3 text-md font-weight-medium"
+              <v-list-item-title class="mx-n6 text-md font-weight-medium"
                 >Cấu hình trang chủ</v-list-item-title
               >
             </template>

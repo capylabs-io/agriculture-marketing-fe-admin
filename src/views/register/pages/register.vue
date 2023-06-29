@@ -192,7 +192,7 @@
               v-else
               height="36px"
               type="text"
-              v-model="userStore.metadata.issuer"
+              v-model="userStore.metadata.issueDate"
               class="pa-0 mt-2"
               placeholder="Nhập Ngày cấp"
               outlined
@@ -358,7 +358,7 @@ export default {
   width: 400px;
 }
 .form-input {
-  margin-top: 80px;
+  margin-top: 30px;
 }
 .remember-me {
   height: 25px;
